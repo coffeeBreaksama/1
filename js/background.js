@@ -117,7 +117,7 @@ function initParemStorage(){
 		paremArr[i] = pageParam();
 	}
 }
-
+  
 
 function getParemFormStorge(){
 	paremArr = localStorage.setItem('pageParam');
