@@ -1,0 +1,26 @@
+{
+    "manifest_version": 2,
+    "name": "给我的鸡儿放天假吧",
+    "version": "1.0",
+	"background":{"scripts":["js/background.js"]},
+    "description": "",
+	"browser_action":{
+		"default_icon":"images/1.png",
+		"default_popup":"popup.html"
+	},
+	"permissions":["tabs","webRequest","webRequestBlocking","*://gcweb.nis.netease.com/*","notifications"],
+    "content_scripts": [
+        {
+            "matches": ["*://gcweb.nis.netease.com/*","*://mmo.mi.nis.netease.com/*","*://blog.nis.netease.com/*"],
+            "js": ["js/cannot_touch.js"]
+        }
+    ],
+	"web_accessible_resources" : [
+        "js/inject.js",
+		"js/oldJS/image-mark-content.js",
+		"js/yuedu.js",
+		"js/jquery-3.2.1.js",
+		"js/musicCensor.js",
+		"js/musicImage.js"
+	]
+}
