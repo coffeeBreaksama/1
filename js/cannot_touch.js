@@ -4,6 +4,19 @@
   //  this.parentNode.removeChild(this);
 //};
 //(document.head || document.documentElement).appendChild(s);
+//loadScript(url('js/jquery-3.2.1.js'));
+loadScript(url('js/inject.js'));
+var interTime = 0;
+var nowUrl;
+if(document.getElementsByClassName("m-news") != null)
+{
+	initIntertimeText(interTime);
+}
+
+
+
+
+
 
 function loadScript(url) {
     var elem = document.createElement('script');
@@ -17,14 +30,6 @@ function loadScript(url) {
 function url(file) {
     return chrome.extension.getURL(file);
 }
-
-loadScript(url('js/inject.js'));
-//loadScript(url('js/jquery-3.2.1.js'));
-
-var interTime = 500;
-var nowUrl;
-initIntertimeText("null");
-
 
 
 function initIntertimeText(interTimeText){
@@ -55,6 +60,7 @@ function initIntertimeText(interTimeText){
 		//alert(response);
 		//alert("1");
 		interTime = parseInt(response);
+		if(interTime == null){interTime = 1000};
 		document.getElementById("interTimeText").innerHTML = "自动间隔：" + response;
 		});
 	});	

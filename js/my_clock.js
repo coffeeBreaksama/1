@@ -13,6 +13,13 @@ function my_clock(el){
 
 var clock_div = document.getElementById('clock_div');
 my_clock(clock_div);
+getNotifStatus();
+document.getElementById('closeNotifiction').addEventListener("click",function(){
+	closeNotifiction(); 
+	chrome.runtime.sendMessage('autoInterTime', function(response){
+		//alert(response);		
+	});
+});
 
 
 function closeNotifiction()
@@ -22,13 +29,6 @@ function closeNotifiction()
 	});
 }
 
-document.getElementById('closeNotifiction').addEventListener("click",function(){
-	closeNotifiction(); 
-	chrome.runtime.sendMessage('autoInterTime', function(response){
-		//alert(response);		
-	});
-	});
-
 function getNotifStatus()
 {
 	chrome.runtime.sendMessage('getNotifStatus;popup;null;', function(response){
@@ -36,4 +36,3 @@ function getNotifStatus()
 	});
 }
 
-getNotifStatus();

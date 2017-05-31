@@ -3,8 +3,20 @@ blockArry[0] = "http://gcweb.nis.netease.com/js/modules/censor/yuedu/yuedu-open-
 blockArry[1] = "*://mmo.mi.nis.netease.com/js/modules/image/mark/image-mark-content.js*";
 blockArry[2] = "http://gcweb.nis.netease.com/js/modules/censor/music/music-censor*";
 blockArry[3] = "http://gcweb.nis.netease.com/js/modules/censor/music/music-image*";
-
-
+sendNotif("fuck");
+var timeSend = 1;
+var intervalID;
+var interTime = 500;
+var NotifSwitch = parseInt(localStorage.getItem("globalVariables"+"-NotifSwitch"));//默认打开
+if(NotifSwitch != 1 || NotifSwitch != 0)
+{
+	NotifSwitch = 0;
+}
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
+    var cmd = analysisInstruction(message);
+	sendResponse(executeCmd(cmd));
+	updataStorage(cmd);
+});
 chrome.webRequest.onBeforeRequest.addListener(
 	  function(details) {
 		console.log(details);
@@ -31,6 +43,8 @@ chrome.webRequest.onBeforeRequest.addListener(
 	  },
 	  ["blocking"]
 	);	
+
+	
 function sendNotif(type)
 {
 	var n;
@@ -54,15 +68,7 @@ function sendNotif(type)
 	}
 	
 }
-sendNotif("fuck");
-var timeSend = 1;
-var intervalID;
-var interTime = 500;
-var NotifSwitch = parseInt(localStorage.getItem("globalVariables"+"-NotifSwitch"));//默认打开
-if(NotifSwitch != 1 || NotifSwitch != 0)
-{
-	NotifSwitch = 0;
-}
+
 /* var paremArr = new Array();
 initParemStorage();
 localStorage.setItem("pageParam",paremArr) 
@@ -192,8 +198,3 @@ function executeCmd(cmd)
 }
 
 
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
-    var cmd = analysisInstruction(message);
-	sendResponse(executeCmd(cmd));
-	updataStorage(cmd);
-});
