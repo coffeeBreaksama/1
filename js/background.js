@@ -58,17 +58,24 @@ sendNotif("fuck");
 var timeSend = 1;
 var intervalID;
 var interTime = 500;
-var NotifSwitch = 0;//默认打开
+var NotifSwitch = parseInt(localStorage.getItem("globalVariables"+"-NotifSwitch"));//默认打开
+if(NotifSwitch != 1 || NotifSwitch != 0)
+{
+	NotifSwitch = 0;
+}
+/* var paremArr = new Array();
+initParemStorage();
+localStorage.setItem("pageParam",paremArr) 
 
 
-
-var paremArr = new Array();
 if(!localStorage.getItem("pageParam")){
 	initParemStorage();
 }
 else{
-	getParemFormStorge();
+	paremArr = getParemFormStorge();
 }
+console.log(paremArr);
+ */
 
 
 function switchNoti()
@@ -93,6 +100,11 @@ function switchNoti()
 		sendNotif("停止计算时间");
 		NotifSwitch = 0;
 	}
+	
+	if(NotifSwitch==1)
+    {return('关闭小模块计时器');}
+	else if(NotifSwitch==0)
+	{return('开启小模块计时器');}
 }
 function instruction(type,source,num)
 {
@@ -101,35 +113,43 @@ function instruction(type,source,num)
 	this.num = num;
 	
 }
-function pageParam(url,type,interTime,notiTime)
+/* function pageParam(url,type,interTime,notiTime,notiSwitch)
 {
-	this.url = url;
-	this.type = type;
-	this.interTime = interTime;
-	this.notiTime = notiTime;
-}
+	var ob = new Object();
+	ob.url = url;
+	ob.type = type;
+	ob.interTime = interTime;
+	ob.notiTime = notiTime;
+	ob.notiSwitch = notiSwitch;
+	return ob;
+} */
 
 
-
+/* 
 function initParemStorage(){
 	for(var i=0;i<30;i++)
 	{
-		paremArr[i] = pageParam();
+		paremArr[i] = pageParam(1,1,1,1,1);
 	}
-}
+} */
   
-
+/* 
 function getParemFormStorge(){
-	paremArr = localStorage.setItem('pageParam');
+	var param = pageParam();
 	
-}
+	
+} */
 
 
-function updataStorage()
+function updataStorage(cmd)
 {
-	
-	localStorage.setItem('pageParam',)
-	
+	if(cmd.type == "setInterTime"){
+		localStorage.setItem(cmd.source+"-interTime",cmd.num);
+
+	}
+	if(cmd.type == "CloseNotif"){
+		localStorage.setItem("globalVariables"+"-NotifSwitch",NotifSwitch);
+	}
 }
 
 
@@ -143,33 +163,37 @@ function analysisInstruction(message)
 	console.log("指令类型：" + instType +"来源：" + instSourse + "数字：" + instNum);
 	return new instruction(instType,instSourse,instNum);
 }
-
-
-
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
-    var cmd = analysisInstruction(message);
+function executeCmd(cmd)
+{
+	var responseText;
 	if(cmd.type == 'CloseNotif'){
-		switchNoti();
-		if(NotifSwitch==1)
-        {sendResponse('关闭小模块计时器');}
-		else if(NotifSwitch==0)
-		{sendResponse('开启小模块计时器');}
+		responseText = switchNoti();
     }
 	else if(cmd.type == "getNotifStatus")
 	{ 
 		if(NotifSwitch==1)
-        {sendResponse('关闭小模块计时器');}
+        {responseText = '关闭小模块计时器';}
 		else if(NotifSwitch==0)
-		{sendResponse('开启小模块计时器');}
+		{responseText = '开启小模块计时器';}
     }
 	else if(cmd.type == "getInterTime")
 	{
-		sendResponse(interTime);
+		interTime = parseInt(localStorage.getItem(cmd.source+"-interTime"));
+		responseText = interTime;
+		console.log("getInterTime:"+interTime);
 	}
 	else if(cmd.type == "setInterTime")
 	{
 		interTime = cmd.num;
-		sendResponse(cmd.num);
+		responseText = cmd.num;
+		console.log("setInterTime:"+interTime);
 	}
-    //console.log(analysisInstruction(message));
+	return responseText;
+}
+
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
+    var cmd = analysisInstruction(message);
+	sendResponse(executeCmd(cmd));
+	updataStorage(cmd);
 });

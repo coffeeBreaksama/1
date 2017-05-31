@@ -144,13 +144,45 @@ function liveAutoKeydown()
 		}
 	}
 	
+	var startAutoNext = function()
+	{
+		getIndexNum();
+		$("#cs-list a").eq(firstUncensorIndex).click();//从第一个未审核的开始。
+		nowIndex = firstUncensorIndex;
+		intervalID = window.setInterval(function(){
+		//if(pauseFlag == 0){
+			if($("#querycount").text() != "0"){
+				if(delMessage == 1){
+					delItem($("#cs-list a").eq(nowIndex));
+					delMessage = 0;
+				}
+				else{
+					passItem($("#cs-list a").eq(nowIndex));				
+				}
+			}
+			else{
+					intervalID = window.clearInterval(intervalID);
+					autoStatus = 0;
+			}
+					
+		},interTime);
+		autoStatus = 1;
+	}
+	
+	var stopAutoNext = function()
+	{
+		intervalID = window.clearInterval(intervalID);
+		autoStatus = 0;
+	}
+	
+	
 	var list = $("#cs-list a");
 	var item;
 	var autoStatus = 0;
 	var intervalID;
 	var delMessage = 0;
-	var pauseFlag = 0;
-	var interTime = 500;
+	//var pauseFlag = 0;
+	var interTime = parseInt($("#selecterId").val());;
 
 	
 	$("#selecterId").on("change",function(){
@@ -171,34 +203,14 @@ function liveAutoKeydown()
 			if(autoStatus == 1){
 				if(e.which == 1)
 				{
-					if(pauseFlag == 0){	
-						//passItem($("#cs-list a").eq(nowIndex));
-					}
-					else if(pauseFlag == 1){
-						getIndexNum();
-						passItem($("#cs-list a").eq(nowIndex));
-					}
 				}
 				if(e.which == 3)
-				{
-					if(pauseFlag == 0){	
-						//passItem($("#cs-list a").eq(nowIndex));
-						delMessage = 1;
-					}
-					else if(pauseFlag == 1){
-						getIndexNum();
-						delItem($("#cs-list a").eq(nowIndex));
-						
-					}
+				{	
+					delMessage = 1;				
 				}
 				if(e.which == 2){
-					if(pauseFlag == 0)
-					{
-						pauseFlag = 1;
-					}else 
-					{
-						pauseFlag = 0;
-					}
+					e.preventDefault();
+					stopAutoNext();
 				}
 			}
 			else if(autoStatus == 0 && $("#querycount").text() != "0")
@@ -215,10 +227,14 @@ function liveAutoKeydown()
 					passItem($("#cs-list a").eq(nowIndex));
 					nowIndex += 1;
 				}
+				else if(e.which == 2&&$("#cs-list a").length > 0)
+				{
+					e.preventDefault();
+					startAutoNext();
+				}
 				screenTopNum = 0;
 				$("#detail").animate({scrollTop:0},100);
-				//alert(nowIndex);
-				
+				//alert(nowIndex);				
 			}
 		})
 	
@@ -226,34 +242,11 @@ function liveAutoKeydown()
 			if(e.which == 89)//V
 			{
 				if(autoStatus == 0){
-				//passItem($(".uncensor focus")[0]);
-					getIndexNum();
-					$("#cs-list a").eq(firstUncensorIndex).click();//从第一个未审核的开始。
-					nowIndex = firstUncensorIndex;
-					intervalID = window.setInterval(function(){
-						if(pauseFlag == 0){
-							if($("#querycount").text() != "0"){
-								if(delMessage == 1){
-									delItem($("#cs-list a").eq(nowIndex));
-									delMessage = 0;
-								}
-								else {
-									passItem($("#cs-list a").eq(nowIndex));				
-								}
-							}
-							else
-							{
-								intervalID = window.clearInterval(intervalID);
-								autoStatus = 0;
-							}
-						}
-					},interTime);
-					autoStatus = 1;
+				startAutoNext();
 				}
 				else if(autoStatus == 1)
 				{
-					intervalID = window.clearInterval(intervalID);
-					autoStatus = 0;
+					stopAutoNext();
 				}
 			}
 			if(e.which == 82)//R
