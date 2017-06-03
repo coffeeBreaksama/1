@@ -1,4 +1,4 @@
-var onOffPass = 1;
+﻿var onOffPass = 1;
 $(document).ready(function() {
 	//alert("success");
 	var prefix = "/modules/censor/yuedu/open";
