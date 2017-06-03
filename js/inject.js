@@ -100,12 +100,14 @@ function liveAutoKeydown()
 	var passItem = function(currentItem){
 		$(currentItem).removeClass("s-fc7 unpass uncensor").addClass("s-fc8 pass").attr("newStatus", "2000");
 		moveNext(currentItem);
+		$(currentItem).attr("style","none");
 	}
 	
 	/** 删除当前选中的项 */
 	var delItem = function(currentItem){
 		$(currentItem).removeClass("s-fc8 pass uncensor").addClass("s-fc7 unpass").attr("newStatus", "3000");
 		moveNext(currentItem);
+		$(currentItem).attr("style","none");
 	}
 	var moveNext = function(currentItem){
 		var index = parseInt($(currentItem).attr("index"));
