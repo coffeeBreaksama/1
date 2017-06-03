@@ -148,6 +148,7 @@ function liveAutoKeydown()
 	
 	var startAutoNext = function()
 	{
+		interTime = parseInt($("#interTimeText").text().split("：")[1]);
 		getIndexNum();
 		$("#cs-list a").eq(firstUncensorIndex).click();//从第一个未审核的开始。
 		nowIndex = firstUncensorIndex;
@@ -184,7 +185,7 @@ function liveAutoKeydown()
 	var intervalID;
 	var delMessage = 0;
 	//var pauseFlag = 0;
-	var interTime = parseInt($("#selecterId").val());;
+	var interTime = parseInt($("#interTimeText").text().split("：")[1]);
 
 	
 	$("#selecterId").on("change",function(){
