@@ -877,13 +877,20 @@ function changeCookie(value)
 var autoId;
 function autoUpdataBooks()
 {
-	autoId = window.setInterval(function(){
-		if($("#querycount").text() != "0")
-		{
-			$("#submit").click();
-		}
-		else{
-			autoId = window.clearInterval(autoId);
-		}
-	},1000*60*2);
+	if(window.location.herf == "http://gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html"||window.location.herf == "http://gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html#")
+	{
+		autoId = window.setInterval(function(){
+			if($("#querycount").text() != "0")
+			{
+				$("#submit").click();
+			}
+			else{
+				autoId = window.clearInterval(autoId);
+				}
+		},1000*60*2);
+	}
+	else 
+	{
+		alert("THE PAGA NOT AT ADDRESS IN RIGHT!");
+	}
 }
