@@ -242,6 +242,14 @@ function liveAutoKeydown()
 		})
 	
 		$("body").on("keydown", function(e){
+			if(e.which == 96)
+			{
+				window.open("http://gcweb.nis.netease.com/modules/censor/yuedu/yaolushan-censor.html","漫画");
+				window.open("http://gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html","阅读");
+				window.open("http://gcweb.nis.netease.com/modules/censor/gacha/gacha-user-censor.html","GACHA");
+				window.open("http://gcweb.nis.netease.com/modules/censor/yooc/yooc-censor.html","云课堂");
+				window.open("http://gcweb.nis.netease.com/modules/censor/popo/popo-suspect-censor.html","POPO");
+			}
 			if(e.which == 89)//V
 			{
 				if(autoStatus == 0){
