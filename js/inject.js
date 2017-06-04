@@ -874,4 +874,16 @@ function changeCookie(value)
 	updateNum = value;
 	setCookie(value);
 }
-
+var autoId;
+function autoUpdataBooks()
+{
+	autoId = window.setInterval(function(){
+		if($("#querycount").text() != "0")
+		{
+			$("#submit").click();
+		}
+		else{
+			autoId = window.clearInterval(autoId);
+		}
+	},1000*60*2);
+}
