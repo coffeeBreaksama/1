@@ -177,30 +177,8 @@ function liveAutoKeydown()
 		intervalID = window.clearInterval(intervalID);
 		autoStatus = 0;
 	}
-	
-	
-	var list = $("#cs-list a");
-	var item;
-	var autoStatus = 0;
-	var intervalID;
-	var delMessage = 0;
-	//var pauseFlag = 0;
-	var interTime = parseInt($("#interTimeText").text().split("：")[1]);
-
-	
-	$("#selecterId").on("change",function(){
-		var x = $("#selecterId");
-		interTime = parseInt(x.val());
-	});
-	$("#detail").bind("contextmenu",function(e){return false;});
-
-	var screenTopNum = 0;
-	
-	$("body").off("keydown");
-	$(".m-news").on("change",function(){getIndexNum();});
-	if(list != null)
-	{	
-		//var a = $(".s-fc0.content");
+	var liveMouseEvent = function()
+	{
 		$("#detail").mousedown(function(e){
 			
 			if(autoStatus == 1){
@@ -239,8 +217,38 @@ function liveAutoKeydown()
 				$("#detail").animate({scrollTop:0},100);
 				//alert(nowIndex);				
 			}
-		})
+		})		
+		
+	}
+	var dieMouseEvent = function()
+	{
+		$("#detail").unbind("mousedown");
+	}
 	
+	
+	var list = $("#cs-list a");
+	var item;
+	var autoStatus = 0;
+	var intervalID;
+	var delMessage = 0;
+	var allowMouse = 1;
+	//var pauseFlag = 0;
+	var interTime = parseInt($("#interTimeText").text().split("：")[1]);
+
+	
+	$("#selecterId").on("change",function(){
+		var x = $("#selecterId");
+		interTime = parseInt(x.val());
+	});
+	$("#detail").bind("contextmenu",function(e){return false;});
+
+	var screenTopNum = 0;
+	
+	$("body").off("keydown");
+	$(".m-news").on("change",function(){getIndexNum();});
+	if(list != null)
+	{	
+		liveMouseEvent();
 		$("body").on("keydown", function(e){
 			if(e.which == 96)
 			{
@@ -250,7 +258,20 @@ function liveAutoKeydown()
 				window.open("http://gcweb.nis.netease.com/modules/censor/yooc/yooc-censor.html","云课堂");
 				window.open("http://gcweb.nis.netease.com/modules/censor/popo/popo-suspect-censor.html","POPO");
 			}
-			if(e.which == 89)//V
+			if(e.which == 97)
+			{
+				if(allowMouse == 1)
+				{
+					dieMouseEvent();
+					allowMouse = 0;
+				}
+				else if(allowMouse == 0)
+				{
+					liveMouseEvent();
+					allowMouse = 1;
+				}
+			}
+			if(e.which == 89)//Y
 			{
 				if(autoStatus == 0){
 				startAutoNext();
