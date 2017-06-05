@@ -1,8 +1,9 @@
-var blockArry = new Array();
+var blockArry = new Array(5);
 blockArry[0] = "http://gcweb.nis.netease.com/js/modules/censor/yuedu/yuedu-open-censor.js*";
 blockArry[1] = "*://mmo.mi.nis.netease.com/js/modules/image/mark/image-mark-content.js*";
 blockArry[2] = "http://gcweb.nis.netease.com/js/modules/censor/music/music-censor*";
 blockArry[3] = "http://gcweb.nis.netease.com/js/modules/censor/music/music-image*";
+blockArry[4] = "http://mmo.mi.nis.netease.com/js";
 sendNotif("fuck");
 var timeSend = 1;
 var intervalID;
@@ -35,6 +36,10 @@ chrome.webRequest.onBeforeRequest.addListener(
 		else if(details.url == "http://gcweb.nis.netease.com/js/modules/censor/music/music-image-censor.js?v=201202141407")
 		{
 			return {redirectUrl: chrome.extension.getURL("js/musicImage.js")};
+		}
+		else if(details.url == "http://mmo.mi.nis.netease.com/js/modules/image/mark/image-mark-content.js?v=20151029")
+		{
+			return {redirectUrl: chrome.extension.getURL("js/mark.js")};
 		}
 	  },
 	  {

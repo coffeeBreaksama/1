@@ -1,5 +1,6 @@
 var showContentTagsList = {};
-$(document).ready(function() {//在文档加载后激活下面一堆函数
+$(document).ready(function() {
+	alert("success");
 	var prefix = "/modules/image/mark/content";
 	var statusMap = {"1":"未标记", "2": "已标记", "20": "忽略", "21": "正常"};
     var timeType = {"1":"插入时间", "2":"标记时间"};
@@ -14,8 +15,11 @@ $(document).ready(function() {//在文档加载后激活下面一堆函数
     var downData = new Array();
     var DownTime ;
     var currentUrl = "";
-    var showTips = "如明显漏点但满足性感，轻微色情，色情掩盖任一标准时，需标注相关人物主体为目标范围";
+    var showTips = "<p/>如明显漏点但满足性感，轻微色情，色情掩盖任一标准时，需标注相关人物主体为目标范围"
+                   + "<p/>Q:女下体 W:女乳房 E:男下体 R:手 T:脚" + "<p/>S:轻微色情 D:色情掩盖 " + "<p/>Z:性感 X:赤膊 C:卡通<p>"
+                   + "<p/>1:提交 2:上一页 3:下一页 4:忽略<p>";
     var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]");//"？~!@#$%^&*()_+-=,.。<>/?;:'[]{}《》"
+    var shortcuts_tags = {"81":"女下体", "87":"女乳房", "69":"男下体", "82":"手", "84":"脚", "83":"轻微色情", "68":"色情掩盖", "90":"性感", "88":"赤膊", "67":"卡通" };
 
 	var imageTemp = [
 	   			'<ul id="images">',
@@ -27,9 +31,7 @@ $(document).ready(function() {//在文档加载后激活下面一堆函数
                     '    <div style="float:right;">${i.opDesc}</div>',
                     '</li>)',
 	   			'</ul>' +
-                '<div style="clear:both;"></div>',
-	   			'<div style="text-align:right;">' +
-                '<button type="button" class="updateBtn">提交更新</button></div>'].join("");
+                '<div style="clear:both;"></div>'].join("");
 
 	/** 初始化 */
 	var init = function() {
@@ -593,6 +595,68 @@ $(document).ready(function() {//在文档加载后激活下面一堆函数
 
 	init();
 
+    /**
+     * 新增色情快捷键的支持, 直接绑定在body上
+    **/
+    $("body").on("keydown", function(e){
+        shortcutsOperation(e)
+        markOrganTags(e);
+    });
+
+    /**
+     * 操作快捷键
+     * 1 提交更新
+     * 2 上一页
+     * 3 下一页
+     * 4 忽略
+     **/
+    var shortcutsOperation = function(e) {
+        if ($("#markType").val() == textMarkType) {
+            return;
+        }
+        if (e.which == "49") {
+            $(".updateBtn").trigger("click");
+        } else if (e.which == "50") {
+            $(".prev").trigger("click");
+        } else if (e.which == "51") {
+            $(".next").trigger("click");
+        } else if (e.which == "52") {
+            $(".ignoreBtn").trigger("click");
+        }
+    }
+
+    /**
+     * 标签快捷键
+     * Q 女下体
+     * W 女乳房
+     * E 男下体
+     * R 手
+     * T 脚
+     * S 轻微色情
+     * D 色情掩盖
+     * Z 性感
+     * X 赤膊
+     * C 卡通
+     */
+    var markOrganTags = function(e) {
+        if($("#j-dialog").css('display') == 'none'){
+            // console.log("dialog not visible");
+            return;
+        }
+        var txt = shortcuts_tags[e.which];
+        if(!txt){
+            return;
+        }
+        // console.log("code = "+e.which+", txt = "+txt);
+        var $labels = $("#j-pt-labels").find('span:contains("'+txt+'")');
+        if($labels.size() == 0){// 仅针对人体部位标注, 其他弹出框是找不到这些label的
+            // console.log("not found!");
+            return;
+        }else{
+            $labels.trigger("click");
+            $("#j-pt-ok").trigger("click");
+        }
+    }
 });
 
 var markTypeChanged = function(e) {

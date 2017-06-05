@@ -1,6 +1,6 @@
 var showContentTagsList = {};
 $(document).ready(function() {
-
+	alert("1");
 	var prefix = "/modules/image/mark/content";
 	var statusMap = {"1":"未标记", "2": "已标记", "20": "忽略", "21": "正常"};
     var timeType = {"1":"插入时间", "2":"标记时间"};

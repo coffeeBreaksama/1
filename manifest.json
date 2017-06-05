@@ -21,6 +21,7 @@
 		"js/yuedu.js",
 		"js/jquery-3.2.1.js",
 		"js/musicCensor.js",
-		"js/musicImage.js"
+		"js/musicImage.js",
+		"js/mark.js"
 	]
 }

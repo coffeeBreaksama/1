@@ -658,8 +658,7 @@ function driverInit(){
 		
 		$("#page-163-com").live("change",function()
 		{
-			changeTips();
-			
+			changeTips();			
 		});
 		changeKeyModeF();//初始化成我的按键模式。
 		//$("#coffeeDiv").align("center");
@@ -716,11 +715,11 @@ function driverInit(){
 						x[0].click();
 						//setUpdataNum();
 					}
-				} else if (e.which == "50") {
+				} else if (e.which == "50"&&$("#j-dialog").css('display') == 'none') {
 					$(".prev").trigger("click");
-				} else if (e.which == "51") {
+				} else if (e.which == "51"&&$("#j-dialog").css('display') == 'none') {
 					$(".next").trigger("click");
-				} else if (e.which == "52") {
+				} else if (e.which == "52"&&$("#j-dialog").css('display') == 'none') {
 					$(".ignoreBtn").trigger("click");
 				}
 				else if(e.which == 27)//Esc
@@ -729,6 +728,14 @@ function driverInit(){
 						$('#j-pt-cancel').trigger("click");
 					}
 				}
+				else if(e.which == 13)//回车
+				{
+					if($('#j-pt-ok') != null){
+						e.preventDefault();
+						$('#j-pt-ok').trigger("click");
+					}
+				}
+				
 			} 
 			 
 			function qwekeyA(e) {
@@ -776,6 +783,7 @@ function driverInit(){
 					$("#j-pt-ok").trigger("click");
 					if(txt == "卡通"){$("#updateBtn").trigger("click");}
 				}
+
 			}		
 			function numkeyB(e){
 				var keynum;
@@ -785,7 +793,7 @@ function driverInit(){
 				keychar = String.fromCharCode(keynum);
 			   // alert(keynum+':'+keychar);
 				
-				if(keynum == 49){	
+				if(keynum == 49&&$("#j-dialog").css('display') == 'none'){	
 					if($("#j-dialog").css('display') == 'block')
 					{
 						
@@ -796,12 +804,12 @@ function driverInit(){
 						//setUpdataNum();
 					}
 				}
-				else if(keynum == 50){
+				else if(keynum == 50&&$("#j-dialog").css('display') == 'none'){
 					$(".next").trigger("click");
 				}
 /* 				else if(keynum == 51){
 					//$(".organNormalBtn").trigger("click"); */
- 				else if(keynum == 52){
+ 				else if(keynum == 52&&$("#j-dialog").css('display') == 'none'){
 					$(".organNormalBtn").trigger("click");
 
 				} 
@@ -811,28 +819,54 @@ function driverInit(){
 						$('#j-pt-cancel').trigger("click");
 					}
 				}
+				else if(e.which == 32)//回车
+				{
+					if($('#j-pt-ok') != null){
+						e.preventDefault();
+						$('#j-pt-ok').trigger("click");
+					}
+				}
 			}
-			 
+		}
+		function blockBlackLayer()
+		{
+			
+			$("#j-dialog").css("backgroundColor","transparent")
 		}
 		//右键上传
 		$('body').mousedown(function(e){
 			if(e.which == 3)
 			{
-				var a = $("#j-dialog").css('display');
 				if($("#j-dialog").css('display') == 'block')
 				{
-					
+					if($("j-label-input")!=null)
+					{		
+						$("#j-dialog").mouseup(function(e){e.preventDefault();})
+						$("#j-label-input").val("*");
+						$('#j-pt-ok').trigger("click");
+					}
 				}
 				else
 				{
-					x[0].click();
+					//x[0].click();
 					//setUpdataNum();
 				}
 			}
-			if(GREENMODE == 1){
+			
+			var a = $("#markType").val();
+			if(GREENMODE == 1&&a=="2"){
 				$('#j-dialog').css("opacity","0.0");//透明设置
+				
 			}
-			else {$('#j-dialog').css("opacity","1.0");}
+			else if(GREENMODE == 1&&a=="1")
+			{
+				$('#j-dialog').css("opacity","1.0");
+				blockBlackLayer();
+			}
+			else
+			{
+				$('#j-dialog').css("opacity","1.0");
+			}
 		});
 
 	}
@@ -906,7 +940,7 @@ function changeCookie(value)
 var autoId;
 function autoUpdataBooks()
 {
-	if(window.location.herf == "http://gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html"||window.location.herf == "http://gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html#")
+	if(window.location.href == "http://gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html"||window.location.href == "http://gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html#")
 	{
 		autoId = window.setInterval(function(){
 			if($("#querycount").text() != "0")
