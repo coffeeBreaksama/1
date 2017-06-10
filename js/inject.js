@@ -1,3 +1,5 @@
+//var dieWord = 肉棒，精液，习近平，江泽民，飞叶子，丁磊，丁三石，你妈;
+
 var updateNum;
 var nowIndex = null;
 var firstUncensorIndex = null;
