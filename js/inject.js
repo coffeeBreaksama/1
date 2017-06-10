@@ -289,17 +289,18 @@ function liveAutoKeydown()
 			{
 				screenTopNum = 0;
 				$("#detail").animate({scrollTop:0},100);
-				$("body").keydown(function(e){$("#cs-list a.focus").focus();});
+				$("#cs-list a.focus").focus();
 				//PASS,下一个
 			}
 			if(e.which == 83)//D
 			{
-				$("body").keydown(function(e){$("#cs-list a.focus").focus();});
+				$("#cs-list a.focus").focus();
 				//DEL,下一个
 			}
 			if(e.which == 71)//D
 			{
-				$("#submit").click();
+				//$("#submit").click();
+				//alert("G");
 			}
 			if(e.which == 81)//Q
 			{
