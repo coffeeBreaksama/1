@@ -948,6 +948,7 @@ function autoUpdataBooks()
 		autoId = window.setInterval(function(){
 			if($("#querycount").text() != "0")
 			{
+				$("#cs-list a").removeClass("uncensor").addClass("s-fc8 pass").attr("newStatus", "2000");
 				$("#submit").click();
 			}
 			else{
