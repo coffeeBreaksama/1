@@ -368,12 +368,70 @@ function initArticle()
 	$("#querybtn").click();
 	//$("body").off("keydown");
 }
+
+
 function initMUSIC()
 {
+	var endflag = 0;
+	var delI = 0;
+	var delWord = new Array();
+	delWord[0] = "做不一样的音乐";
+	delWord[1] = "精液";
+	delWord[2] = "这是本人真的私信！";
+	delWord[3] = "kg2";
+	delWord[4] = "kugou";
+	function delMessage(delkey)
+	{
+		$("#dataType").val("5");
+		$("#suspectType").val("1");
+		$("#thumbnail").val("1");
+		$("#ext").attr("checked",false);
+		$("#keyword").val(delkey);
+		//list.find("option[text='图片']").attr("selected".true);
+		$("#querybtn").click();
+		var delInterval = window.setInterval(function(){
+			if($(".loading").css("display")=="none"&&$("#querycount").text() != "0"){
+				$("#cs-list a").removeClass("uncensor").addClass("s-fc7 unpass").attr("newStatus", "3000");
+				$("#submit").click();
+				if($("#querycount").text() == "0")
+				{
+					delInterval = window.clearInterval(delInterval);
+					endflag = 1;
+				}
+			}
+		},1*1000);
+	}
 	//$("body").off("keydown");
 	$("body").on("keydown", function(e){
 					var list = $("#dataType");
 					var type = $("#suspectType");
+					if(e.which == 98)
+					{
+						delMessage(delWord[delI]);
+						var interval = window.setInterval(function(){
+							if(endflag == 1)
+							{	
+								delI += 1;
+								endflag = 0;
+								if(delI+1 <= delWord.length)
+								{
+									delMessage(delWord[delI]);
+								}
+								else
+								{
+									interval = window.clearInterval(interval);
+									delI = 0;
+								}
+							}
+							if(delI == delWord.length)
+							{
+								interval = window.clearInterval(interval);
+								endflag = 0;
+								delI = 0;
+							}
+						},5*1000);
+
+					}
 					if(e.which == 49)
 					{
 						list.val("1");
