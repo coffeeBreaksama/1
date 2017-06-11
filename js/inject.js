@@ -393,12 +393,12 @@ function initMUSIC()
 			if($(".loading").css("display")=="none"&&$("#querycount").text() != "0"){
 				$("#cs-list a").removeClass("uncensor").addClass("s-fc7 unpass").attr("newStatus", "3000");
 				$("#submit").click();
-				if($("#querycount").text() == "0")
+			}
+			if($("#querycount").text() == "0")
 				{
 					delInterval = window.clearInterval(delInterval);
 					endflag = 1;
 				}
-			}
 		},1*1000);
 	}
 	//$("body").off("keydown");
@@ -411,11 +411,11 @@ function initMUSIC()
 						var interval = window.setInterval(function(){
 							if(endflag == 1)
 							{	
-								delI += 1;
-								endflag = 0;
-								if(delI+1 <= delWord.length)
+								if(delI+1 < delWord.length)
 								{
+									delI += 1;
 									delMessage(delWord[delI]);
+									endflag = 0;
 								}
 								else
 								{
