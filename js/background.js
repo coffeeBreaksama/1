@@ -49,6 +49,19 @@ chrome.webRequest.onBeforeRequest.addListener(
 	  ["blocking"]
 	);	
 
+////////////////////////////////////////////////////
+/*  	var xhr = new XMLHttpRequest();
+xhr.open("GET", "https://github.com/coffeeBreaksama/censor-chrome-version/blob/master/README.md", true);
+
+xhr.onreadystatechange = function() {
+  if (xhr.readyState == 4) {
+    // innerText不会给攻击者注入HTML元素的机会.
+    console.log(xhr.responseText);
+  }
+
+}
+xhr.send();  */
+/////////////////////////////////////////////////	
 	
 function sendNotif(type)
 {
@@ -198,6 +211,10 @@ function executeCmd(cmd)
 		interTime = cmd.num;
 		responseText = cmd.num;
 		console.log("setInterTime:"+interTime);
+	}
+	else if(cmd.type == "getUpdataText")
+	{
+		
 	}
 	return responseText;
 }

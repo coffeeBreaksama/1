@@ -380,6 +380,9 @@ function initMUSIC()
 	delWord[2] = "这是本人真的私信！";
 	delWord[3] = "kg2";
 	delWord[4] = "kugou";
+	delWord[5] = "丁磊";
+	delWord[6] = "丁三石";
+	delWord[7] = "你妈";
 	function delMessage(delkey)
 	{
 		$("#dataType").val("5");

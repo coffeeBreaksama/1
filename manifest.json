@@ -8,7 +8,7 @@
 		"default_icon":"images/1.png",
 		"default_popup":"popup.html"
 	},
-	"permissions":["tabs","webRequest","webRequestBlocking","*://gcweb.nis.netease.com/*","notifications"],
+	"permissions":["tabs","webRequest","webRequestBlocking","*://gcweb.nis.netease.com/*","notifications","*://github.com/*"],
     "content_scripts": [
         {
             "matches": ["*://gcweb.nis.netease.com/*","*://mmo.mi.nis.netease.com/*","*://blog.nis.netease.com/*"],
