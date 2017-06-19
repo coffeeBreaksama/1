@@ -4,6 +4,7 @@ blockArry[1] = "*://mmo.mi.nis.netease.com/js/modules/image/mark/image-mark-cont
 blockArry[2] = "http://gcweb.nis.netease.com/js/modules/censor/music/music-censor*";
 blockArry[3] = "http://gcweb.nis.netease.com/js/modules/censor/music/music-image*";
 blockArry[4] = "http://mmo.mi.nis.netease.com/js";
+
 sendNotif("fuck");
 var timeSend = 1;
 var intervalID;

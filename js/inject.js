@@ -3,8 +3,41 @@
 var updateNum;
 var nowIndex = null;
 var firstUncensorIndex = null;
-initAll();
+matchUrl();
 
+
+
+function matchUrl()
+{
+	if(window.location.href.match("gcweb.nis.netease.com") =="gcweb.nis.netease.com")
+	{
+		initAll();
+	}
+	else if(window.location.href.match("220.181.72.109:8181") =="220.181.72.109:8181")
+	{
+		initEmail();
+	}
+}
+
+///////////123///////
+function initEmail(){
+	var a = $("#main-frame"); 
+	alert("1");
+	var a = window.setInterval(function(){
+			console.log($(window.document));
+			console.log($("body",window.document).find("#SystemZone"));
+			//$(".message.font_weightB").innerHTML = "fuck";
+			//console.log();
+			a = window.clearInterval(a);
+		},2*1000);
+	//console.log($("#submit",self.document).css({"color":"red"}));
+	
+/* 	var a = window.setInterval(function(){
+	var emailList = $(".simple_table");
+	emailList.attr("hasFocus","noFocus");
+	emailList[0].css({"color":"red"});
+	},5*1000); */
+}
 /* var currentUrl = window.location.href;
 if(window.location.href == "*://gcweb.nis.netease.com/*"){
 $(".m-banner pos-rel").append("<a id=\"ManhuaTag\" href=\"/modules/censor/yuedu/yaolushan-censor.html\">网易漫画</a>" 
@@ -21,7 +54,13 @@ $(".m-nav li").mouseleave(function(){
 	$(this).width("40");
 }); 
 }*/
-
+function delayAndExecute(delayNum,func)
+{
+	var a = window.setInterval(function(){
+			func();
+			a = window.clearInterval(a);
+		},delayNum);
+}
 function initAll()
 {
 	

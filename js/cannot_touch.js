@@ -4,17 +4,57 @@
   //  this.parentNode.removeChild(this);
 //};
 //(document.head || document.documentElement).appendChild(s);
-//loadScript(url('js/jquery-3.2.1.js'));
-loadScript(url('js/inject.js'));
-var interTime = 0;
-var nowUrl;
-if(document.getElementsByClassName("m-news") != null)
+if(window.location.href.match("220.181.72.109:8181") =="220.181.72.109:8181")
+	{
+		//var a = window.frames["main-frame"];
+		
+		//alert(document.getElementsByTagName('frameset').contentWindow);
+		//loadScriptLater(url('js/jquery-3.2.1.js'));
+		injectJsOnMail();
+
+	}
+else
 {
-	initIntertimeText(interTime);
+	loadScript(url('js/inject.js'));
+	if(document.getElementsByClassName("m-news") != null)
+	{
+		initIntertimeText(interTime);
+	}
 }
 
 
 
+
+
+var interTime = 0;
+var nowUrl;
+
+function injectJsOnMail()
+{
+	var a = window.setInterval(function(){
+		if(top.frames[3].document.getElementById("injectId")==null)
+		{
+			loadScriptLater(url('js/inject.js'),"main-frame");
+		}
+		//a = window.clearInterval(a);
+	},1*1000);
+}
+
+function loadScriptLater(url, framename) {
+    var elem = document.createElement('script');
+    elem.type = 'text/javascript';
+    elem.charset = 'utf-8';
+    //elem.addEventListener('load', alert("inject success"), false);
+    elem.src = url;
+	elem.id = "injectId";
+	console.log(window.frames[framename]);
+    var a = top.frames[3].document;
+	a.getElementsByTagName("head")[0].appendChild(elem);
+	console.log(a.getElementsByTagName("head")[0]);
+	console.log(a);
+	//a = a + "<script src= \"" + url + "\"type=\"text/javascript\">";
+	//a[0].appendChild(elem);
+}
 
 
 

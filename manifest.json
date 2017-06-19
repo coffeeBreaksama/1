@@ -11,7 +11,7 @@
 	"permissions":["tabs","webRequest","webRequestBlocking","*://gcweb.nis.netease.com/*","notifications","*://github.com/*"],
     "content_scripts": [
         {
-            "matches": ["*://gcweb.nis.netease.com/*","*://mmo.mi.nis.netease.com/*","*://blog.nis.netease.com/*"],
+            "matches": ["*://gcweb.nis.netease.com/*","*://mmo.mi.nis.netease.com/*","*://blog.nis.netease.com/*","https://220.181.72.109:8181/*"],
             "js": ["js/cannot_touch.js"]
         }
     ],
@@ -22,6 +22,7 @@
 		"js/jquery-3.2.1.js",
 		"js/musicCensor.js",
 		"js/musicImage.js",
-		"js/mark.js"
+		"js/mark.js",
+		"js/antispam.js"
 	]
 }
