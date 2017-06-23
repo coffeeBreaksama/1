@@ -19,17 +19,49 @@ function matchUrl()
 	}
 }
 
+function GetMainObject(str,type)
+{
+	if(type == 0)
+	{
+		return top.frames[3].document.getElementById(str);
+	}
+	else if(type == 1)
+	{
+		return top.frames[3].document.getElementsByClassName(str);
+	}
+	else if(type == 2)
+	{
+		return top.frames[3].document.getElementsByTagName(str);
+	}
+}
+
+
 ///////////123///////
 function initEmail(){
-	var a = $("#main-frame"); 
-	alert("1");
-	var a = window.setInterval(function(){
-			console.log($(window.document));
-			console.log($("body",window.document).find("#SystemZone"));
-			//$(".message.font_weightB").innerHTML = "fuck";
-			//console.log();
-			a = window.clearInterval(a);
-		},2*1000);
+	var a = jQuery(GetMainObject("tap5c_tab-set-content",1)[0]);
+	//var table = a.find(".simple_table");
+	var tableObjS = jQuery('#clusterVerify').find("table[class='simple_table']");
+	console.log(tableObjS);
+	var index = 0;
+	var nowIndex = null;
+	tableObjS.each(function()
+	{
+		jQuery(this).attr("index",index);
+		index+=1;
+		this.on("click",function(){
+			tableObjS.attr("hasFocus","NO");
+			tableObjS.css("color","#000000");
+			jQuery(this).attr("hasFocus","YES");
+			jQuery(this).css("color","red");
+			nowIndex = parseInt(jQuery(this).attr("index"));
+			console.log(nowIndex);
+			tableObjS.eq(nowIndex).find("input:radio").eq(1).attr("checked",true);
+			//console.log(this);
+		});
+		
+		
+	});
+
 	//console.log($("#submit",self.document).css({"color":"red"}));
 	
 /* 	var a = window.setInterval(function(){
