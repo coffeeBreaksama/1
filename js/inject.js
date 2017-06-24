@@ -57,9 +57,9 @@ function initEmail(){
 							tableObjS.attr("hasFocus","NO");
 							tableObjS[i].on("mousedown",function(){
 								tableObjS.attr("hasFocus","NO");
-								tableObjS.css("background-color","yellow");
+								tableObjS.attr("style","background-color: while;");
 								jQuery(this).attr("hasFocus","YES");
-								jQuery(this).css("color","red");
+								jQuery(this).css("background-color","#F9CD81");
 								nowIndex = parseInt(jQuery(this).attr("index"));
 								console.log("nowIndex = "+nowIndex);
 					//tableObjS.eq(nowIndex).find("input:radio").eq(1).attr("checked",true);对radio的访问。
@@ -157,9 +157,9 @@ function initEmail(){
 	function focusNextItem(itemIndex)
 	{
 		tableObjS.attr("hasFocus","NO");
-		tableObjS.css("color","#000000");
+		tableObjS.attr("style","background-color: while;");
 		tableObjS.eq(itemIndex).attr("hasFocus","YES");
-		tableObjS.eq(itemIndex).css("color","red");
+		tableObjS.eq(itemIndex).css("background-color","#F9CD81");
 		nowIndex += 1;
 		console.log("nowIndex = "+nowIndex);
 		ItemToView(itemIndex)
