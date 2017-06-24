@@ -38,39 +38,147 @@ function GetMainObject(str,type)
 
 ///////////123///////
 function initEmail(){
-	var a = jQuery(GetMainObject("tap5c_tab-set-content",1)[0]);
-	//var table = a.find(".simple_table");
-	var tableObjS = jQuery('#clusterVerify').find("table[class='simple_table']");
-	console.log(tableObjS);
+	function searchInitItem(cmd)//每隔两秒扫描item条目并绑定事件，后面尝试一下改成doc.ready的可能性。
+	{
+			var interTime = 1;
+			if(cmd == "stop")
+			{
+				searchValId = window.clearInterval(searchValId);
+			}
+			else{
+				searchValId = window.setInterval(function(){
+					tableObjS = jQuery('#tab').find("table[class='simple_table']");
+					for(var i=0;i<tableObjS.length;i++)
+					{
+						if(tableObjS.eq(i).attr("index")==null)
+						{
+							tableObjS.eq(i).attr("index",i);//
+							//tableObjS.eq(i).height(500);//item高度。
+							tableObjS.attr("hasFocus","NO");
+							tableObjS[i].on("mousedown",function(){
+								tableObjS.attr("hasFocus","NO");
+								tableObjS.css("background-color","yellow");
+								jQuery(this).attr("hasFocus","YES");
+								jQuery(this).css("color","red");
+								nowIndex = parseInt(jQuery(this).attr("index"));
+								console.log("nowIndex = "+nowIndex);
+					//tableObjS.eq(nowIndex).find("input:radio").eq(1).attr("checked",true);对radio的访问。
+					//console.log(this);
+							});
+						}
+					}
+					i = 0;
+				},2*1000);
+			}
+	}
+	
+	function setRadioVal(itemIndex,str)//设置radio的val为true，记得考虑组冲突的情况，可能需要修改。
+	{
+		if(nowIndex == null)
+		{
+			console.log("No focus");
+			tableObjS.eq(0).click();
+		}
+		var radios = tableObjS.eq(itemIndex).find("input:radio");
+		if(radios.length==0)
+		{
+			return console.log("Cannot find radio object");
+		}
+		for(var i=0;i<radios.length;i++)
+		{
+			if(radios.eq(i).next().text()==str)
+			{
+				radios.eq(i).attr("checked",true);
+			}
+		}
+	}
+	function ItemToView(itemIndex)//跳转至item位置。
+	{
+		var scrollOffset = top.frames[3].document.documentElement.scrollTop;//滚动条上面隐藏区域的高度
+		var topOffsetDoc = tableObjS.eq(itemIndex).offset().top;//离文档可是区域顶端的距离,在区域上面时为负数。
+		var positionY = topOffsetDoc + scrollOffset;//元素的Y轴位置。
+		top.frames[3].scrollTo(0,positionY);			
+	}
+	function bindKeyEvent()
+	{
+		GetMainObject("body",2)[0].on("keydown",function(e){//可能找不到body无法绑定
+			if(nowIndex != null)
+			{
+				if(e.which == 96)//0 忽略
+				{
+					setRadioVal(nowIndex,"忽略");
+					focusNextItem(nowIndex+1);
+					
+				}
+				else if(e.which == 97)//1 正常
+				{
+					setRadioVal(nowIndex,"正常");
+					focusNextItem(nowIndex+1);
+				}
+				else if(e.which == 98)//2  广告邮件
+				{
+					setRadioVal(nowIndex,"广告邮件");
+					focusNextItem(nowIndex+1);
+				}
+				else if(e.which == 99)//3  订阅邮件
+				{
+					setRadioVal(nowIndex,"订阅邮件");
+					focusNextItem(nowIndex+1);
+				}
+				else if(e.which == 100)//4  垃圾邮件
+				{
+					setRadioVal(nowIndex,"垃圾邮件");
+					focusNextItem(nowIndex+1);
+				}
+				else if(e.which == 101 || e.which == 73)//5,I   标题聚类/URL/概要标题/趋势分析/（文本）
+				{
+					var radios = tableObjS.eq(nowIndex).find("input:radio");
+					var firstText = radios.eq(0).next().text();
+					setRadioVal(nowIndex,firstText);
+				}
+				else if(e.which == 102 ||e.which == 79)//6,O   不入库
+				{
+					setRadioVal(nowIndex,"不入库");
+				}
+				else if(e.which == 105)//9   拒收
+				{
+					setRadioVal(nowIndex,"拒收");
+					focusNextItem(nowIndex+1);
+				}
+			}
+			else
+			{
+				nowIndex = 0;
+			}
+			
+		});
+	}
+	
+	function focusNextItem(itemIndex)
+	{
+		tableObjS.attr("hasFocus","NO");
+		tableObjS.css("color","#000000");
+		tableObjS.eq(itemIndex).attr("hasFocus","YES");
+		tableObjS.eq(itemIndex).css("color","red");
+		nowIndex += 1;
+		console.log("nowIndex = "+nowIndex);
+		ItemToView(itemIndex)
+	}
+	
+	var searchValId;
 	var index = 0;
 	var nowIndex = null;
-	tableObjS.each(function()
-	{
-		jQuery(this).attr("index",index);
-		index+=1;
-		this.on("click",function(){
-			tableObjS.attr("hasFocus","NO");
-			tableObjS.css("color","#000000");
-			jQuery(this).attr("hasFocus","YES");
-			jQuery(this).css("color","red");
-			nowIndex = parseInt(jQuery(this).attr("index"));
-			console.log(nowIndex);
-			tableObjS.eq(nowIndex).find("input:radio").eq(1).attr("checked",true);
-			//console.log(this);
-		});
-		
-		
-	});
-
-	//console.log($("#submit",self.document).css({"color":"red"}));
+	searchInitItem("start");
+	bindKeyEvent();
+	var nowRadios=null;
 	
-/* 	var a = window.setInterval(function(){
-	var emailList = $(".simple_table");
-	emailList.attr("hasFocus","noFocus");
-	emailList[0].css({"color":"red"});
-	},5*1000); */
+	
+	
+	
+
 }
-/* var currentUrl = window.location.href;
+/* 修改通用标签的宽度显示
+ var currentUrl = window.location.href;
 if(window.location.href == "*://gcweb.nis.netease.com/*"){
 $(".m-banner pos-rel").append("<a id=\"ManhuaTag\" href=\"/modules/censor/yuedu/yaolushan-censor.html\">网易漫画</a>" 
 + "<a id=\"KaiFangTag\" href=\"/modules/censor/yuedu/yuedu-open-censor.html\">阅读开放平台</a>"
