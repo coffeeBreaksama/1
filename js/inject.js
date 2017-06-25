@@ -38,36 +38,116 @@ function GetMainObject(str,type)
 
 ///////////123///////
 function initEmail(){
+	function foucsItemInit(itemIndex)//清楚其他项目focus样式，设置目标focus样式
+	{
+		var item = tableObjS.eq(itemIndex);
+		for(var j=0;j<tableObjS.length;j++)
+		{
+			radios = tableObjS.eq(j).find("input:radio");
+			for(var i=0;i<radios.length;i++)
+			{
+				switch(radios.eq(i).next().text())
+				{
+					case "标题聚类(5,I)": radios.eq(i).next().text("标题聚类");break;//5,I   标题聚类/URL/概要标题/趋势分析/（文本）
+					case "URL(5,I)": radios.eq(i).next().text("URL");break;
+					case "概要标题(5,I)": radios.eq(i).next().text("概要标题");break;
+					case "趋势分析(5,I)": radios.eq(i).next().text("趋势分析");break;
+					case "文本(5,I)": radios.eq(i).next().text("文本");break;
+					case "文本(+,P)": radios.eq(i).next().text("文本");break;
+					case "不入库(6,O)": radios.eq(i).next().text("不入库");break;
+					case "忽略(0)": radios.eq(i).next().text("忽略");break;
+					case "正常(1)": radios.eq(i).next().text("正常");break;
+					case "广告邮件(2)": radios.eq(i).next().text("广告邮件");break;
+					case "订阅邮件(3)": radios.eq(i).next().text("订阅邮件");break;
+					case "垃圾邮件(4)": radios.eq(i).next().text("垃圾邮件");break;
+					case "拒收(9)": radios.eq(i).next().text("拒收");break;
+					default:console.log("Cannot find radios for init");break;
+				}
+			}
+		}
+		tableObjS.attr("hasFocus","NO");
+		tableObjS.attr("style","background-color: while;");
+		item.attr("hasFocus","YES");
+		item.css("background-color","#F9CD81");
+		var radios = item.find("input:radio");
+		for(var i=0;i<radios.length;i++)
+		{
+			switch(radios.eq(i).next().text())
+			{
+				case "标题聚类": radios.eq(i).next().text("标题聚类"+"(5,I)");break;//5,I   标题聚类/URL/概要标题/趋势分析/（文本）
+				case "URL": radios.eq(i).next().text("URL"+"(5,I)");break;
+				case "概要标题": radios.eq(i).next().text("概要标题"+"(5,I)");break;
+				case "趋势分析": radios.eq(i).next().text("趋势分析"+"(5,I)");break;
+				case "文本": if(i==0)
+							 {radios.eq(i).next().text("文本"+"(5,I)");}
+							 else
+							 {radios.eq(i).next().text("文本"+"(+,P)")}
+							 break;
+				case "不入库": radios.eq(i).next().text("不入库"+"(6,O)");break;
+				case "忽略": radios.eq(i).next().text("忽略"+"(0)");break;
+				case "正常": radios.eq(i).next().text("正常"+"(1)");break;
+				case "广告邮件": radios.eq(i).next().text("广告邮件"+"(2)");break;
+				case "订阅邮件": radios.eq(i).next().text("订阅邮件"+"(3)");break;
+				case "垃圾邮件": radios.eq(i).next().text("垃圾邮件"+"(4)");break;
+				case "拒收": radios.eq(i).next().text("拒收"+"(9)");break;
+				default:console.log("Cannot find radios for init");break;
+			}
+		}
+	}
+	
+	function initItem()
+	{
+		tableObjS = jQuery('#tab').find("table[class='simple_table']");
+		var focusFirstFlag = 0;
+			for(var i=0;i<tableObjS.length;i++)
+			{
+				if(tableObjS.eq(i).attr("index")==null)
+				{
+					tableObjS.eq(i).attr("index",i);//
+					//tableObjS.eq(i).height(500);//item高度。
+					tableObjS.attr("hasFocus","NO");
+					tableObjS[i].on("mousedown",function(){
+						nowIndex = parseInt(jQuery(this).attr("index"));
+						console.log("nowIndex = "+nowIndex);
+						foucsItemInit(nowIndex);
+						//tableObjS.eq(nowIndex).find("input:radio").eq(1).attr("checked",true);对radio的访问。
+						//console.log(this);
+					});
+				}
+				if(tableObjS.eq(i).attr("hasFocus")=="YES")
+				{
+					focusFirstFlag+=1;
+				}
+			}
+			i = 0;
+			if(focusFirstFlag==0)
+			{
+				nowIndex = -1;
+				focusNextItem(0);
+			}
+				
+	}
+	function readyToInit()
+	{
+		/* GetMainObject("body",2)[0].on("onload",function(e){
+			initItem();
+			
+		}); */
+		jQuery(top.frames[3].document).ready(function(){
+			initItem();
+			
+		});
+	}
 	function searchInitItem(cmd)//每隔两秒扫描item条目并绑定事件，后面尝试一下改成doc.ready的可能性。
 	{
-			var interTime = 1;
+			//var interTime = 1;
 			if(cmd == "stop")
 			{
 				searchValId = window.clearInterval(searchValId);
 			}
 			else{
 				searchValId = window.setInterval(function(){
-					tableObjS = jQuery('#tab').find("table[class='simple_table']");
-					for(var i=0;i<tableObjS.length;i++)
-					{
-						if(tableObjS.eq(i).attr("index")==null)
-						{
-							tableObjS.eq(i).attr("index",i);//
-							//tableObjS.eq(i).height(500);//item高度。
-							tableObjS.attr("hasFocus","NO");
-							tableObjS[i].on("mousedown",function(){
-								tableObjS.attr("hasFocus","NO");
-								tableObjS.attr("style","background-color: while;");
-								jQuery(this).attr("hasFocus","YES");
-								jQuery(this).css("background-color","#F9CD81");
-								nowIndex = parseInt(jQuery(this).attr("index"));
-								console.log("nowIndex = "+nowIndex);
-					//tableObjS.eq(nowIndex).find("input:radio").eq(1).attr("checked",true);对radio的访问。
-					//console.log(this);
-							});
-						}
-					}
-					i = 0;
+					initItem();
 				},2*1000);
 			}
 	}
@@ -106,44 +186,72 @@ function initEmail(){
 			{
 				if(e.which == 96)//0 忽略
 				{
-					setRadioVal(nowIndex,"忽略");
+					setRadioVal(nowIndex,"忽略(0)");
 					focusNextItem(nowIndex+1);
 					
 				}
 				else if(e.which == 97)//1 正常
 				{
-					setRadioVal(nowIndex,"正常");
+					setRadioVal(nowIndex,"正常(1)");
 					focusNextItem(nowIndex+1);
 				}
 				else if(e.which == 98)//2  广告邮件
 				{
-					setRadioVal(nowIndex,"广告邮件");
+					setRadioVal(nowIndex,"广告邮件(2)");
 					focusNextItem(nowIndex+1);
 				}
 				else if(e.which == 99)//3  订阅邮件
 				{
-					setRadioVal(nowIndex,"订阅邮件");
+					setRadioVal(nowIndex,"订阅邮件(3)");
 					focusNextItem(nowIndex+1);
 				}
 				else if(e.which == 100)//4  垃圾邮件
 				{
-					setRadioVal(nowIndex,"垃圾邮件");
+					setRadioVal(nowIndex,"垃圾邮件(4)");
 					focusNextItem(nowIndex+1);
 				}
 				else if(e.which == 101 || e.which == 73)//5,I   标题聚类/URL/概要标题/趋势分析/（文本）
 				{
 					var radios = tableObjS.eq(nowIndex).find("input:radio");
-					var firstText = radios.eq(0).next().text();
-					setRadioVal(nowIndex,firstText);
+					var firstText = radios.eq(0).next().text().replace("(5,I)","");
+					setRadioVal(nowIndex,firstText+"(5,I)");
+				}
+				else if(e.which == 107 ||e.which == 80)//+,P  位处第二的文本
+				{
+					setRadioVal(nowIndex,"文本(+,P)");
 				}
 				else if(e.which == 102 ||e.which == 79)//6,O   不入库
 				{
-					setRadioVal(nowIndex,"不入库");
+					setRadioVal(nowIndex,"不入库(6,O)");
 				}
 				else if(e.which == 105)//9   拒收
 				{
-					setRadioVal(nowIndex,"拒收");
+					setRadioVal(nowIndex,"拒收(9)");
 					focusNextItem(nowIndex+1);
+				}
+				else if(e.which == 38)//UP  向上一条
+				{
+					if(nowIndex==0)
+					{
+						nowIndex = tableObjS.length -1+1;
+						focusPrveItem(nowIndex-1);
+					}
+					else
+					{
+						focusPrveItem(nowIndex-1);
+					}
+				}
+				else if(e.which == 40)//DOWN  向下一条
+				{
+					if(nowIndex==tableObjS.length - 1)
+					{
+						nowIndex = -1;
+						focusNextItem(0);
+					}
+					else
+					{
+						focusNextItem(nowIndex+1);
+					}
 				}
 			}
 			else
@@ -156,18 +264,22 @@ function initEmail(){
 	
 	function focusNextItem(itemIndex)
 	{
-		tableObjS.attr("hasFocus","NO");
-		tableObjS.attr("style","background-color: while;");
-		tableObjS.eq(itemIndex).attr("hasFocus","YES");
-		tableObjS.eq(itemIndex).css("background-color","#F9CD81");
+		foucsItemInit(itemIndex);
 		nowIndex += 1;
 		console.log("nowIndex = "+nowIndex);
 		ItemToView(itemIndex)
 	}
-	
+	function focusPrveItem(itemIndex)
+	{
+		foucsItemInit(itemIndex);
+		nowIndex -= 1;
+		console.log("nowIndex = "+nowIndex);
+		ItemToView(itemIndex)
+	}	
 	var searchValId;
 	var index = 0;
 	var nowIndex = null;
+	readyToInit();
 	searchInitItem("start");
 	bindKeyEvent();
 	var nowRadios=null;
