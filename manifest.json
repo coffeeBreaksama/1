@@ -11,7 +11,7 @@
 	"permissions":["tabs","webRequest","webRequestBlocking","*://gcweb.nis.netease.com/*","notifications","*://github.com/*"],
     "content_scripts": [
         {
-            "matches": ["*://gcweb.nis.netease.com/*","*://mmo.mi.nis.netease.com/*","*://blog.nis.netease.com/*","https://220.181.72.109:8181/*"],
+            "matches": ["*://gcweb.nis.netease.com/*","*://mmo.mi.nis.netease.com/*","*://blog.nis.netease.com/*","https://220.181.72.109:8181/*","https://220.181.72.109:8182/*","https://220.181.72.109:8183/*","https://220.181.72.109:8184/*"],
             "js": ["js/cannot_touch.js"]
         }
     ],

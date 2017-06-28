@@ -4,7 +4,7 @@
   //  this.parentNode.removeChild(this);
 //};
 //(document.head || document.documentElement).appendChild(s);
-if(window.location.href.match("220.181.72.109:8181") =="220.181.72.109:8181")
+if(window.location.href.match("220.181.72.109:818") =="220.181.72.109:818")
 	{
 		//var a = window.frames["main-frame"];
 		

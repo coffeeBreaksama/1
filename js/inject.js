@@ -13,7 +13,7 @@ function matchUrl()
 	{
 		initAll();
 	}
-	else if(window.location.href.match("220.181.72.109:8181") =="220.181.72.109:8181")
+	else if(window.location.href.match("220.181.72.109:818") =="220.181.72.109:818")
 	{
 		initEmail();
 	}
@@ -37,37 +37,47 @@ function GetMainObject(str,type)
 
 
 ///////////123///////
+
+
 function initEmail(){
-	function foucsItemInit(itemIndex)//清楚其他项目focus样式，设置目标focus样式
+	function foucsItemInit(itemIndex)//清除其他项目的focus样式，设置目标focus样式
 	{
 		var item = tableObjS.eq(itemIndex);
+		var flagText;
 		for(var j=0;j<tableObjS.length;j++)
 		{
-			radios = tableObjS.eq(j).find("input:radio");
-			for(var i=0;i<radios.length;i++)
+			if(tableObjS.eq(j).attr("needReset")=="true")
 			{
-				switch(radios.eq(i).next().text())
+				radios = tableObjS.eq(j).find("input:radio");
+				tableObjS.eq(j).attr("needReset","false");
+				for(var i=0;i<radios.length;i++)
 				{
-					case "标题聚类(5,I)": radios.eq(i).next().text("标题聚类");break;//5,I   标题聚类/URL/概要标题/趋势分析/（文本）
-					case "URL(5,I)": radios.eq(i).next().text("URL");break;
-					case "概要标题(5,I)": radios.eq(i).next().text("概要标题");break;
-					case "趋势分析(5,I)": radios.eq(i).next().text("趋势分析");break;
-					case "文本(5,I)": radios.eq(i).next().text("文本");break;
-					case "文本(+,P)": radios.eq(i).next().text("文本");break;
-					case "不入库(6,O)": radios.eq(i).next().text("不入库");break;
-					case "忽略(0)": radios.eq(i).next().text("忽略");break;
-					case "正常(1)": radios.eq(i).next().text("正常");break;
-					case "广告邮件(2)": radios.eq(i).next().text("广告邮件");break;
-					case "订阅邮件(3)": radios.eq(i).next().text("订阅邮件");break;
-					case "垃圾邮件(4)": radios.eq(i).next().text("垃圾邮件");break;
-					case "拒收(9)": radios.eq(i).next().text("拒收");break;
-					default:console.log("Cannot find radios for init");break;
-				}
+					switch(radios.eq(i).next().text())
+					{
+						case "标题聚类(5,I)": radios.eq(i).next().text("标题聚类");break;//5,I   标题聚类/URL/概要标题/趋势分析/（文本）
+						case "URL(5,I)": radios.eq(i).next().text("URL");break;
+						case "概要标题(5,I)": radios.eq(i).next().text("概要标题");break;
+						case "趋势分析(5,I)": radios.eq(i).next().text("趋势分析");break;
+						case "文本(5,I)": radios.eq(i).next().text("文本");break;
+						case "图片(5,I)": radios.eq(i).next().text("图片");break;
+						case "附件(5,I)": radios.eq(i).next().text("附件");break;
+						case "文本(+,P)": radios.eq(i).next().text("文本");break;
+						case "不入库(6,O)": radios.eq(i).next().text("不入库");break;
+						case "忽略(0)": radios.eq(i).next().text("忽略");break;
+						case "正常(1)": radios.eq(i).next().text("正常");break;
+						case "广告邮件(2)": radios.eq(i).next().text("广告邮件");break;
+						case "订阅邮件(3)": radios.eq(i).next().text("订阅邮件");break;
+						case "垃圾邮件(4)": radios.eq(i).next().text("垃圾邮件");break;
+						case "拒收(9)": radios.eq(i).next().text("拒收");break;
+						default:console.log("Cannot find radio to reset");break;
+					}
+				}			
 			}
 		}
 		tableObjS.attr("hasFocus","NO");
 		tableObjS.attr("style","background-color: while;");
 		item.attr("hasFocus","YES");
+		item.attr("needReset","true");
 		item.css("background-color","#F9CD81");
 		var radios = item.find("input:radio");
 		for(var i=0;i<radios.length;i++)
@@ -78,6 +88,8 @@ function initEmail(){
 				case "URL": radios.eq(i).next().text("URL"+"(5,I)");break;
 				case "概要标题": radios.eq(i).next().text("概要标题"+"(5,I)");break;
 				case "趋势分析": radios.eq(i).next().text("趋势分析"+"(5,I)");break;
+				case "图片": radios.eq(i).next().text("图片"+"(5,I)");break;
+				case "附件": radios.eq(i).next().text("附件"+"(5,I)");break;
 				case "文本": if(i==0)
 							 {radios.eq(i).next().text("文本"+"(5,I)");}
 							 else
@@ -95,10 +107,12 @@ function initEmail(){
 		}
 	}
 	
-	function initItem()
+	function initItem()//为邮件条目添加index等初始化事件
 	{
 		tableObjS = jQuery('#tab').find("table[class='simple_table']");
-		var focusFirstFlag = 0;
+		if(tableObjS.length!=0)
+		{
+			var focusFirstFlag = 0;
 			for(var i=0;i<tableObjS.length;i++)
 			{
 				if(tableObjS.eq(i).attr("index")==null)
@@ -123,11 +137,16 @@ function initEmail(){
 			if(focusFirstFlag==0)
 			{
 				nowIndex = -1;
-				focusNextItem(0);
+				focusNextItem(0,false);
 			}
-				
+		}
+		else
+		{
+			console.log("The email table not find");
+			searchInitItem("stop");
+		}
 	}
-	function readyToInit()
+	function readyToInit()//文档加载完成时候初始化邮件条目
 	{
 		/* GetMainObject("body",2)[0].on("onload",function(e){
 			initItem();
@@ -138,7 +157,7 @@ function initEmail(){
 			
 		});
 	}
-	function searchInitItem(cmd)//每隔两秒扫描item条目并绑定事件，后面尝试一下改成doc.ready的可能性。
+	function searchInitItem(cmd)//每隔两秒扫描item条目并绑定事件，不是太懂如何去监视邮件的条目更改，暂时写死.
 	{
 			//var interTime = 1;
 			if(cmd == "stop")
@@ -179,7 +198,7 @@ function initEmail(){
 		var positionY = topOffsetDoc + scrollOffset;//元素的Y轴位置。
 		top.frames[3].scrollTo(0,positionY);			
 	}
-	function bindKeyEvent()
+	function bindKeyEvent()//绑定键盘事件在body上
 	{
 		GetMainObject("body",2)[0].on("keydown",function(e){//可能找不到body无法绑定
 			if(nowIndex != null)
@@ -210,7 +229,7 @@ function initEmail(){
 					setRadioVal(nowIndex,"垃圾邮件(4)");
 					focusNextItem(nowIndex+1);
 				}
-				else if(e.which == 101 || e.which == 73)//5,I   标题聚类/URL/概要标题/趋势分析/（文本）
+				else if(e.which == 101 || e.which == 73)//5,I   标题聚类/URL/概要标题/趋势分析/（文本）/图片/附件
 				{
 					var radios = tableObjS.eq(nowIndex).find("input:radio");
 					var firstText = radios.eq(0).next().text().replace("(5,I)","");
@@ -231,6 +250,7 @@ function initEmail(){
 				}
 				else if(e.which == 38)//UP  向上一条
 				{
+					e.preventDefault();
 					if(nowIndex==0)
 					{
 						nowIndex = tableObjS.length -1+1;
@@ -243,6 +263,7 @@ function initEmail(){
 				}
 				else if(e.which == 40)//DOWN  向下一条
 				{
+					e.preventDefault();
 					if(nowIndex==tableObjS.length - 1)
 					{
 						nowIndex = -1;
@@ -262,12 +283,19 @@ function initEmail(){
 		});
 	}
 	
-	function focusNextItem(itemIndex)
+	function focusNextItem(itemIndex,jumpFlag)//
 	{
-		foucsItemInit(itemIndex);
-		nowIndex += 1;
-		console.log("nowIndex = "+nowIndex);
-		ItemToView(itemIndex)
+		jumpFlag = arguments[1] ? arguments[1]:true;
+		if(itemIndex<tableObjS.length)
+		{
+			foucsItemInit(itemIndex);
+			nowIndex += 1;
+			console.log("nowIndex = "+nowIndex);
+			if(jumpFlag == true)
+			{
+			ItemToView(itemIndex);
+			}
+		}
 	}
 	function focusPrveItem(itemIndex)
 	{

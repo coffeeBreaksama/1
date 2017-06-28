@@ -5,7 +5,7 @@ blockArry[2] = "http://gcweb.nis.netease.com/js/modules/censor/music/music-censo
 blockArry[3] = "http://gcweb.nis.netease.com/js/modules/censor/music/music-image*";
 blockArry[4] = "http://mmo.mi.nis.netease.com/js";
 
-sendNotif("fuck");
+sendNotif("插件开始工作");
 var timeSend = 1;
 var intervalID;
 var interTime = 500;
