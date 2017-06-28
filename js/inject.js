@@ -68,6 +68,8 @@ function initEmail(){
 						case "广告邮件(2)": radios.eq(i).next().text("广告邮件");break;
 						case "订阅邮件(3)": radios.eq(i).next().text("订阅邮件");break;
 						case "垃圾邮件(4)": radios.eq(i).next().text("垃圾邮件");break;
+						case "垃圾(4)": radios.eq(i).next().text("垃圾");break;
+						case "封禁(8)": radios.eq(i).next().text("封禁");break;
 						case "拒收(9)": radios.eq(i).next().text("拒收");break;
 						default:console.log("Cannot find radio to reset");break;
 					}
@@ -102,6 +104,8 @@ function initEmail(){
 				case "订阅邮件": radios.eq(i).next().text("订阅邮件"+"(3)");break;
 				case "垃圾邮件": radios.eq(i).next().text("垃圾邮件"+"(4)");break;
 				case "拒收": radios.eq(i).next().text("拒收"+"(9)");break;
+				case "封禁": radios.eq(i).next().text("封禁"+"(8)");break;
+				case "垃圾": radios.eq(i).next().text("垃圾"+"(4)");break;
 				default:console.log("Cannot find radios for init");break;
 			}
 		}
@@ -109,6 +113,7 @@ function initEmail(){
 	
 	function initItem()//为邮件条目添加index等初始化事件
 	{
+
 		tableObjS = jQuery('#tab').find("table[class='simple_table']");
 		if(tableObjS.length!=0)
 		{
@@ -136,8 +141,11 @@ function initEmail(){
 			i = 0;
 			if(focusFirstFlag==0)
 			{
-				nowIndex = -1;
-				focusNextItem(0,false);
+				if(nowIndex == null || nowIndex < 0)
+				{
+					nowIndex = 0;
+				}
+				focusItem(nowIndex,false);
 			}
 		}
 		else
@@ -145,6 +153,7 @@ function initEmail(){
 			console.log("The email table not find");
 			searchInitItem("stop");
 		}
+		
 	}
 	function readyToInit()//文档加载完成时候初始化邮件条目
 	{
@@ -154,7 +163,7 @@ function initEmail(){
 		}); */
 		jQuery(top.frames[3].document).ready(function(){
 			initItem();
-			
+			jQuery(GetMainObject("body",2)[0]).focus();
 		});
 	}
 	function searchInitItem(cmd)//每隔两秒扫描item条目并绑定事件，不是太懂如何去监视邮件的条目更改，暂时写死.
@@ -166,7 +175,10 @@ function initEmail(){
 			}
 			else{
 				searchValId = window.setInterval(function(){
-					initItem();
+					if(loseFocusFlag == null)
+					{
+						initItem();
+					}
 				},2*1000);
 			}
 	}
@@ -175,8 +187,7 @@ function initEmail(){
 	{
 		if(nowIndex == null)
 		{
-			console.log("No focus");
-			tableObjS.eq(0).click();
+			return console.log("No focus item");
 		}
 		var radios = tableObjS.eq(itemIndex).find("input:radio");
 		if(radios.length==0)
@@ -188,8 +199,10 @@ function initEmail(){
 			if(radios.eq(i).next().text()==str)
 			{
 				radios.eq(i).attr("checked",true);
+				return true;
 			}
 		}
+		return false;
 	}
 	function ItemToView(itemIndex)//跳转至item位置。
 	{
@@ -224,9 +237,12 @@ function initEmail(){
 					setRadioVal(nowIndex,"订阅邮件(3)");
 					focusNextItem(nowIndex+1);
 				}
-				else if(e.which == 100)//4  垃圾邮件
+				else if(e.which == 100)//4  垃圾邮件 垃圾
 				{
-					setRadioVal(nowIndex,"垃圾邮件(4)");
+					if(setRadioVal(nowIndex,"垃圾邮件(4)") == false)
+					{
+						setRadioVal(nowIndex,"垃圾(4)");
+					}
 					focusNextItem(nowIndex+1);
 				}
 				else if(e.which == 101 || e.which == 73)//5,I   标题聚类/URL/概要标题/趋势分析/（文本）/图片/附件
@@ -242,6 +258,11 @@ function initEmail(){
 				else if(e.which == 102 ||e.which == 79)//6,O   不入库
 				{
 					setRadioVal(nowIndex,"不入库(6,O)");
+				}
+				else if(e.which == 104)//8   封禁
+				{
+					setRadioVal(nowIndex,"封禁(8)");
+					focusNextItem(nowIndex+1);
 				}
 				else if(e.which == 105)//9   拒收
 				{
@@ -281,6 +302,64 @@ function initEmail(){
 			}
 			
 		});
+		GetMainObject("body",2)[0].tabIndex = "-1";
+		jQuery(GetMainObject("body",2)[0]).focus(function(){
+			console.log("focus");
+			loseFocusFlag = null;
+			initItem();
+		});
+		jQuery(GetMainObject("body",2)[0]).blur(function(){
+			for(var j=0;j<tableObjS.length;j++)
+			{
+				if(tableObjS.eq(j).attr("needReset")=="true")
+				{
+					radios = tableObjS.eq(j).find("input:radio");
+					tableObjS.eq(j).attr("needReset","false");
+					for(var i=0;i<radios.length;i++)
+					{
+						switch(radios.eq(i).next().text())
+						{
+							case "标题聚类(5,I)": radios.eq(i).next().text("标题聚类");break;//5,I   标题聚类/URL/概要标题/趋势分析/（文本）
+							case "URL(5,I)": radios.eq(i).next().text("URL");break;
+							case "概要标题(5,I)": radios.eq(i).next().text("概要标题");break;
+							case "趋势分析(5,I)": radios.eq(i).next().text("趋势分析");break;
+							case "文本(5,I)": radios.eq(i).next().text("文本");break;
+							case "图片(5,I)": radios.eq(i).next().text("图片");break;
+							case "附件(5,I)": radios.eq(i).next().text("附件");break;
+							case "文本(+,P)": radios.eq(i).next().text("文本");break;
+							case "不入库(6,O)": radios.eq(i).next().text("不入库");break;
+							case "忽略(0)": radios.eq(i).next().text("忽略");break;
+							case "正常(1)": radios.eq(i).next().text("正常");break;
+							case "广告邮件(2)": radios.eq(i).next().text("广告邮件");break;
+							case "订阅邮件(3)": radios.eq(i).next().text("订阅邮件");break;
+							case "垃圾邮件(4)": radios.eq(i).next().text("垃圾邮件");break;
+							case "垃圾(4)": radios.eq(i).next().text("垃圾");break;
+							case "封禁(8)": radios.eq(i).next().text("封禁");break;
+							case "拒收(9)": radios.eq(i).next().text("拒收");break;
+							default:console.log("Cannot find radio to reset");break;
+						}
+					}			
+				}
+			}
+			tableObjS.attr("hasFocus","NO");
+			tableObjS.attr("style","background-color: while;");
+			//nowIndex = null;
+			loseFocusFlag = 1;
+			console.log("page has no focus");
+		});
+	}
+	function focusItem(itemIndex,jumpFlag)//
+	{
+		jumpFlag = arguments[1] ? arguments[1]:true;
+		if(itemIndex<tableObjS.length)
+		{
+			foucsItemInit(itemIndex);
+			console.log("nowIndex = "+nowIndex);
+			if(jumpFlag == true)
+			{
+			ItemToView(itemIndex);
+			}
+		}
 	}
 	
 	function focusNextItem(itemIndex,jumpFlag)//
@@ -311,7 +390,7 @@ function initEmail(){
 	searchInitItem("start");
 	bindKeyEvent();
 	var nowRadios=null;
-	
+	var loseFocusFlag = null;
 	
 	
 	
