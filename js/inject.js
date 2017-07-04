@@ -17,6 +17,10 @@ function matchUrl()
 	{
 		initEmail();
 	}
+	else if(window.location.href.match("mmo.mi.nis.netease.com") =="mmo.mi.nis.netease.com")
+	{
+		imgMarkInit();
+	}
 }
 
 function GetMainObject(str,type)
@@ -175,7 +179,7 @@ function initEmail(){
 			}
 			else{
 				searchValId = window.setInterval(function(){
-					if(loseFocusFlag == null)
+					if(jQuery("#panel_unimportanceClusterVerify").attr("class")=="tap5c_tab-set-panel activated"||jQuery("#panel_clusterVerify").attr("class")=="tap5c_tab-set-panel activated")
 					{
 						initItem();
 					}
@@ -306,7 +310,10 @@ function initEmail(){
 		jQuery(GetMainObject("body",2)[0]).focus(function(){
 			console.log("focus");
 			loseFocusFlag = null;
-			initItem();
+			if(jQuery("#panel_unimportanceClusterVerify").attr("class")=="tap5c_tab-set-panel activated"||jQuery("#panel_clusterVerify").attr("class")=="tap5c_tab-set-panel activated")
+			{
+				initItem();
+			}
 		});
 		jQuery(GetMainObject("body",2)[0]).blur(function(){
 			for(var j=0;j<tableObjS.length;j++)
@@ -440,9 +447,6 @@ function initAll()
 	switch(window.location.href){
 		case "http://gcweb.nis.netease.com/modules/censor/study/study-censor.html?dataType=14":initKeyMOOC(); break;
 		case "http://gcweb.nis.netease.com/modules/censor/study/study-censor.html?dataType=14#":initKeyMOOC(); break;
-		
-		case "http://mmo.mi.nis.netease.com/modules/image/mark/image-mark-ad.html":imgMarkInit();break;
-		case "http://mmo.mi.nis.netease.com/modules/image/mark/image-mark-ad.html#":imgMarkInit();break;
 		
 		case "http://gcweb.nis.netease.com/modules/censor/gacha/gacha-post-censor.html":initKeyGACHA();break;
 		case "http://gcweb.nis.netease.com/modules/censor/gacha/gacha-post-censor.html#":initKeyGACHA();break;

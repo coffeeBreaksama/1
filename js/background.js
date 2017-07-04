@@ -72,6 +72,7 @@ function sendNotif(type)
 		n = new Notification("起床了！", {body: "漫画原创了",icon: "images/漫画原创.png"}); // 显示通知
 		n.addEventListener("click",function(e){
 		chrome.tabs.query({active:true},function(){
+			
 			n.close();
 		});
 		});
