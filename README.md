@@ -1,7 +1,7 @@
 # censor-chrome-version
 信息审核部门用
 
-有事请POPO我。<br>
+有事请POPO我。下载在右上角clone and download按钮。历史版本下载在左上角commits。<br>
 
 `2017/6/28`<br>
 邮件审核增加适配封禁(8)与垃圾(4)，适配企业邮，vip，发信模块。
