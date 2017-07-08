@@ -44,6 +44,7 @@ function GetMainObject(str,type)
 
 
 function initEmail(){
+	
 	function foucsItemInit(itemIndex)//清除其他项目的focus样式，设置目标focus样式
 	{
 		var item = tableObjS.eq(itemIndex);
@@ -58,23 +59,24 @@ function initEmail(){
 				{
 					switch(radios.eq(i).next().text())
 					{
-						case "标题聚类(5,I)": radios.eq(i).next().text("标题聚类");break;//5,I   标题聚类/URL/概要标题/趋势分析/（文本）
-						case "URL(5,I)": radios.eq(i).next().text("URL");break;
-						case "概要标题(5,I)": radios.eq(i).next().text("概要标题");break;
-						case "趋势分析(5,I)": radios.eq(i).next().text("趋势分析");break;
-						case "文本(5,I)": radios.eq(i).next().text("文本");break;
-						case "图片(5,I)": radios.eq(i).next().text("图片");break;
-						case "附件(5,I)": radios.eq(i).next().text("附件");break;
-						case "文本(+,P)": radios.eq(i).next().text("文本");break;
-						case "不入库(6,O)": radios.eq(i).next().text("不入库");break;
-						case "忽略(0)": radios.eq(i).next().text("忽略");break;
-						case "正常(1)": radios.eq(i).next().text("正常");break;
-						case "广告邮件(2)": radios.eq(i).next().text("广告邮件");break;
-						case "订阅邮件(3)": radios.eq(i).next().text("订阅邮件");break;
-						case "垃圾邮件(4)": radios.eq(i).next().text("垃圾邮件");break;
-						case "垃圾(4)": radios.eq(i).next().text("垃圾");break;
-						case "封禁(8)": radios.eq(i).next().text("封禁");break;
-						case "拒收(9)": radios.eq(i).next().text("拒收");break;
+						case "标题聚类(1)": radios.eq(i).next().text("标题聚类");break;//1   标题聚类/URL/概要标题/趋势分析/（文本）
+						case "URL(1)": radios.eq(i).next().text("URL");break;
+						case "概要标题(1)": radios.eq(i).next().text("概要标题");break;
+						case "趋势分析(1)": radios.eq(i).next().text("趋势分析");break;
+						case "文本(1)": radios.eq(i).next().text("文本");break;
+						case "图片(1)": radios.eq(i).next().text("图片");break;
+						case "附件(1)": radios.eq(i).next().text("附件");break;
+						case "文本(3)": radios.eq(i).next().text("文本");break;
+						case "不入库(2)": radios.eq(i).next().text("不入库");break;
+						case "忽略(空格)": radios.eq(i).next().text("忽略");break;
+						case "正常(R)": radios.eq(i).next().text("正常");break;
+						case "良好(R)": radios.eq(i).next().text("良好");break;
+						case "广告邮件(W)": radios.eq(i).next().text("广告邮件");break;
+						case "订阅邮件(E)": radios.eq(i).next().text("订阅邮件");break;
+						case "垃圾邮件(Q)": radios.eq(i).next().text("垃圾邮件");break;
+						case "垃圾(Q)": radios.eq(i).next().text("垃圾");break;
+						case "封禁(D)": radios.eq(i).next().text("封禁");break;
+						case "拒收(D)": radios.eq(i).next().text("拒收");break;
 						default:console.log("Cannot find radio to reset");break;
 					}
 				}			
@@ -90,26 +92,27 @@ function initEmail(){
 		{
 			switch(radios.eq(i).next().text())
 			{
-				case "标题聚类": radios.eq(i).next().text("标题聚类"+"(5,I)");break;//5,I   标题聚类/URL/概要标题/趋势分析/（文本）
-				case "URL": radios.eq(i).next().text("URL"+"(5,I)");break;
-				case "概要标题": radios.eq(i).next().text("概要标题"+"(5,I)");break;
-				case "趋势分析": radios.eq(i).next().text("趋势分析"+"(5,I)");break;
-				case "图片": radios.eq(i).next().text("图片"+"(5,I)");break;
-				case "附件": radios.eq(i).next().text("附件"+"(5,I)");break;
+				case "标题聚类": radios.eq(i).next().text("标题聚类"+"(1)");break;//1   标题聚类/URL/概要标题/趋势分析/（文本）
+				case "URL": radios.eq(i).next().text("URL"+"(1)");break;
+				case "概要标题": radios.eq(i).next().text("概要标题"+"(1)");break;
+				case "趋势分析": radios.eq(i).next().text("趋势分析"+"(1)");break;
+				case "图片": radios.eq(i).next().text("图片"+"(1)");break;
+				case "附件": radios.eq(i).next().text("附件"+"(1)");break;
 				case "文本": if(i==0)
-							 {radios.eq(i).next().text("文本"+"(5,I)");}
+							 {radios.eq(i).next().text("文本"+"(1)");}
 							 else
-							 {radios.eq(i).next().text("文本"+"(+,P)")}
+							 {radios.eq(i).next().text("文本"+"(3)")}
 							 break;
-				case "不入库": radios.eq(i).next().text("不入库"+"(6,O)");break;
-				case "忽略": radios.eq(i).next().text("忽略"+"(0)");break;
-				case "正常": radios.eq(i).next().text("正常"+"(1)");break;
-				case "广告邮件": radios.eq(i).next().text("广告邮件"+"(2)");break;
-				case "订阅邮件": radios.eq(i).next().text("订阅邮件"+"(3)");break;
-				case "垃圾邮件": radios.eq(i).next().text("垃圾邮件"+"(4)");break;
-				case "拒收": radios.eq(i).next().text("拒收"+"(9)");break;
-				case "封禁": radios.eq(i).next().text("封禁"+"(8)");break;
-				case "垃圾": radios.eq(i).next().text("垃圾"+"(4)");break;
+				case "不入库": radios.eq(i).next().text("不入库"+"(2)");break;
+				case "忽略": radios.eq(i).next().text("忽略"+"(空格)");break;
+				case "正常": radios.eq(i).next().text("正常"+"(R)");break;
+				case "良好": radios.eq(i).next().text("良好"+"(R)");break;
+				case "广告邮件": radios.eq(i).next().text("广告邮件"+"(W)");break;
+				case "订阅邮件": radios.eq(i).next().text("订阅邮件"+"(E)");break;
+				case "垃圾邮件": radios.eq(i).next().text("垃圾邮件"+"(Q)");break;
+				case "拒收": radios.eq(i).next().text("拒收"+"(D)");break;
+				case "封禁": radios.eq(i).next().text("封禁"+"(D)");break;
+				case "垃圾": radios.eq(i).next().text("垃圾"+"(Q)");break;
 				default:console.log("Cannot find radios for init");break;
 			}
 		}
@@ -133,9 +136,10 @@ function initEmail(){
 						nowIndex = parseInt(jQuery(this).attr("index"));
 						console.log("nowIndex = "+nowIndex);
 						foucsItemInit(nowIndex);
-						//tableObjS.eq(nowIndex).find("input:radio").eq(1).attr("checked",true);对radio的访问。
+						//tableObjS.eq(nowIndex).find("input:radio").eq(R).attr("checked",true);对radio的访问。
 						//console.log(this);
 					});
+					nowIndex = 0;
 				}
 				if(tableObjS.eq(i).attr("hasFocus")=="YES")
 				{
@@ -243,60 +247,71 @@ function initEmail(){
 	}
 	function bindKeyEvent()//绑定键盘事件在body上
 	{
-		GetMainObject("body",2)[0].on("keydown",function(e){//可能找不到body无法绑定
+		GetMainObject("body",2)[0].on("keydown",function(e){
+			
+			if(e.which == 32 ||e.which == 38 ||e.which == 40)//space UP DOWN 忽略 上 下
+			{
+				e.preventDefault();	
+				return	false;				
+			}
+		});
+		GetMainObject("body",2)[0].on("keyup",function(e){//可能找不到body无法绑定
 			if(nowIndex != null)
 			{
-				if(e.which == 96)//0 忽略
+				if(e.which == 32)//space 忽略
 				{
-					setRadioVal(nowIndex,"忽略(0)");
+					e.preventDefault();
+					setRadioVal(nowIndex,"忽略(空格)");
 					focusNextItem(nowIndex+1);
 					
 				}
-				else if(e.which == 97)//1 正常
+				else if(e.which == 82)//R 正常 加一个良好
 				{
-					setRadioVal(nowIndex,"正常(1)");
-					focusNextItem(nowIndex+1);
-				}
-				else if(e.which == 98)//2  广告邮件
-				{
-					setRadioVal(nowIndex,"广告邮件(2)");
-					focusNextItem(nowIndex+1);
-				}
-				else if(e.which == 99)//3  订阅邮件
-				{
-					setRadioVal(nowIndex,"订阅邮件(3)");
-					focusNextItem(nowIndex+1);
-				}
-				else if(e.which == 100)//4  垃圾邮件 垃圾
-				{
-					if(setRadioVal(nowIndex,"垃圾邮件(4)") == false)
+					if(setRadioVal(nowIndex,"正常(R)") == false)
 					{
-						setRadioVal(nowIndex,"垃圾(4)");
+						setRadioVal(nowIndex,"良好(R)");
 					}
 					focusNextItem(nowIndex+1);
 				}
-				else if(e.which == 101 || e.which == 73)//5,I   标题聚类/URL/概要标题/趋势分析/（文本）/图片/附件
+				else if(e.which == 87)//W  广告邮件
 				{
-					var radios = tableObjS.eq(nowIndex).find("input:radio");
-					var firstText = radios.eq(0).next().text().replace("(5,I)","");
-					setRadioVal(nowIndex,firstText+"(5,I)");
-				}
-				else if(e.which == 107 ||e.which == 80)//+,P  位处第二的文本
-				{
-					setRadioVal(nowIndex,"文本(+,P)");
-				}
-				else if(e.which == 102 ||e.which == 79)//6,O   不入库
-				{
-					setRadioVal(nowIndex,"不入库(6,O)");
-				}
-				else if(e.which == 104)//8   封禁
-				{
-					setRadioVal(nowIndex,"封禁(8)");
+					setRadioVal(nowIndex,"广告邮件(W)");
 					focusNextItem(nowIndex+1);
 				}
-				else if(e.which == 105)//9   拒收
+				else if(e.which == 69)//E  订阅邮件
 				{
-					setRadioVal(nowIndex,"拒收(9)");
+					setRadioVal(nowIndex,"订阅邮件(E)");
+					focusNextItem(nowIndex+1);
+				}
+				else if(e.which == 81)//Q  垃圾邮件 垃圾
+				{
+					if(setRadioVal(nowIndex,"垃圾邮件(Q)") == false)
+					{
+						setRadioVal(nowIndex,"垃圾(Q)");
+					}
+					focusNextItem(nowIndex+1);
+				}
+				else if(e.which == 49)//1   标题聚类/URL/概要标题/趋势分析/（文本）/图片/附件
+				{
+					var radios = tableObjS.eq(nowIndex).find("input:radio");
+					var firstText = radios.eq(0).next().text().replace("(1)","");
+					setRadioVal(nowIndex,firstText+"(1)");
+				}
+				else if(e.which == 51)//3  位处第二的文本
+				{
+					setRadioVal(nowIndex,"文本(3)");
+				}
+				else if(e.which == 50)//2   不入库
+				{
+					setRadioVal(nowIndex,"不入库(2)");
+				}
+				else if(e.which == 68)//D   封禁 拒收 
+				{
+					if(setRadioVal(nowIndex,"封禁(D)") == false)
+					{
+						setRadioVal(nowIndex,"拒收(D)");
+					}
+					//setRadioVal(nowIndex,"封禁(D)");
 					focusNextItem(nowIndex+1);
 				}
 				else if(e.which == 38)//UP  向上一条
@@ -352,23 +367,24 @@ function initEmail(){
 					{
 						switch(radios.eq(i).next().text())
 						{
-							case "标题聚类(5,I)": radios.eq(i).next().text("标题聚类");break;//5,I   标题聚类/URL/概要标题/趋势分析/（文本）
-							case "URL(5,I)": radios.eq(i).next().text("URL");break;
-							case "概要标题(5,I)": radios.eq(i).next().text("概要标题");break;
-							case "趋势分析(5,I)": radios.eq(i).next().text("趋势分析");break;
-							case "文本(5,I)": radios.eq(i).next().text("文本");break;
-							case "图片(5,I)": radios.eq(i).next().text("图片");break;
-							case "附件(5,I)": radios.eq(i).next().text("附件");break;
-							case "文本(+,P)": radios.eq(i).next().text("文本");break;
-							case "不入库(6,O)": radios.eq(i).next().text("不入库");break;
-							case "忽略(0)": radios.eq(i).next().text("忽略");break;
-							case "正常(1)": radios.eq(i).next().text("正常");break;
-							case "广告邮件(2)": radios.eq(i).next().text("广告邮件");break;
-							case "订阅邮件(3)": radios.eq(i).next().text("订阅邮件");break;
-							case "垃圾邮件(4)": radios.eq(i).next().text("垃圾邮件");break;
-							case "垃圾(4)": radios.eq(i).next().text("垃圾");break;
-							case "封禁(8)": radios.eq(i).next().text("封禁");break;
-							case "拒收(9)": radios.eq(i).next().text("拒收");break;
+							case "标题聚类(1)": radios.eq(i).next().text("标题聚类");break;//1   标题聚类/URL/概要标题/趋势分析/（文本）
+							case "URL(1)": radios.eq(i).next().text("URL");break;
+							case "概要标题(1)": radios.eq(i).next().text("概要标题");break;
+							case "趋势分析(1)": radios.eq(i).next().text("趋势分析");break;
+							case "文本(3)": radios.eq(i).next().text("文本");break;
+							case "文本(1)": radios.eq(i).next().text("文本");break;
+							case "图片(1)": radios.eq(i).next().text("图片");break;
+							case "附件(1)": radios.eq(i).next().text("附件");break;
+							case "不入库(2)": radios.eq(i).next().text("不入库");break;
+							case "忽略(空格)": radios.eq(i).next().text("忽略");break;
+							case "正常(R)": radios.eq(i).next().text("正常");break;
+							case "良好(R)": radios.eq(i).next().text("良好");break;
+							case "广告邮件(W)": radios.eq(i).next().text("广告邮件");break;
+							case "订阅邮件(E)": radios.eq(i).next().text("订阅邮件");break;
+							case "垃圾邮件(Q)": radios.eq(i).next().text("垃圾邮件");break;
+							case "垃圾(Q)": radios.eq(i).next().text("垃圾");break;
+							case "封禁(D)": radios.eq(i).next().text("封禁");break;
+							case "拒收(D)": radios.eq(i).next().text("拒收");break;
 							default:console.log("Cannot find radio to reset");break;
 						}
 					}			
