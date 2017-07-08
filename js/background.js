@@ -5,7 +5,8 @@ blockArry[2] = "http://gcweb.nis.netease.com/js/modules/censor/music/music-censo
 blockArry[3] = "http://gcweb.nis.netease.com/js/modules/censor/music/music-image*";
 blockArry[4] = "http://mmo.mi.nis.netease.com/js";
 
-sendNotif("插件开始工作");
+//sendNotif("插件已经开始工作！");
+sendNotif(1);
 var timeSend = 1;
 var intervalID;
 var interTime = 500;
@@ -64,22 +65,41 @@ xhr.onreadystatechange = function() {
 xhr.send();  */
 /////////////////////////////////////////////////	
 	
+function jumpToWindow(aimUrl,jumpFlag)//若有则跳转，若无则创建
+{
+	jumpFlag = arguments[1]?true:arguments[1];
+	chrome.tabs.query({},function(tabs){
+		for(var tab of tabs)
+		{
+			if(tab.url.match(aimUrl))
+			{
+				chrome.tabs.update(tab.id, {selected:true});
+				return 1;
+			}
+		}
+		chrome.tabs.create({"url":"http://"+ aimUrl,"selected":jumpFlag});
+		return 2;
+	});
+	
+	
+}
+	
 function sendNotif(type)
 {
 	var n;
 	if(type == 1)
 	{
-		n = new Notification("起床了！", {body: "漫画原创了",icon: "images/漫画原创.png"}); // 显示通知
+		n = new Notification("起床了！", {body: "漫画原创了\n此通知点击跳转至/打开原创。",icon: "images/吃瓜.png"}); // 显示通知
 		n.addEventListener("click",function(e){
 		chrome.tabs.query({active:true},function(){
-			
+			jumpToWindow("gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html");
 			n.close();
 		});
 		});
 	}
 	else
 	{
-		n = new Notification("起床了！", {body: type,icon: "images/漫画原创.png"}); // 显示通知
+		n = new Notification("通知：", {body: type+"\n点击关闭此通知",icon: "images/吃瓜.png"}); // 显示通知
 		n.addEventListener("click",function(e){
 		chrome.tabs.query({active:true},function(){
 			n.close();
@@ -213,6 +233,15 @@ function executeCmd(cmd)
 		interTime = cmd.num;
 		responseText = cmd.num;
 		console.log("setInterTime:"+interTime);
+	}
+	else if(cmd.type == "openPagas")
+	{
+		jumpToWindow("gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html",false);
+		jumpToWindow("gcweb.nis.netease.com/modules/censor/yuedu/yaolushan-censor.html",false);
+		jumpToWindow("gcweb.nis.netease.com/modules/censor/gacha/gacha-user-censor.html",false);
+		jumpToWindow("gcweb.nis.netease.com/modules/censor/yooc/yooc-censor.html",false);
+		jumpToWindow("gcweb.nis.netease.com/modules/censor/popo/popo-suspect-censor.html",false);
+		responseText = "open pages";
 	}
 	else if(cmd.type == "getUpdataText")
 	{

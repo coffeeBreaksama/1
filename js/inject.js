@@ -170,6 +170,32 @@ function initEmail(){
 			jQuery(GetMainObject("body",2)[0]).focus();
 		});
 	}
+	function getActiveTab()
+	{
+		var activeTab = 0;
+		if(jQuery("#panel_unimportanceClusterVerify").attr("class")=="tap5c_tab-set-panel activated")
+		{
+			activeTab += 1;
+			return true;
+		}
+		if(jQuery("#panel_clusterVerify").attr("class")=="tap5c_tab-set-panel activated")
+		{
+			activeTab += 1;
+			return true;
+		}
+		if(jQuery("#panel_clusterInfoLowScoreVerify").attr("class")=="tap5c_tab-set-panel activated")
+		{
+			activeTab += 1;
+			return true;
+		}
+		if(jQuery("#panel_unimportanceClusterVerify").attr("class")=="tap5c_tab-set-panel activated")
+		{
+			activeTab += 1;
+			return true;
+		}
+		return false;
+	}
+	
 	function searchInitItem(cmd)//每隔两秒扫描item条目并绑定事件，不是太懂如何去监视邮件的条目更改，暂时写死.
 	{
 			//var interTime = 1;
@@ -179,7 +205,7 @@ function initEmail(){
 			}
 			else{
 				searchValId = window.setInterval(function(){
-					if(jQuery("#panel_unimportanceClusterVerify").attr("class")=="tap5c_tab-set-panel activated"||jQuery("#panel_clusterVerify").attr("class")=="tap5c_tab-set-panel activated")
+					if(getActiveTab())
 					{
 						initItem();
 					}
@@ -310,7 +336,7 @@ function initEmail(){
 		jQuery(GetMainObject("body",2)[0]).focus(function(){
 			console.log("focus");
 			loseFocusFlag = null;
-			if(jQuery("#panel_unimportanceClusterVerify").attr("class")=="tap5c_tab-set-panel activated"||jQuery("#panel_clusterVerify").attr("class")=="tap5c_tab-set-panel activated")
+			if(getActiveTab())
 			{
 				initItem();
 			}
@@ -675,7 +701,7 @@ function liveAutoKeydown()
 					allowMouse = 1;
 				}
 			}
-			if(e.which == 89)//Y
+			if(e.which == 105)//9
 			{
 				if(autoStatus == 0){
 				startAutoNext();

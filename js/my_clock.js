@@ -7,12 +7,17 @@ function my_clock(el){
     m=m>=10?m:('0'+m);
     s=s>=10?s:('0'+s);
     el.innerHTML = h+":"+m+":"+s;
-	if(m == 0 || m == 30)
-    setTimeout(function(){my_clock(el)}, 1000);
+	//if(m == 0 || m == 30)
+    //setTimeout(function(){my_clock(el)}, 1000);
 }
+
+
 
 var clock_div = document.getElementById('clock_div');
 my_clock(clock_div);
+var interval = window.setInterval(function(){my_clock(clock_div);},1000);
+
+
 getNotifStatus();
 document.getElementById('closeNotifiction').addEventListener("click",function(){
 	closeNotifiction(); 
@@ -20,7 +25,11 @@ document.getElementById('closeNotifiction').addEventListener("click",function(){
 		//alert(response);		
 	});
 });
-
+document.getElementById('openPagas').addEventListener("click",function(){
+	chrome.runtime.sendMessage('openPagas;popup;null', function(response){
+		//alert(response);		
+	});
+});
 
 function closeNotifiction()
 {
