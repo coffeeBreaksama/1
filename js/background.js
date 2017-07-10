@@ -11,10 +11,21 @@ var timeSend = 1;
 var intervalID;
 var interTime = 500;
 var NotifSwitch = parseInt(localStorage.getItem("globalVariables"+"-NotifSwitch"));//默认打开
-if(NotifSwitch != 1 || NotifSwitch != 0)
+if(NotifSwitch != 1 && NotifSwitch != 0)
 {
-	NotifSwitch = 0;
+	NotifSwitch = 0;//默认关
 }
+
+var ReflashSwitch = parseInt(localStorage.getItem("globalVariables"+"-ReflashSwitch"));//默认打开
+if(ReflashSwitch != 1 && ReflashSwitch != 0)
+{
+	ReflashSwitch = 0;
+}
+if(ReflashSwitch == 1)
+{
+	startAutoRefreshPage();
+}
+
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
     var cmd = analysisInstruction(message);
 	sendResponse(executeCmd(cmd));
@@ -64,24 +75,65 @@ xhr.onreadystatechange = function() {
 }
 xhr.send();  */
 /////////////////////////////////////////////////	
-	
+
+var reflashArr = new Array(5);
+reflashArr[0] = "web.antispam.netease.com";
+reflashArr[1] = "gcweb.nis.netease.com";
+
+/* http://gcweb.nis.netease.com/modules/censor/yuedu/yaolushan-censor.html
+http://gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html */
+
+var nowUrl = null;
+
+
+function reflashPage(activeInfo){
+		console.log(activeInfo.tabId); 
+		iTime = 0;
+		chrome.tabs.get(activeInfo.tabId, function(tab){
+			nowUrl = tab.url;
+			for(var i=0;i<reflashArr.length;i++)
+			{
+				if(nowUrl.match(reflashArr[i])==reflashArr[i])
+				{
+					chrome.tabs.reload(activeInfo.tabId);
+					return 1;
+				}
+			}
+		});
+}		
+function startAutoRefreshPage()//若有则跳转，若无则创建
+{
+	chrome.tabs.onActivated.addListener(reflashPage);
+	ReflashSwitch = 1;
+}
+function stopAutoRefreshPage()
+{
+	chrome.tabs.onActivated.removeListener(reflashPage);
+	ReflashSwitch = 0;
+}
+
 function jumpToWindow(aimUrl,jumpFlag)//若有则跳转，若无则创建
 {
 	jumpFlag = arguments[1]?true:arguments[1];
 	chrome.tabs.query({},function(tabs){
 		for(var tab of tabs)
 		{
-			if(tab.url.match(aimUrl))
+			if(tab.url.match(aimUrl))//全匹配
 			{
 				chrome.tabs.update(tab.id, {selected:true});
 				return 1;
 			}
+			else if(tab.url.match("gcweb.nis.netease.com/modules/censor/yuedu/yuedu"))//半匹配
+			{
+				chrome.tabs.update(tab.id, {selected:true});
+				//tab.url = aimUrl;
+				//chrome.tabs.reload(tab.id);
+				return 1;
+			}
 		}
-		chrome.tabs.create({"url":"http://"+ aimUrl,"selected":jumpFlag});
+		chrome.tabs.create({"url":"http://"+ aimUrl,"active":jumpFlag});
 		return 2;
 	});
-	
-	
 }
 	
 function sendNotif(type)
@@ -123,7 +175,22 @@ else{
 console.log(paremArr);
  */
 
-
+function switchReflash()
+{
+	if(ReflashSwitch == 0)
+	{
+		startAutoRefreshPage();
+	}
+	else if(ReflashSwitch == 1)
+	{
+		stopAutoRefreshPage();
+	}
+	
+	if(NotifSwitch==1)
+    {return('关闭小模块计时器');}
+	else if(NotifSwitch==0)
+	{return('开启小模块计时器');}
+}
 function switchNoti()
 {
 	if(NotifSwitch == 0)
@@ -196,6 +263,9 @@ function updataStorage(cmd)
 	if(cmd.type == "CloseNotif"){
 		localStorage.setItem("globalVariables"+"-NotifSwitch",NotifSwitch);
 	}
+	if(cmd.type == "changeReflashStatus"){
+		localStorage.setItem("globalVariables"+"-ReflashSwitch",ReflashSwitch);
+	}
 }
 
 
@@ -215,12 +285,31 @@ function executeCmd(cmd)
 	if(cmd.type == 'CloseNotif'){
 		responseText = switchNoti();
     }
+	else if(cmd.type == 'changeReflashStatus'){
+		if(ReflashSwitch==1)
+        {
+			stopAutoRefreshPage();
+			responseText = '开启切换刷新';
+		}
+		else if(ReflashSwitch==0)
+		{
+			startAutoRefreshPage();
+			responseText = '关闭切换刷新';
+		}
+    }
 	else if(cmd.type == "getNotifStatus")
 	{ 
 		if(NotifSwitch==1)
         {responseText = '关闭小模块计时器';}
 		else if(NotifSwitch==0)
 		{responseText = '开启小模块计时器';}
+    }
+	else if(cmd.type == "getReflashStatus")
+	{ 
+		if(ReflashSwitch==1)
+        {responseText = '关闭切换刷新';}
+		else if(ReflashSwitch==0)
+		{responseText = '开启切换刷新';}
     }
 	else if(cmd.type == "getInterTime")
 	{

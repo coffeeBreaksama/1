@@ -19,29 +19,50 @@ var interval = window.setInterval(function(){my_clock(clock_div);},1000);
 
 
 getNotifStatus();
-document.getElementById('closeNotifiction').addEventListener("click",function(){
+getReflashStatus();
+
+
+document.getElementById('NotifictionButton').addEventListener("click",function(){
 	closeNotifiction(); 
-	chrome.runtime.sendMessage('autoInterTime', function(response){
-		//alert(response);		
-	});
 });
+
+document.getElementById('ReflashButton').addEventListener("click",function(){
+	changeReflash(); 
+});
+
 document.getElementById('openPagas').addEventListener("click",function(){
 	chrome.runtime.sendMessage('openPagas;popup;null', function(response){
 		//alert(response);		
 	});
 });
 
+
+
 function closeNotifiction()
 {
 	chrome.runtime.sendMessage('CloseNotif;popup;null;', function(response){
-		document.getElementById('closeNotifiction').innerHTML = response;		
+		document.getElementById('NotifictionButton').innerHTML = response;		
 	});
 }
 
 function getNotifStatus()
 {
 	chrome.runtime.sendMessage('getNotifStatus;popup;null;', function(response){
-		document.getElementById('closeNotifiction').innerHTML = response;		
+		document.getElementById('NotifictionButton').innerHTML = response;		
+	});
+}
+
+
+function changeReflash()
+{
+	chrome.runtime.sendMessage('changeReflashStatus;popup;null;', function(response){
+		document.getElementById('ReflashButton').innerHTML = response;		
+	});
+}
+function getReflashStatus()
+{
+	chrome.runtime.sendMessage('getReflashStatus;popup;null;', function(response){
+		document.getElementById('ReflashButton').innerHTML = response;		
 	});
 }
 

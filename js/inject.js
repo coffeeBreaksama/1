@@ -539,7 +539,7 @@ function blogInit()
 
 
 }
-
+var interTime;
 function liveAutoKeydown()
 {
 	
@@ -679,7 +679,7 @@ function liveAutoKeydown()
 	var delMessage = 0;
 	var allowMouse = 1;
 	//var pauseFlag = 0;
-	var interTime = parseInt($("#interTimeText").text().split("：")[1]);
+	interTime = parseInt($("#interTimeText").text().split("：")[1]);
 
 	
 	$("#selecterId").on("change",function(){
@@ -1027,6 +1027,8 @@ function initKeyGACHA()
 }
 function initKeyMOOC()
 {	
+	$("#dataType").val("5");
+	$("#querybtn").click();
 	//$("body").off("keydown");
 	$("body").on("keydown", function(e){
 					var list = $("#dataType");
@@ -1053,8 +1055,9 @@ function initKeyMOOC()
 
 
 function initKeyREAD()
-{	
-	//$("body").off("keydown");
+{		
+	$("#multiCensor").attr("checked",false);
+	$("#querybtn").click();
 	$("body").on("keydown", function(e){
 					var sourceType = $("#sourceType");
 					var checkStatus = $("#status");
