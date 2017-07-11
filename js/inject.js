@@ -1,8 +1,7 @@
 //var dieWord = 肉棒，精液，习近平，江泽民，飞叶子，丁磊，丁三石，你妈;
 
-var updateNum;
-var nowIndex = null;
-var firstUncensorIndex = null;
+var updateNum;//器官标注的统计，需要全局在F12更改，所以放在外面可访问。
+
 matchUrl();
 
 
@@ -19,7 +18,7 @@ function matchUrl()
 	}
 	else if(window.location.href.match("mmo.mi.nis.netease.com") =="mmo.mi.nis.netease.com")
 	{
-		imgMarkInit();
+		initImgMark();
 	}
 }
 
@@ -176,31 +175,26 @@ function initEmail(){
 	}
 	function getActiveTab()
 	{
-		var activeTab = 0;
+		var ActiveTab = null;
 		if(jQuery("#panel_unimportanceClusterVerify").attr("class")=="tap5c_tab-set-panel activated")
 		{
-			activeTab += 1;
+			activeTab = "非重要聚类";
 			return true;
 		}
 		if(jQuery("#panel_clusterVerify").attr("class")=="tap5c_tab-set-panel activated")
 		{
-			activeTab += 1;
+			activeTab = "聚类审核";
 			return true;
 		}
 		if(jQuery("#panel_clusterInfoLowScoreVerify").attr("class")=="tap5c_tab-set-panel activated")
 		{
-			activeTab += 1;
-			return true;
-		}
-		if(jQuery("#panel_unimportanceClusterVerify").attr("class")=="tap5c_tab-set-panel activated")
-		{
-			activeTab += 1;
+			activeTab = "低分聚类审核";
 			return true;
 		}
 		return false;
 	}
 	
-	function searchInitItem(cmd)//每隔两秒扫描item条目并绑定事件，不是太懂如何去监视邮件的条目更改，暂时写死.
+	function searchInitItem(cmd)//每隔x秒扫描item条目并绑定事件，不是太懂如何去监视邮件的条目更改，暂时写死.
 	{
 			//var interTime = 1;
 			if(cmd == "stop")
@@ -253,18 +247,21 @@ function initEmail(){
 			
 			if(e.which == 32 ||e.which == 38 ||e.which == 40)//space UP DOWN 忽略 上 下
 			{
-				e.preventDefault();	
-				return	false;				
+				if(loseFocusFlag != 1)
+				{
+					e.preventDefault();	
+					return	false;				
+				}
 			}
 		});
 		GetMainObject("body",2)[0].on("keyup",function(e){//可能找不到body无法绑定
-			if(nowIndex != null)
+			if(nowIndex != null&&loseFocusFlag != 1)
 			{
 				if(e.which == 32)//space 忽略
 				{
 					e.preventDefault();
 					setRadioVal(nowIndex,"忽略(空格)");
-					focusNextItem(nowIndex+1);
+					focusNextItem(nowIndex);
 					
 				}
 				else if(e.which == 82)//R 正常 加一个良好
@@ -273,17 +270,17 @@ function initEmail(){
 					{
 						setRadioVal(nowIndex,"良好(R)");
 					}
-					focusNextItem(nowIndex+1);
+					focusNextItem(nowIndex);
 				}
 				else if(e.which == 87)//W  广告邮件
 				{
 					setRadioVal(nowIndex,"广告邮件(W)");
-					focusNextItem(nowIndex+1);
+					focusNextItem(nowIndex);
 				}
 				else if(e.which == 69)//E  订阅邮件
 				{
 					setRadioVal(nowIndex,"订阅邮件(E)");
-					focusNextItem(nowIndex+1);
+					focusNextItem(nowIndex);
 				}
 				else if(e.which == 81)//Q  垃圾邮件 垃圾
 				{
@@ -291,7 +288,7 @@ function initEmail(){
 					{
 						setRadioVal(nowIndex,"垃圾(Q)");
 					}
-					focusNextItem(nowIndex+1);
+					focusNextItem(nowIndex);
 				}
 				else if(e.which == 49)//1   标题聚类/URL/概要标题/趋势分析/（文本）/图片/附件
 				{
@@ -314,7 +311,7 @@ function initEmail(){
 						setRadioVal(nowIndex,"拒收(D)");
 					}
 					//setRadioVal(nowIndex,"封禁(D)");
-					focusNextItem(nowIndex+1);
+					focusNextItem(nowIndex);
 				}
 				else if(e.which == 38)//UP  向上一条
 				{
@@ -339,8 +336,12 @@ function initEmail(){
 					}
 					else
 					{
-						focusNextItem(nowIndex+1);
+						focusNextItem(nowIndex);
 					}
+				}
+				else if(e.which == 70)//F focus
+				{
+					focusItem(nowIndex);
 				}
 			}
 			else
@@ -416,7 +417,7 @@ function initEmail(){
 	function focusNextItem(itemIndex,jumpFlag)//
 	{
 		nowIndex += 1;
-		focusItem(itemIndex+1,jumpFlag);
+		focusItem(nowIndex,jumpFlag);
 	}
 	function focusPrveItem(itemIndex)
 	{
@@ -425,14 +426,20 @@ function initEmail(){
 		console.log("nowIndex = "+nowIndex);
 		ItemToView(itemIndex)
 	}	
+	
+	
+	
 	var searchValId = null;
 	var index = 0;
 	var nowIndex = null;
+	var nowRadios=null;
+	var loseFocusFlag = null;
+	
+	
 	readyToInit();
 	searchInitItem("start");
 	bindKeyEvent();
-	var nowRadios=null;
-	var loseFocusFlag = null;
+
 	
 	
 	
@@ -532,10 +539,9 @@ function blogInit()
 
 
 }
-var interTime;
+
 function liveAutoKeydown()
 {
-	
 	var passItem = function(currentItem){
 		$(currentItem).removeClass("s-fc7 unpass uncensor").addClass("s-fc8 pass").attr("newStatus", "2000");
 		moveNext(currentItem);
@@ -665,6 +671,9 @@ function liveAutoKeydown()
 	}
 	
 	
+	var firstUncensorIndex = null;
+	var interTime;
+	var nowIndex = null;
 	var list = $("#cs-list a");
 	var item;
 	var autoStatus = 0;
@@ -935,7 +944,7 @@ function initMUSIC()
 				});
 }
 
-function imgMarkInit(){
+function initImgMark(){
 	
 }
 function initMANHUA()
