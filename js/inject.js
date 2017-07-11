@@ -159,7 +159,7 @@ function initEmail(){
 		else
 		{
 			console.log("The email table not find");
-			searchInitItem("stop");
+			//searchInitItem("stop");
 		}
 		
 	}
@@ -171,7 +171,7 @@ function initEmail(){
 		}); */
 		jQuery(top.frames[3].document).ready(function(){
 			initItem();
-			jQuery(GetMainObject("body",2)[0]).focus();
+			//jQuery(GetMainObject("body",2)[0]).focus();
 		});
 	}
 	function getActiveTab()
@@ -207,13 +207,15 @@ function initEmail(){
 			{
 				searchValId = window.clearInterval(searchValId);
 			}
-			else{
+			else //if(searchValId == null)
+			{
+				searchValId = window.clearInterval(searchValId);
 				searchValId = window.setInterval(function(){
-					if(getActiveTab())
+					if(getActiveTab()&&loseFocusFlag!=1)
 					{
 						initItem();
 					}
-				},2*1000);
+				},3*1000);
 			}
 	}
 	
@@ -413,17 +415,8 @@ function initEmail(){
 	
 	function focusNextItem(itemIndex,jumpFlag)//
 	{
-		jumpFlag = arguments[1] ? arguments[1]:true;
-		if(itemIndex<tableObjS.length)
-		{
-			foucsItemInit(itemIndex);
-			nowIndex += 1;
-			console.log("nowIndex = "+nowIndex);
-			if(jumpFlag == true)
-			{
-			ItemToView(itemIndex);
-			}
-		}
+		nowIndex += 1;
+		focusItem(itemIndex+1,jumpFlag);
 	}
 	function focusPrveItem(itemIndex)
 	{
@@ -432,7 +425,7 @@ function initEmail(){
 		console.log("nowIndex = "+nowIndex);
 		ItemToView(itemIndex)
 	}	
-	var searchValId;
+	var searchValId = null;
 	var index = 0;
 	var nowIndex = null;
 	readyToInit();
