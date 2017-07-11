@@ -153,7 +153,7 @@ function initEmail(){
 				{
 					nowIndex = 0;
 				}
-				focusItem(nowIndex,false);
+				focusItem(nowIndex,-1);
 			}
 		}
 		else
@@ -397,14 +397,14 @@ function initEmail(){
 			console.log("page has no focus");
 		});
 	}
-	function focusItem(itemIndex,jumpFlag)//
+	function focusItem(itemIndex,jumpFlag)//切换不跳，
 	{
-		jumpFlag = arguments[1] ? arguments[1]:true;
+		jumpFlag = arguments[1] ? arguments[1]:1;
 		if(itemIndex<tableObjS.length)
 		{
 			foucsItemInit(itemIndex);
 			console.log("nowIndex = "+nowIndex);
-			if(jumpFlag == true)
+			if(jumpFlag == 1)
 			{
 			ItemToView(itemIndex);
 			}
