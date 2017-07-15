@@ -20,7 +20,7 @@ var interval = window.setInterval(function(){my_clock(clock_div);},1000);
 
 getNotifStatus();
 getReflashStatus();
-
+getSoundNotiStatus();
 
 document.getElementById('NotifictionButton').addEventListener("click",function(){
 	closeNotifiction(); 
@@ -35,7 +35,23 @@ document.getElementById('openPagas').addEventListener("click",function(){
 		//alert(response);		
 	});
 });
+document.getElementById('NotiSoundButton').addEventListener("click",function(){
+	changeSoundNoti();
+});
 
+function changeSoundNoti()
+{
+	chrome.runtime.sendMessage('changeSoundPermission;popup;null;', function(response){
+		document.getElementById('NotiSoundButton').innerHTML = response;		
+	});
+}
+
+function getSoundNotiStatus()
+{
+	chrome.runtime.sendMessage('getSoundPermission;popup;null;', function(response){
+		document.getElementById('NotiSoundButton').innerHTML = response;		
+	});
+}
 
 
 function closeNotifiction()

@@ -1,93 +1,90 @@
-var blockArry = new Array(5);
-blockArry[0] = "http://gcweb.nis.netease.com/js/modules/censor/yuedu/yuedu-open-censor.js*";
+var blockArry = new Array(3);
+blockArry[2] = "http://gcweb.nis.netease.com/js/modules/censor/yuedu/yuedu-open-censor.js*";
 blockArry[1] = "*://mmo.mi.nis.netease.com/js/modules/image/mark/image-mark-content.js*";
-blockArry[2] = "http://gcweb.nis.netease.com/js/modules/censor/music/music-censor*";
-blockArry[3] = "http://gcweb.nis.netease.com/js/modules/censor/music/music-image*";
-blockArry[4] = "http://mmo.mi.nis.netease.com/js";
-
-//sendNotif("插件已经开始工作！");
-sendNotif(1);
+blockArry[0] = "*://web.antispam.netease.com/javascript/page/censor/cluster.js*";
 var timeSend = 1;
 var intervalID;
 var interTime = 500;
-var NotifSwitch = parseInt(localStorage.getItem("globalVariables"+"-NotifSwitch"));//默认打开
-if(NotifSwitch != 1 && NotifSwitch != 0)
-{
-	NotifSwitch = 0;//默认关
-}
-
-var ReflashSwitch = parseInt(localStorage.getItem("globalVariables"+"-ReflashSwitch"));//默认打开
-if(ReflashSwitch != 1 && ReflashSwitch != 0)
-{
-	ReflashSwitch = 0;
-}
-if(ReflashSwitch == 1)
-{
-	startAutoRefreshPage();
-}
-
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
-    var cmd = analysisInstruction(message);
-	sendResponse(executeCmd(cmd));
-	updataStorage(cmd);
-});
-chrome.webRequest.onBeforeRequest.addListener(
-	  function(details) {
-		console.log(details);
-		if(details.url == "http://gcweb.nis.netease.com/js/modules/censor/yuedu/yuedu-open-censor.js?v=201202141407")
-		{
-			return {redirectUrl: chrome.extension.getURL("js/yuedu.js")};
-		}
-		else if(details.url == "http://mmo.mi.nis.netease.com/js/modules/image/mark/image-mark-content.js?v=20151029")
-		{
-			return {redirectUrl: chrome.extension.getURL("js/oldJS/image-mark-content.js")};
-		}
-		else if(details.url == "http://gcweb.nis.netease.com/js/modules/censor/music/music-censor.js?v=201202141407")
-		{
-			return {redirectUrl: chrome.extension.getURL("js/musicCensor.js")};
-		}
-		else if(details.url == "http://gcweb.nis.netease.com/js/modules/censor/music/music-image-censor.js?v=201202141407")
-		{
-			return {redirectUrl: chrome.extension.getURL("js/musicImage.js")};
-		}
-		else if(details.url == "http://mmo.mi.nis.netease.com/js/modules/image/mark/image-mark-content.js?v=20151029")
-		{
-			return {redirectUrl: chrome.extension.getURL("js/mark.js")};
-		}
-	  },
-	  {
-		urls: blockArry,
-		types: ["script"]
-	  },
-	  ["blocking"]
-	);	
-
-////////////////////////////////////////////////////
-/*  	var xhr = new XMLHttpRequest();
-xhr.open("GET", "https://github.com/coffeeBreaksama/censor-chrome-version/blob/master/README.md", true);
-
-xhr.onreadystatechange = function() {
-  if (xhr.readyState == 4) {
-    // innerText不会给攻击者注入HTML元素的机会.
-    console.log(xhr.responseText);
-  }
-
-}
-xhr.send();  */
-/////////////////////////////////////////////////	
-
-var reflashArr = new Array(5);
+var NotifSwitch;
+var ReflashSwitch;
+var soundPermisson;
+var reflashArr = new Array(5);//切换刷新url匹配名单
 reflashArr[0] = "web.antispam.netease.com";
 reflashArr[1] = "gcweb.nis.netease.com";
 
-/* http://gcweb.nis.netease.com/modules/censor/yuedu/yaolushan-censor.html
-http://gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html */
 
-var nowUrl = null;
+initBackgrand();
 
+
+
+function initBackgrand()
+{
+	//从localStorge获取全局设置参数，若没有则初始化值
+	NotifSwitch = parseInt(localStorage.getItem("globalVariables"+"-NotifSwitch"));//默认打开
+	if(NotifSwitch != 1 && NotifSwitch != 0)
+	{
+		NotifSwitch = 0;//默认关
+	}
+	if(ReflashSwitch == 1)
+	{
+		switchNoti();
+	}
+	ReflashSwitch = parseInt(localStorage.getItem("globalVariables"+"-ReflashSwitch"));//默认打开
+	if(ReflashSwitch != 1 && ReflashSwitch != 0)
+	{
+		ReflashSwitch = 0;
+	}
+	if(ReflashSwitch == 1)
+	{
+		startAutoRefreshPage();
+	}
+	soundPermisson = parseInt(localStorage.getItem("globalVariables"+"-soundPermisson"));//默认打开
+	if(soundPermisson != 1 && soundPermisson != 0)
+	{
+		soundPermisson = 0;
+	}
+	
+	
+	
+	//添加message监视用以通讯
+	chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
+		var cmd = analysisInstruction(message);
+		sendResponse(executeCmd(cmd));
+		updataStorage(cmd);
+	});
+	//添加webRequest监视以屏蔽特定文件
+	chrome.webRequest.onBeforeRequest.addListener(
+		  function(details) {
+			console.log(details);
+			if(details.url == "http://gcweb.nis.netease.com/js/modules/censor/yuedu/yuedu-open-censor.js?v=201202141407")
+			{
+				return {redirectUrl: chrome.extension.getURL("js/yuedu.js")};
+			}
+			else if(details.url == "http://mmo.mi.nis.netease.com/js/modules/image/mark/image-mark-content.js?v=20151029")
+			{
+				return {redirectUrl: chrome.extension.getURL("js/oldJS/image-mark-content.js")};
+			}
+			else if(details.url == "http://web.antispam.netease.com/javascript/page/censor/cluster.js")
+			{
+				return {redirectUrl: chrome.extension.getURL("js/cluster.js")};
+			}
+		  },
+		  {
+			urls: blockArry,
+			types: ["script"]
+		  },
+		  ["blocking"]
+	);	
+		
+	
+	initSoundPlay();//载入音频元素作提示音用
+	
+	sendNotif("程序开始工作！");
+}	
 
 function reflashPage(activeInfo){
-		console.log(activeInfo.tabId); 
+		var nowUrl = null;
+		//console.log(activeInfo.tabId); 
 		iTime = 0;
 		chrome.tabs.get(activeInfo.tabId, function(tab){
 			nowUrl = tab.url;
@@ -105,11 +102,13 @@ function startAutoRefreshPage()//若有则跳转，若无则创建
 {
 	chrome.tabs.onActivated.addListener(reflashPage);
 	ReflashSwitch = 1;
+	//sendNotif("已开启切换刷新");
 }
 function stopAutoRefreshPage()
 {
 	chrome.tabs.onActivated.removeListener(reflashPage);
 	ReflashSwitch = 0;
+	//sendNotif("已关闭切换刷新");
 }
 
 function jumpToWindow(aimUrl,jumpFlag)//若有则跳转，若无则创建
@@ -135,9 +134,20 @@ function jumpToWindow(aimUrl,jumpFlag)//若有则跳转，若无则创建
 		return 2;
 	});
 }
-	
+
+function initSoundPlay()
+{
+	var elem = document.createElement('audio');
+    elem.src = "images/down.mp3";
+	elem.id = "bgm";
+    document.getElementsByTagName('head')[0].appendChild(elem);
+	//document.getElementById('bgm').load();
+}
+
+
 function sendNotif(type)
 {
+
 	var n;
 	if(type == 1)
 	{
@@ -145,9 +155,18 @@ function sendNotif(type)
 		n.addEventListener("click",function(e){
 		chrome.tabs.query({active:true},function(){
 			jumpToWindow("gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html");
+			if(soundPermisson == 1)
+			{
+				document.getElementById('bgm').pause();
+				document.getElementById('bgm').load();
+			}
 			n.close();
 		});
 		});
+		if(soundPermisson == 1)
+		{
+			document.getElementById('bgm').play();
+		}
 	}
 	else
 	{
@@ -161,19 +180,7 @@ function sendNotif(type)
 	
 }
 
-/* var paremArr = new Array();
-initParemStorage();
-localStorage.setItem("pageParam",paremArr) 
 
-
-if(!localStorage.getItem("pageParam")){
-	initParemStorage();
-}
-else{
-	paremArr = getParemFormStorge();
-}
-console.log(paremArr);
- */
 
 function switchReflash()
 {
@@ -196,17 +203,18 @@ function switchNoti()
 	if(NotifSwitch == 0)
 	{
 			intervalID = window.setInterval(function(){
-			alert("清原创漫画");
+			alert("清原创漫画"); //回头取消
 			timeSend += 1;
 			sendNotif(1);
 			if(timeSend == 4)
 			{
 				alert("其他模块也要清了");
+				sendNotif("其他模块也要清了");
 				timeSend = 0;
 			}
 			},30*1000*60);
 			NotifSwitch = 1;
-			sendNotif("开始计算时间，注意清当前一轮漫画原创");
+			sendNotif("开始计算时间，注意清当前一轮漫画原创"); //回头取消
 	}else if(NotifSwitch == 1)
 	{
 		intervalID = window.clearInterval(intervalID);
@@ -226,32 +234,6 @@ function instruction(type,source,num)
 	this.num = num;
 	
 }
-/* function pageParam(url,type,interTime,notiTime,notiSwitch)
-{
-	var ob = new Object();
-	ob.url = url;
-	ob.type = type;
-	ob.interTime = interTime;
-	ob.notiTime = notiTime;
-	ob.notiSwitch = notiSwitch;
-	return ob;
-} */
-
-
-/* 
-function initParemStorage(){
-	for(var i=0;i<30;i++)
-	{
-		paremArr[i] = pageParam(1,1,1,1,1);
-	}
-} */
-  
-/* 
-function getParemFormStorge(){
-	var param = pageParam();
-	
-	
-} */
 
 
 function updataStorage(cmd)
@@ -265,6 +247,10 @@ function updataStorage(cmd)
 	}
 	if(cmd.type == "changeReflashStatus"){
 		localStorage.setItem("globalVariables"+"-ReflashSwitch",ReflashSwitch);
+	}
+	if(cmd.type == "changeSoundPermission")
+	{
+		localStorage.setItem("globalVariables"+"-SoundPermission",soundPermisson);
 	}
 }
 
@@ -335,6 +321,26 @@ function executeCmd(cmd)
 	else if(cmd.type == "getUpdataText")
 	{
 		
+	}
+	else if(cmd.type == "changeSoundPermission")
+	{
+		if(soundPermisson==1)
+        {
+			soundPermisson = 0;
+			responseText = '开启通知声音提醒';
+		}
+		else if(soundPermisson==0)
+		{
+			soundPermisson = 1;
+			responseText = '关闭通知声音提醒';
+		}
+	}
+	else if(cmd.type == "getSoundPermission")
+	{
+		if(soundPermisson==1)
+        {responseText = '关闭通知声音提醒';}
+		else if(soundPermisson==0)
+		{responseText = '开启通知声音提醒';}
 	}
 	return responseText;
 }

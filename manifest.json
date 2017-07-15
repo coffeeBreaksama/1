@@ -8,10 +8,10 @@
 		"default_icon":"images/1.png",
 		"default_popup":"popup.html"
 	},
-	"permissions":["tabs","webRequest","webRequestBlocking","*://gcweb.nis.netease.com/*","notifications","*://github.com/*"],
+	"permissions":["tabs","webRequest","webRequestBlocking","*://gcweb.nis.netease.com/*","notifications","*://github.com/*","*://web.antispam.netease.com/*"],
     "content_scripts": [
         {
-            "matches": ["*://gcweb.nis.netease.com/*","*://mmo.mi.nis.netease.com/*","*://blog.nis.netease.com/*","https://220.181.72.109:8181/*","https://220.181.72.109:8182/*","https://220.181.72.109:8183/*","https://220.181.72.109:8184/*"],
+            "matches": ["*://web.antispam.netease.com/*","*://gcweb.nis.netease.com/*","*://mmo.mi.nis.netease.com/*","*://blog.nis.netease.com/*","https://220.181.72.109:8181/*","https://220.181.72.109:8182/*","https://220.181.72.109:8183/*","https://220.181.72.109:8184/*"],
             "js": ["js/cannot_touch.js"]
         }
     ],
@@ -23,6 +23,8 @@
 		"js/musicCensor.js",
 		"js/musicImage.js",
 		"js/mark.js",
-		"js/antispam.js"
+		"js/antispam.js",
+		"js/cluster.js",
+		"js/cluster.js"
 	]
 }

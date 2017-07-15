@@ -13,6 +13,10 @@ if(window.location.href.match("220.181.72.109:818") =="220.181.72.109:818")
 		injectJsOnMail();
 
 	}
+else if(window.location.href.match("web.antispam.netease.com") =="web.antispam.netease.com")
+	{
+		loadScript(url('js/inject.js'));
+	}
 else
 {
 	loadScript(url('js/inject.js'));

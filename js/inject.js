@@ -20,6 +20,10 @@ function matchUrl()
 	{
 		initImgMark();
 	}
+	else if(window.location.href.match("web.antispam.netease.com") =="web.antispam.netease.com")
+	{
+		initYidun();
+	}
 }
 
 function GetMainObject(str,type)
@@ -37,6 +41,65 @@ function GetMainObject(str,type)
 		return top.frames[3].document.getElementsByTagName(str);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+function initYidun(){
+/* 	$(document).ready(function(){
+		//alert(itemList);
+		searchValId = window.setInterval(function(){
+			var item = $('#checklist a');
+			console.log(item.eq(1).text());
+		},3*1000);
+	}); */
+	
+	
+	function getItemList()
+	{
+		var list = $("#checklist a");
+	}
+	var i = 0;
+	$("body").on("keydown",function(e){
+		if(e.which == 69)
+		{
+			$("#checklist a.z-select").trigger("click");
+			var e =  jQuery.Event("keydown");
+			e.which = 96;
+			$('#checkMainCtn').trigger(e);
+			//$("#keyA").trigger("click");
+			/* $("#confirmAllDlg").dialog("open");	
+			$("#confirmAllDlg").find("input:radio").eq(1).next().next().trigger("click");
+			$(".ui-button-text").eq(0).trigger("click"); */
+		}
+		
+	});
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ///////////123///////
@@ -471,12 +534,13 @@ function delayAndExecute(delayNum,func)
 }
 function initAll()
 {
-	
+	var bodyHasFocus;
 	//获取通知权限
 	Notification.requestPermission( function(status) {
     console.log(status); // 仅当值为 "granted" 时显示通知
     //var n = new Notification("title", {body: "插件开始工作"}); // 显示通知
   });
+  
   
 	liveAutoKeydown();
 	liveDelImageKeyDown();
@@ -539,6 +603,19 @@ function blogInit()
 
 
 }
+function changeBodyFocus()
+{
+	var body = document.getElementsByTagName("body")[0];
+	body.tabIndex = "-1";
+	$("body").focus(function(){
+		bodyHasFocus = true;
+	});
+	$("body").blur(function(){
+		bodyHasFocus = false;
+	});
+	
+}
+
 
 function liveAutoKeydown()
 {
@@ -1453,7 +1530,7 @@ function changeCookie(value)
 var autoId;
 function autoUpdataBooks()
 {
-	if(window.location.href == "http://gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html"||window.location.href == "http://gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html#")
+	if(window.location.href.match("gcweb.nis.netease.com") == "gcweb.nis.netease.com")
 	{
 		autoId = window.setInterval(function(){
 			if($("#querycount").text() != "0")
