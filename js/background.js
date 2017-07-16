@@ -25,9 +25,9 @@ function initBackgrand()
 	{
 		NotifSwitch = 0;//默认关
 	}
-	if(ReflashSwitch == 1)
+	if(NotifSwitch == 1)
 	{
-		switchNoti();
+		switchNoti("start");
 	}
 	ReflashSwitch = parseInt(localStorage.getItem("globalVariables"+"-ReflashSwitch"));//默认打开
 	if(ReflashSwitch != 1 && ReflashSwitch != 0)
@@ -198,24 +198,24 @@ function switchReflash()
 	else if(NotifSwitch==0)
 	{return('开启小模块计时器');}
 }
-function switchNoti()
+function switchNoti(cmd)
 {
-	if(NotifSwitch == 0)
+	if(cmd == "start" && intervalID == null)
 	{
 			intervalID = window.setInterval(function(){
-			alert("清原创漫画"); //回头取消
-			timeSend += 1;
-			sendNotif(1);
-			if(timeSend == 4)
-			{
-				alert("其他模块也要清了");
-				sendNotif("其他模块也要清了");
-				timeSend = 0;
-			}
+				timeSend += 1;
+				sendNotif(1);
+				alert("清原创漫画"); //回头取消
+				if(timeSend == 4)
+				{
+					alert("其他模块也要清了");
+					sendNotif("其他模块也要清了");
+					timeSend = 0;
+				}
 			},30*1000*60);
 			NotifSwitch = 1;
 			sendNotif("开始计算时间，注意清当前一轮漫画原创"); //回头取消
-	}else if(NotifSwitch == 1)
+	}else if(cmd == "stop")
 	{
 		intervalID = window.clearInterval(intervalID);
 		sendNotif("停止计算时间");
@@ -269,7 +269,10 @@ function executeCmd(cmd)
 {
 	var responseText;
 	if(cmd.type == 'CloseNotif'){
-		responseText = switchNoti();
+		if(NotifSwitch==1)
+        {responseText = switchNoti("stop");}
+		else if(NotifSwitch==0)
+		{responseText = switchNoti("start");}
     }
 	else if(cmd.type == 'changeReflashStatus'){
 		if(ReflashSwitch==1)

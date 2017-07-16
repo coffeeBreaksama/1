@@ -1,4 +1,16 @@
 //var dieWord = 肉棒，精液，习近平，江泽民，飞叶子，丁磊，丁三石，你妈;
+//hztongyueyao@163.com
+var _checkWord_ = {
+	"yuedu-article-censor":"包夜;多少钱上门;性爱;赌;党;",
+	"yueducmt-censor":"政府;国家领导人;",
+	"yuedu-message-censor":"390350063;",
+	"study-censor":"完整资料;资料;私我;留q;私信我;yuanandcong;ganshiyun666;18406433299;销售;1998元;前面;625783520;",
+	"common":"加V;微信;加头像;",
+	"mostDel":"",
+}
+var pagename = new Array("yueducmt-censor","yuedu-message-censor","yuedu-article-censor",
+					"yuedu-open-censor","yuedu-user-censor","yaolushan-censor","yaolushancmt-censor",
+					"gacha-post-censor","gacha-user-censor","study-censor","popo-suspect-censor");
 
 var updateNum;//器官标注的统计，需要全局在F12更改，所以放在外面可访问。
 
@@ -54,36 +66,6 @@ function GetMainObject(str,type)
 
 
 function initYidun(){
-/* 	$(document).ready(function(){
-		//alert(itemList);
-		searchValId = window.setInterval(function(){
-			var item = $('#checklist a');
-			console.log(item.eq(1).text());
-		},3*1000);
-	}); */
-	
-	
-	function getItemList()
-	{
-		var list = $("#checklist a");
-	}
-	var i = 0;
-	$("body").on("keydown",function(e){
-		if(e.which == 69)
-		{
-			$("#checklist a.z-select").trigger("click");
-			var e =  jQuery.Event("keydown");
-			e.which = 96;
-			$('#checkMainCtn').trigger(e);
-			//$("#keyA").trigger("click");
-			/* $("#confirmAllDlg").dialog("open");	
-			$("#confirmAllDlg").find("input:radio").eq(1).next().next().trigger("click");
-			$(".ui-button-text").eq(0).trigger("click"); */
-		}
-		
-	});
-	
-	
 	
 	
 }
@@ -544,6 +526,7 @@ function initAll()
   
 	liveAutoKeydown();
 	liveDelImageKeyDown();
+	bindSearchKey();
 	
 	$("#messageBoxId").text(window.location.href);
 	$("#messageBoxId").click();
@@ -884,12 +867,44 @@ function initReadMessage()
 
 }
 
+
+function bindSearchKey()
+{
+	var wordList;
+	for(var i in pagename) 
+	{
+		if(window.location.href.match(pagename[i]) == pagename[i] && _checkWord_[pagename[i]] != null)
+		{
+			wordList = _checkWord_[pagename[i]].split(";");
+			break;
+		}
+		if(i == pagename.length - 1 && wordList == null)
+		{
+			return;
+		}
+	}
+	var index = -1;
+	$("body").on("keydown",function(e){
+		if(e.which == 9)//Tab 
+		{
+			e.preventDefault();
+			index++;
+			if(index > wordList.length - 1)
+			{
+				index = -1;
+			}
+			$("#keyword").val(wordList[index]);
+			$("#querybtn").trigger("click");
+		}
+		
+	});
+}
+
 function initArticle()
 {
 	$("#dataType").val("-1");
 	$("#multiCensor").attr("checked",false);
-	$("#querybtn").click();
-	//$("body").off("keydown");
+	$("#querybtn").trigger("click");
 }
 
 
@@ -1126,6 +1141,13 @@ function initKeyMOOC()
 					if(e.which == 51)
 					{
 						list.val("-1");
+						//list.find("option[text='图片']").attr("selected".true);
+						$("#querybtn").click();
+					}
+					if(e.which == 52)
+					{
+						list.val("-1");
+						$("#status").val("0");
 						//list.find("option[text='图片']").attr("selected".true);
 						$("#querybtn").click();
 					}
