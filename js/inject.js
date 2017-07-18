@@ -4,7 +4,7 @@ var _checkWord_ = {
 	"yuedu-article-censor":"包夜;多少钱上门;性爱;赌;党;",
 	"yueducmt-censor":"政府;国家领导人;",
 	"yuedu-message-censor":"390350063;",
-	"study-censor":"完整资料;免费;1998元;资料;私我;留q;私信我;yuanandcong;ganshiyun666;18406433299;销售;前面;625783520;",
+	"study-censor":"完整资料;免费;1998元;资料;625;私我;群;留q;私信我;yuanandcong;ganshiyun666;18406433299;销售;前面;625783520;",
 	
 	"web.antispam.netease.com-pornographic":"逼;奶子;插;奸;高潮;舔;口交;呻吟;约;日;曰;射;屌;水多;爽;草;啪;干;自慰;精液;撸;叫 床;做爱;套 紧;上 床;bi;咪;j8;搞;",
 	"web.antispam.netease.com-polity":"政府;文革;腐败;萨德;广电;官;抵制;起义;暴动;二 代;长者;蛤;警察;",

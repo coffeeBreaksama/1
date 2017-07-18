@@ -200,7 +200,7 @@ function switchNoti(cmd)
 	{
 			intervalID = window.setInterval(function(){
 				timeSend += 1;
-				sendNotif(1);
+				//sendNotif(1);
 				//alert("清原创漫画"); //回头取消
 				if(timeSend == 4)
 				{
