@@ -1,14 +1,14 @@
-var blockArry = new Array(3);
-blockArry[2] = "http://gcweb.nis.netease.com/js/modules/censor/yuedu/yuedu-open-censor.js*";
+var blockArry = new Array();
+blockArry[0] = "http://gcweb.nis.netease.com/js/modules/censor/yuedu/yuedu-open-censor.js*";
 blockArry[1] = "*://mmo.mi.nis.netease.com/js/modules/image/mark/image-mark-content.js*";
-blockArry[0] = "*://web.antispam.netease.com/javascript/page/censor/cluster.js*";
+//blockArry[0] = "*://web.antispam.netease.com/javascript/page/censor/cluster.js*";
 var timeSend = 1;
 var intervalID;
 var interTime = 500;
 var NotifSwitch;
 var ReflashSwitch;
 var soundPermisson;
-var reflashArr = new Array(5);//切换刷新url匹配名单
+var reflashArr = new Array();//切换刷新url匹配名单
 reflashArr[0] = "web.antispam.netease.com";
 reflashArr[1] = "gcweb.nis.netease.com";
 
@@ -38,7 +38,7 @@ function initBackgrand()
 	{
 		startAutoRefreshPage();
 	}
-	soundPermisson = parseInt(localStorage.getItem("globalVariables"+"-soundPermisson"));//默认打开
+	soundPermisson = parseInt(localStorage.getItem("globalVariables"+"-SoundPermission"));//默认打开
 	if(soundPermisson != 1 && soundPermisson != 0)
 	{
 		soundPermisson = 0;
@@ -63,10 +63,6 @@ function initBackgrand()
 			else if(details.url == "http://mmo.mi.nis.netease.com/js/modules/image/mark/image-mark-content.js?v=20151029")
 			{
 				return {redirectUrl: chrome.extension.getURL("js/oldJS/image-mark-content.js")};
-			}
-			else if(details.url == "http://web.antispam.netease.com/javascript/page/censor/cluster.js")
-			{
-				return {redirectUrl: chrome.extension.getURL("js/cluster.js")};
 			}
 		  },
 		  {
@@ -155,7 +151,7 @@ function sendNotif(type)
 		n.addEventListener("click",function(e){
 		chrome.tabs.query({active:true},function(){
 			jumpToWindow("gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html");
-			if(soundPermisson == 1)
+			if(soundPermisson == 1)	
 			{
 				document.getElementById('bgm').pause();
 				document.getElementById('bgm').load();
@@ -205,10 +201,10 @@ function switchNoti(cmd)
 			intervalID = window.setInterval(function(){
 				timeSend += 1;
 				sendNotif(1);
-				alert("清原创漫画"); //回头取消
+				//alert("清原创漫画"); //回头取消
 				if(timeSend == 4)
 				{
-					alert("其他模块也要清了");
+					//alert("其他模块也要清了");
 					sendNotif("其他模块也要清了");
 					timeSend = 0;
 				}

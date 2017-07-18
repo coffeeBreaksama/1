@@ -4,15 +4,29 @@ var _checkWord_ = {
 	"yuedu-article-censor":"包夜;多少钱上门;性爱;赌;党;",
 	"yueducmt-censor":"政府;国家领导人;",
 	"yuedu-message-censor":"390350063;",
-	"study-censor":"完整资料;资料;私我;留q;私信我;yuanandcong;ganshiyun666;18406433299;销售;1998元;前面;625783520;",
+	"study-censor":"完整资料;免费;1998元;资料;私我;留q;私信我;yuanandcong;ganshiyun666;18406433299;销售;前面;625783520;",
+	
+	"web.antispam.netease.com-pornographic":"逼;奶子;插;奸;高潮;舔;口交;呻吟;约;日;曰;射;屌;水多;爽;草;啪;干;自慰;精液;撸;叫 床;做爱;套 紧;上 床;bi;咪;j8;搞;",
+	"web.antispam.netease.com-polity":"政府;文革;腐败;萨德;广电;官;抵制;起义;暴动;二 代;长者;蛤;警察;",
+	"web.antispam.netease.com-ads":"虾米;快手;yy;酷我;加 我;薇;qq .com;vx;房事;建议;长个;2893;",
+	"web.antispam.netease.com-scold":"贱;傻;垃圾;辣鸡;gou;撒泡尿;丑;东西;撒 比;有病;进水;你妈;猪 脑;卧槽;喷子;他妈;犊子;cnm;gun;tm;mdzz;shabby;sb;jb;laji;几把;那鹰;婊;狗;猪;沙;啥;孙;屁;养 教;shi;",
+	"web.antispam.netease.com-watering":"儿子 名;有个 爱着她;转发;右上;喂 屎;手指 点;觉得 好 赞;",
+	"web.antispam.netease.com-name":"本兮;童可可;邓紫棋;那英;迪丽热;杨幂;赵丽颖;颖宝;卑鄙;鹿晗;",
+	
+	"web.antispam.netease.com-coffee":"文摘;",
+	
 	"common":"加V;微信;加头像;",
-	"mostDel":"",
+	"mustDel":"",
 }
 var pagename = new Array("yueducmt-censor","yuedu-message-censor","yuedu-article-censor",
 					"yuedu-open-censor","yuedu-user-censor","yaolushan-censor","yaolushancmt-censor",
-					"gacha-post-censor","gacha-user-censor","study-censor","popo-suspect-censor");
+					"gacha-post-censor","gacha-user-censor","study-censor","popo-suspect-censor","web.antispam.netease.com");
 
 var updateNum;//器官标注的统计，需要全局在F12更改，所以放在外面可访问。
+var _bodyHasFocus_ = 1;
+var checkKeyIndex = -1;
+var wordList;
+
 
 matchUrl();
 
@@ -22,7 +36,9 @@ function matchUrl()
 {
 	if(window.location.href.match("gcweb.nis.netease.com") =="gcweb.nis.netease.com")
 	{
-		initAll();
+		$(document).ready(function(){
+			initAll();
+		});
 	}
 	else if(window.location.href.match("220.181.72.109:818") =="220.181.72.109:818")
 	{
@@ -67,7 +83,47 @@ function GetMainObject(str,type)
 
 function initYidun(){
 	
-	
+	//changeBodyFocus();
+	var wordListInyidun = {
+		"pornographic":_checkWord_["web.antispam.netease.com-pornographic"].split(";"),
+		"polity":_checkWord_["web.antispam.netease.com-polity"].split(";"),
+		"ads":_checkWord_["web.antispam.netease.com-ads"].split(";"),
+		"scold":_checkWord_["web.antispam.netease.com-scold"].split(";"),
+		"watering":_checkWord_["web.antispam.netease.com-watering"].split(";"),
+		"name":_checkWord_["web.antispam.netease.com-name"].split(";"),
+		"coffee":_checkWord_["web.antispam.netease.com-coffee"].split(";")
+	};
+	var checkKeyIndexInyidun = new Array(0,0,0,0,0,0,0);
+	$("body").on("keydown",function(e){
+		if(90 >= e.which && e.which >= 65 && e.target.tagName != "INPUT")//1 
+		{
+			var nowKeyIndex = null;
+			var nowtype = null;
+			switch (e.which)
+			{
+				case 81:nowtype = "pornographic";nowKeyIndex = 0;break;//Q
+				case 87:nowtype = "polity";nowKeyIndex = 1;break;//W
+				case 69:nowtype = "ads";nowKeyIndex = 2;break;//E
+				case 82:nowtype = "scold";nowKeyIndex = 3;break;//R
+				case 84:nowtype = "watering";nowKeyIndex = 4;break;//T
+				case 89:nowtype = "name";nowKeyIndex = 5;break;//Y
+				case 90:nowtype = "coffee";nowKeyIndex = 6;break;//Z
+				default: return;break;
+			}
+			checkKeyIndexInyidun[nowKeyIndex]++;
+			if(checkKeyIndexInyidun[nowKeyIndex] > wordListInyidun[nowtype].length - 1)
+			{
+				checkKeyIndexInyidun[nowKeyIndex] = -1;
+			}
+			$("#keyword").val(wordListInyidun[nowtype][checkKeyIndexInyidun[nowKeyIndex]]);
+			$("#queryBtn").trigger("click");
+		}
+		if(e.which == 110 && e.target.tagName != "INPUT")
+		{
+			$("#keyG").trigger("click");
+		}
+		
+	});
 }
 
 
@@ -516,17 +572,16 @@ function delayAndExecute(delayNum,func)
 }
 function initAll()
 {
-	var bodyHasFocus;
 	//获取通知权限
 	Notification.requestPermission( function(status) {
     console.log(status); // 仅当值为 "granted" 时显示通知
     //var n = new Notification("title", {body: "插件开始工作"}); // 显示通知
   });
-  
-  
+ 
+	//changeBodyFocus();
 	liveAutoKeydown();
 	liveDelImageKeyDown();
-	bindSearchKey();
+	getSearchKey();
 	
 	$("#messageBoxId").text(window.location.href);
 	$("#messageBoxId").click();
@@ -591,10 +646,10 @@ function changeBodyFocus()
 	var body = document.getElementsByTagName("body")[0];
 	body.tabIndex = "-1";
 	$("body").focus(function(){
-		bodyHasFocus = true;
+		_bodyHasFocus_ = 1;
 	});
-	$("body").blur(function(){
-		bodyHasFocus = false;
+	$("body").blur(function(e){
+		_bodyHasFocus_ = null;
 	});
 	
 }
@@ -684,8 +739,10 @@ function liveAutoKeydown()
 	}
 	var liveMouseEvent = function()
 	{
-		$("#detail").mousedown(function(e){
-			
+		var detail =$("#detail");
+		detail.on("mouseup",function(e){
+			var targetType = e.target.tagName
+			if(targetType == "A" || targetType == "INPUT") return;
 			if(autoStatus == 1){
 				if(e.which == 1)
 				{
@@ -722,12 +779,13 @@ function liveAutoKeydown()
 				$("#detail").animate({scrollTop:0},100);
 				//alert(nowIndex);				
 			}
-		})		
-		
+		});
+		mouseEvent = 1;
 	}
 	var dieMouseEvent = function()
 	{
-		$("#detail").unbind("mousedown");
+		$("#detail").off("mouseup");
+		mouseEvent = 0;
 	}
 	
 	
@@ -739,10 +797,9 @@ function liveAutoKeydown()
 	var autoStatus = 0;
 	var intervalID;
 	var delMessage = 0;
-	var allowMouse = 1;
 	//var pauseFlag = 0;
 	interTime = parseInt($("#interTimeText").text().split("：")[1]);
-
+	var mouseEvent;
 	
 	$("#selecterId").on("change",function(){
 		var x = $("#selecterId");
@@ -758,83 +815,90 @@ function liveAutoKeydown()
 	{	
 		liveMouseEvent();
 		$("body").on("keydown", function(e){
-			if(e.which == 96)
-			{
-				window.open("http://gcweb.nis.netease.com/modules/censor/yuedu/yaolushan-censor.html","漫画");
-				window.open("http://gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html","阅读");
-				window.open("http://gcweb.nis.netease.com/modules/censor/gacha/gacha-user-censor.html","GACHA");
-				window.open("http://gcweb.nis.netease.com/modules/censor/yooc/yooc-censor.html","云课堂");
-				window.open("http://gcweb.nis.netease.com/modules/censor/popo/popo-suspect-censor.html","POPO");
-			}
-			if(e.which == 97)
-			{
-				if(allowMouse == 1)
+			if(e.target.tagName != "INPUT"){
+				if(e.which == 96)
 				{
-					dieMouseEvent();
-					allowMouse = 0;
+					window.open("http://gcweb.nis.netease.com/modules/censor/yuedu/yaolushan-censor.html","漫画");
+					window.open("http://gcweb.nis.netease.com/modules/censor/yuedu/yuedu-open-censor.html","阅读");
+					window.open("http://gcweb.nis.netease.com/modules/censor/gacha/gacha-user-censor.html","GACHA");
+					window.open("http://gcweb.nis.netease.com/modules/censor/yooc/yooc-censor.html","云课堂");
+					window.open("http://gcweb.nis.netease.com/modules/censor/popo/popo-suspect-censor.html","POPO");
 				}
-				else if(allowMouse == 0)
+				if(e.which == 105)//9
 				{
-					liveMouseEvent();
-					allowMouse = 1;
-				}
-			}
-			if(e.which == 105)//9
-			{
-				if(autoStatus == 0){
-				startAutoNext();
-				}
-				else if(autoStatus == 1)
-				{
-					stopAutoNext();
-				}
-			}
-			if(e.which == 82)//R
-			{
-				$("#cs-list a").removeClass("uncensor").addClass("s-fc8 pass").attr("newStatus", "2000");
-			}
-			if(e.which == 83)//S
-			{
-				screenTopNum = 0;
-				$("#detail").animate({scrollTop:0},100);
-				$("#cs-list a.focus").focus();
-				//PASS,下一个
-			}
-			if(e.which == 83)//D
-			{
-				$("#cs-list a.focus").focus();
-				//DEL,下一个
-			}
-			if(e.which == 71)//D
-			{
-				//$("#submit").click();
-				//alert("G");
-			}
-			if(e.which == 81)//Q
-			{
-				screenTopNum += 300;
-				if(screenTopNum > 1800){screenTopNum = 0;}
-				$("#detail").animate({scrollTop:screenTopNum},100);
-			}	
-			if(e.which == 69)//E
-			{
-				for(i=0;i<$("#cs-list a").length;i++)
-				{
-					var item = $("#cs-list a").eq(i);
-					if(item.hasClass("s-fc7 unpass")||item.attr("style")=="color: rgb(128, 0, 128);")
-					{	
-						if(item.attr("hasFocus") == "true")
-						{
-							continue;
-						}
-						else 
-						{
-							item.trigger("click");
-							item.attr("hasFocus",true);
-						}
-						break;
+					if(autoStatus == 0){
+					startAutoNext();
+					}
+					else if(autoStatus == 1)
+					{
+						stopAutoNext();
 					}
 				}
+				if(e.which == 82)//R
+				{
+					$("#cs-list a").removeClass("uncensor").addClass("s-fc8 pass").attr("newStatus", "2000");
+				}
+				if(e.which == 83)//S
+				{
+					screenTopNum = 0;
+					$("#detail").animate({scrollTop:0},100);
+					$("#cs-list a.focus").focus();
+					//PASS,下一个
+				}
+				if(e.which == 83)//D
+				{
+					$("#cs-list a.focus").focus();
+					//DEL,下一个
+				}
+				if(e.which == 97)//1
+				{
+					if(mouseEvent == 1)
+						dieMouseEvent();
+					else
+						liveMouseEvent();
+				}
+				if(e.which == 81)//Q
+				{
+					screenTopNum += 300;
+					if(screenTopNum > 1800){screenTopNum = 0;}
+					$("#detail").animate({scrollTop:screenTopNum},100);
+				}	
+				if(e.which == 69)//E
+				{
+					for(i=0;i<$("#cs-list a").length;i++)
+					{
+						var item = $("#cs-list a").eq(i);
+						if(item.hasClass("s-fc7 unpass")||item.attr("style")=="color: rgb(128, 0, 128);")
+						{	
+							if(item.attr("hasFocus") == "true")
+							{
+								continue;
+							}
+							else 
+							{
+								item.trigger("click");
+								item.attr("hasFocus",true);
+							}
+							break;
+						}
+					}
+				}
+				if(e.which == 9)//Tab 
+				{
+					e.preventDefault();
+					checkKeyIndex++;
+					if(checkKeyIndex > wordList.length - 1)
+					{
+						checkKeyIndex = -1;
+					}
+					$("#keyword").val(wordList[checkKeyIndex]);
+					$("#querybtn").trigger("click");
+				}
+			}
+			else if(e.target.tagName == "INPUT" && e.which == 9)
+			{
+				e.preventDefault();
+				return;
 			}
 		});
 	}
@@ -845,7 +909,7 @@ function liveDelImageKeyDown()
 	if(imgDel != null)
 	{
 		$("body").on("keydown", function(e){
-			if(e.which == 81)//Q
+			if(e.which == 81 && e.target.tagName != "INPUT")//Q
 			{
 				imgDel.click();
 			}
@@ -868,9 +932,9 @@ function initReadMessage()
 }
 
 
-function bindSearchKey()
+function getSearchKey()
 {
-	var wordList;
+	//var wordList;
 	for(var i in pagename) 
 	{
 		if(window.location.href.match(pagename[i]) == pagename[i] && _checkWord_[pagename[i]] != null)
@@ -883,21 +947,7 @@ function bindSearchKey()
 			return;
 		}
 	}
-	var index = -1;
-	$("body").on("keydown",function(e){
-		if(e.which == 9)//Tab 
-		{
-			e.preventDefault();
-			index++;
-			if(index > wordList.length - 1)
-			{
-				index = -1;
-			}
-			$("#keyword").val(wordList[index]);
-			$("#querybtn").trigger("click");
-		}
-		
-	});
+	//var index = -1;
 }
 
 function initArticle()
@@ -944,94 +994,96 @@ function initMUSIC()
 	}
 	//$("body").off("keydown");
 	$("body").on("keydown", function(e){
-					var list = $("#dataType");
-					var type = $("#suspectType");
-					if(e.which == 98)
-					{
-						delMessage(delWord[delI]);
-						var interval = window.setInterval(function(){
-							if(endflag == 1)
-							{	
-								if(delI+1 < delWord.length)
-								{
-									delI += 1;
-									delMessage(delWord[delI]);
-									endflag = 0;
+					if(e.target.tagName != "INPUT"){
+						var list = $("#dataType");
+						var type = $("#suspectType");
+						if(e.which == 98)
+						{
+							delMessage(delWord[delI]);
+							var interval = window.setInterval(function(){
+								if(endflag == 1)
+								{	
+									if(delI+1 < delWord.length)
+									{
+										delI += 1;
+										delMessage(delWord[delI]);
+										endflag = 0;
+									}
+									else
+									{
+										interval = window.clearInterval(interval);
+										delI = 0;
+									}
 								}
-								else
+								if(delI == delWord.length)
 								{
 									interval = window.clearInterval(interval);
+									endflag = 0;
 									delI = 0;
 								}
-							}
-							if(delI == delWord.length)
-							{
-								interval = window.clearInterval(interval);
-								endflag = 0;
-								delI = 0;
-							}
-						},5*1000);
+							},5*1000);
 
-					}
-					if(e.which == 49)
-					{
-						list.val("1");
-						type.val("1");
-						$("#pageSize").val("200");
-						$("#ext").attr("checked",false);
-						//list.find("option[text='图片']").attr("selected".true);
-						$("#querybtn").click();
-					}
-					if(e.which == 50)
-					{
-						list.val("1");
-						type.val("2");
-						$("#pageSize").val("200");
-						$("#ext").attr("checked",false);
-						//list.find("option[text='图片']").attr("selected".true);
-						$("#querybtn").click();
-					}
-					if(e.which == 51)
-					{
-						//window.location.reload();
-						//delay(800);
-						list.val("5");
-						type.val("1");
-						$("#pageSize").val("50");
-						$("#ext").attr("checked",true);
-						$("#thumbnail").val("1");
-						//$("#keyword").val("http");
-						//list.find("option[text='图片']").attr("selected".true);
-						$("#querybtn").click();
-					}
-					if(e.which == 52)
-					{
-						list.val("5");
-						type.val("1");
-						$("#thumbnail").val("1");
-						$("#ext").attr("checked",false);
-						$("#keyword").val("http");
-						//list.find("option[text='图片']").attr("selected".true);
-						$("#querybtn").click();
-					}
-					if(e.which == 53)
-					{
-						list.val("5");
-						type.val("1");
-						$("#thumbnail").val("1");
-						$("#ext").attr("checked",false);
-						$("#keyword").val("");
-						//list.find("option[text='图片']").attr("selected".true);
-						$("#querybtn").click();
-					}
-					if(e.which == 54)
-					{
-						list.val("5");
-						type.val("2");
-						$("#thumbnail").val("1");
-						$("#ext").attr("checked",false);
-						//list.find("option[text='图片']").attr("selected".true);
-						$("#querybtn").click();
+						}
+						if(e.which == 49)
+						{
+							list.val("1");
+							type.val("1");
+							$("#pageSize").val("200");
+							$("#ext").attr("checked",false);
+							//list.find("option[text='图片']").attr("selected".true);
+							$("#querybtn").click();
+						}
+						if(e.which == 50)
+						{
+							list.val("1");
+							type.val("2");
+							$("#pageSize").val("200");
+							$("#ext").attr("checked",false);
+							//list.find("option[text='图片']").attr("selected".true);
+							$("#querybtn").click();
+						}
+						if(e.which == 51)
+						{
+							//window.location.reload();
+							//delay(800);
+							list.val("5");
+							type.val("1");
+							$("#pageSize").val("50");
+							$("#ext").attr("checked",true);
+							$("#thumbnail").val("1");
+							//$("#keyword").val("http");
+							//list.find("option[text='图片']").attr("selected".true);
+							$("#querybtn").click();
+						}
+						if(e.which == 52)
+						{
+							list.val("5");
+							type.val("1");
+							$("#thumbnail").val("1");
+							$("#ext").attr("checked",false);
+							$("#keyword").val("http");
+							//list.find("option[text='图片']").attr("selected".true);
+							$("#querybtn").click();
+						}
+						if(e.which == 53)
+						{
+							list.val("5");
+							type.val("1");
+							$("#thumbnail").val("1");
+							$("#ext").attr("checked",false);
+							$("#keyword").val("");
+							//list.find("option[text='图片']").attr("selected".true);
+							$("#querybtn").click();
+						}
+						if(e.which == 54)
+						{
+							list.val("5");
+							type.val("2");
+							$("#thumbnail").val("1");
+							$("#ext").attr("checked",false);
+							//list.find("option[text='图片']").attr("selected".true);
+							$("#querybtn").click();
+						}
 					}
 				});
 }
@@ -1043,6 +1095,8 @@ function initMANHUA()
 {
 	//$("body").off("keydown");
 	$("body").on("keydown", function(e){
+				if(e.target.tagName != "INPUT")
+				{
 					var list = $("#dataType");
 					if(e.which == 49)
 					{
@@ -1078,12 +1132,15 @@ function initMANHUA()
 						//list.find("option[text='图片']").attr("selected".true);
 						$("#querybtn").click();
 					}
-				});
+				}
+			});
 }
 function initKeyGACHA()
 {	
 	//$("body").off("keydown");
 	$("body").on("keydown", function(e){
+			if(e.target.tagName != "INPUT")
+				{
 					var list = $("#dataType");
 					if(e.which == 49)
 					{
@@ -1117,7 +1174,8 @@ function initKeyGACHA()
 						//list.find("option[text='图片']").attr("selected".true);
 						$("#querybtn").click();
 					}
-				});
+				}
+			});
 }
 function initKeyMOOC()
 {	
@@ -1125,6 +1183,8 @@ function initKeyMOOC()
 	$("#querybtn").click();
 	//$("body").off("keydown");
 	$("body").on("keydown", function(e){
+			if(e.target.tagName != "INPUT")
+				{
 					var list = $("#dataType");
 					if(e.which == 49)
 					{
@@ -1151,7 +1211,8 @@ function initKeyMOOC()
 						//list.find("option[text='图片']").attr("selected".true);
 						$("#querybtn").click();
 					}
-				});
+				}
+			});
 }
 
 
@@ -1160,6 +1221,8 @@ function initKeyREAD()
 	$("#multiCensor").attr("checked",false);
 	$("#querybtn").click();
 	$("body").on("keydown", function(e){
+				if(e.target.tagName != "INPUT")
+				{
 					var sourceType = $("#sourceType");
 					var checkStatus = $("#status");
 					if(e.which == 49)
@@ -1210,7 +1273,8 @@ function initKeyREAD()
 						//list.find("option[text='图片']").attr("selected".true);
 						$("#querybtn").click();
 					}
-				});
+				}
+			});
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1569,4 +1633,159 @@ function autoUpdataBooks()
 	{
 		alert("THE PAGA NOT AT ADDRESS IN RIGHT!");
 	}
+}
+
+var delType = 0;
+var autoMain = 0;
+var delListWord = new Array();
+delListWord[0] = "28659a8c76e94309b03667051b31d2fb_1";//前面是要搜索的关键词，后面是类别，看上面，中间用英文符号:隔开
+delListWord[1] = "b32b599972dc457cb0a4f2f0bc199e81_1";
+//delListWord[2] = "操你妈";
+//delListWord[3] = "草泥马";
+function whileDelay()
+{
+	function delayExecut(num,func)
+	{
+		var flag = true;
+		var delayVal = window.setInterval(function(){
+			flag = false;
+			func();
+			executingFlag = 0;
+			delayVal = window.clearInterval(delayVal);		
+		},num);
+		//while(flag){};
+	}
+	function searchStr(str)
+	{
+		if(delType == 0)
+		{
+			$("#status").val("0");
+			delType = 1;
+		}
+		else(delType == 1)
+		{
+			$("#status").val("1000");
+			delType = 0;
+		}
+		$("#sourceId").val(str);
+		//$(".u-check input").find("name:multiable").attr("checked",false);
+		console.log("search " + str);
+		$("#querybtn").trigger("click");
+	}
+	function checkContinueSubmit()
+	{
+		if($('#cs-list a').length > 0)
+		{
+			step = 1;
+		}
+		else
+		{
+			nowDelWordIndex += 1;
+			if(nowDelWordIndex >= delListWord.length)
+			{
+				nowDelWordIndex = 0;
+			}
+			step = 0;
+		}
+	}
+	
+	function delList(action)
+	{
+		if($('#cs-list a').length == 0)
+		{
+			console.log("无数据");
+			return;
+		}
+		if($('#checklist a.focus')!= null)
+		{
+			$("#cs-list a").removeClass("uncensor").addClass("s-fc7 unpass").attr("newStatus", "3000");
+			console.log("删除了一些");
+			$("#submit").click();
+		}
+		
+		//$("#cancelBtn").trigger("click");
+		//submit();
+		/* curPage++;//后面改成submit;
+		$("#querybtn").trigger("click"); */
+	}
+	
+	var executingFlag = 0;
+	var ajaxStop = 0;
+	var step = 0;
+	var nowDelWordIndex = 0;
+	var Main = window.setInterval(function(){
+		var ajaxFlag = $(".loading").attr("style");
+		if(ajaxFlag == "display: block;")
+		{
+			ajaxStop = 1;
+			console.log("ajax stop");
+		}
+		else
+		{
+			ajaxStop = 0;
+			//console.log("executing");
+		}
+		if(ajaxStop == 0&&executingFlag == 0){
+			switch(step)
+			{
+				case 0: 
+					console.log(step+"start");
+					executingFlag = 1;
+					delayExecut(1000,function(){
+						searchStr(delListWord[nowDelWordIndex]);
+						step = 1;
+					});
+				break;
+				case 1: 
+					console.log(step+"start");
+					executingFlag = 1;
+					delayExecut(1000,function(){
+						delList(delListWord[nowDelWordIndex]);
+						step = 2;
+					});
+				break;
+				case 2: 
+					console.log(step+"start");
+					executingFlag = 1;
+					delayExecut(2000,function(){
+						checkContinueSubmit();
+					});
+				break;
+				case 3: 
+					console.log(step+"start");
+					executingFlag = 1;
+					delayExecut(3000,function(){
+						console.log("3s end"+step);
+						step = 4;
+					});
+				break;
+				case 4: 
+					console.log(step+"start");
+					executingFlag = 1;
+					delayExecut(3000,function(){
+						console.log("3s end"+step);
+						step = 5;
+					});
+				break;
+				case 5: 
+					console.log(step+"start");
+					executingFlag = 1;
+					delayExecut(3000,function(){
+						console.log("3s end"+step);
+						step = 6;
+					});
+				break;
+				case 6: 
+					console.log("end");
+					step = null;
+				break;
+				case -666: 
+					console.log("End autoSearch");
+					Main = window.clearInterval(Main);
+				break;
+				default:break;
+			}
+		}	
+		
+	},5*1000);
 }
