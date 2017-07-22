@@ -2,9 +2,9 @@
 //hztongyueyao@163.com
 var _checkWord_ = {
 	"yuedu-article-censor":"包夜;多少钱上门;性爱;赌;党;",
-	"yueducmt-censor":"政府;国家领导人;",
+	"yueducmt-censor":"政府;国家领导人;政才",
 	"yuedu-message-censor":"390350063;",
-	"study-censor":"完整资料;免费;1998元;资料;625;私我;群;留q;私信我;yuanandcong;ganshiyun666;18406433299;销售;前面;625783520;",
+	"study-censor":"老师讲的;完整资料;java;免费;1998元;资料;625;私我;群;留q;私信我;yuanandcong;ganshiyun666;18406433299;销售;前面;625783520;",
 	
 	"web.antispam.netease.com-pornographic":"逼;奶子;插;奸;高潮;舔;口交;呻吟;约;日;曰;射;屌;水多;爽;草;啪;干;自慰;精液;撸;叫 床;做爱;套 紧;上 床;bi;咪;j8;搞;",
 	"web.antispam.netease.com-polity":"政府;文革;腐败;萨德;广电;官;抵制;起义;暴动;二 代;长者;蛤;警察;",
@@ -160,7 +160,7 @@ function initEmail(){
 					switch(radios.eq(i).next().text())
 					{
 						case "标题聚类(1)": radios.eq(i).next().text("标题聚类");break;//1   标题聚类/URL/概要标题/趋势分析/（文本）
-						case "URL(1)": radios.eq(i).next().text("URL");break;
+						case "URL": radios.eq(i).next().text("URL");break;
 						case "概要标题(1)": radios.eq(i).next().text("概要标题");break;
 						case "趋势分析(1)": radios.eq(i).next().text("趋势分析");break;
 						case "文本(1)": radios.eq(i).next().text("文本");break;
@@ -187,13 +187,13 @@ function initEmail(){
 		item.attr("hasFocus","YES");
 		item.attr("needReset","true");
 		item.css("background-color","#F9CD81");
-		var radios = item.find("input:radio");
+		radios = item.find("input:radio");
 		for(var i=0;i<radios.length;i++)
 		{
 			switch(radios.eq(i).next().text())
 			{
 				case "标题聚类": radios.eq(i).next().text("标题聚类"+"(1)");break;//1   标题聚类/URL/概要标题/趋势分析/（文本）
-				case "URL": radios.eq(i).next().text("URL"+"(1)");break;
+				case "URL": radios.eq(i).next().text("URL"+"");break;
 				case "概要标题": radios.eq(i).next().text("概要标题"+"(1)");break;
 				case "趋势分析": radios.eq(i).next().text("趋势分析"+"(1)");break;
 				case "图片": radios.eq(i).next().text("图片"+"(1)");break;
@@ -329,7 +329,8 @@ function initEmail(){
 		{
 			if(radios.eq(i).next().text()==str)
 			{
-				radios.eq(i).attr("checked",true);
+				//radios.eq(i).attr("checked",true);
+				radios.eq(i).trigger("click");
 				return true;
 			}
 		}
@@ -389,12 +390,22 @@ function initEmail(){
 					{
 						setRadioVal(nowIndex,"垃圾(Q)");
 					}
+					var radios = tableObjS.eq(nowIndex).find("input:radio");
+					var firstText = radios.eq(0).next().text().replace("(1)","");
+					if(firstText == "URL" && radios.eq(0).attr("checked") == true &&window.location.href.match("220.181.72.109:8181") == "220.181.72.109:8181")
+					{
+						return;
+					}
 					focusNextItem(nowIndex);
 				}
 				else if(e.which == 49)//1   标题聚类/URL/概要标题/趋势分析/（文本）/图片/附件
 				{
 					var radios = tableObjS.eq(nowIndex).find("input:radio");
 					var firstText = radios.eq(0).next().text().replace("(1)","");
+					if(firstText == "URL")
+					{
+						setRadioVal(nowIndex,firstText);
+					}
 					setRadioVal(nowIndex,firstText+"(1)");
 				}
 				else if(e.which == 51)//3  位处第二的文本
@@ -410,6 +421,14 @@ function initEmail(){
 					if(setRadioVal(nowIndex,"封禁(D)") == false)
 					{
 						setRadioVal(nowIndex,"拒收(D)");
+					}
+					var radios = tableObjS.eq(nowIndex).find("input:radio");
+					var firstText = radios.eq(0).next().text().replace("(1)","");
+					var isUrl = radios.eq(0).attr("checked");
+					var href = window.location.href.match("220.181.72.109:8181");
+					if(firstText == "URL" && radios.eq(0).attr("checked") == true &&window.location.href.match("220.181.72.109:8181") == "220.181.72.109:8181")
+					{
+						return ;
 					}
 					//setRadioVal(nowIndex,"封禁(D)");
 					focusNextItem(nowIndex);
@@ -460,7 +479,9 @@ function initEmail(){
 				initItem();
 			}
 		});
-		jQuery(GetMainObject("body",2)[0]).blur(function(){
+		jQuery(GetMainObject("body",2)[0]).blur(function(e){
+			if(e.target.tagName == "SELECT" || e.target.tagName == "BODY")
+				return;
 			for(var j=0;j<tableObjS.length;j++)
 			{
 				if(tableObjS.eq(j).attr("needReset")=="true")
@@ -472,7 +493,7 @@ function initEmail(){
 						switch(radios.eq(i).next().text())
 						{
 							case "标题聚类(1)": radios.eq(i).next().text("标题聚类");break;//1   标题聚类/URL/概要标题/趋势分析/（文本）
-							case "URL(1)": radios.eq(i).next().text("URL");break;
+							case "URL": radios.eq(i).next().text("URL");break;
 							case "概要标题(1)": radios.eq(i).next().text("概要标题");break;
 							case "趋势分析(1)": radios.eq(i).next().text("趋势分析");break;
 							case "文本(3)": radios.eq(i).next().text("文本");break;
@@ -535,7 +556,7 @@ function initEmail(){
 	var nowIndex = null;
 	var nowRadios=null;
 	var loseFocusFlag = null;
-	
+	var radios = null;
 	
 	readyToInit();
 	searchInitItem("start");
