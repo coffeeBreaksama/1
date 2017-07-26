@@ -177,7 +177,27 @@ function sendNotif(type)
 }
 
 
-
+function switchNoti2H(cmd)
+{
+	if(cmd == "start")
+	{
+		switchNoti("stop");	
+		intervalID = window.setInterval(function(){
+				sendNotif(1);
+				//alert("清原创漫画"); //回头取消
+				alert("其他模块也要清了");
+				sendNotif("其他模块也要清了");
+				timeSend = 0;
+			},60*2*1000*60);
+			sendNotif("开始计算2H时间，注意清当前一轮"); //回头取消
+	}
+	else if(cmd == "stop")
+	{
+		intervalID = window.clearInterval(intervalID);
+		sendNotif("停止计算2H时间");
+		NotifSwitch = 0;
+	}
+}
 function switchReflash()
 {
 	if(ReflashSwitch == 0)
@@ -201,10 +221,10 @@ function switchNoti(cmd)
 			intervalID = window.setInterval(function(){
 				timeSend += 1;
 				sendNotif(1);
-				//alert("清原创漫画"); //回头取消
+				alert("清原创漫画"); //回头取消
 				if(timeSend == 4)
 				{
-					//alert("其他模块也要清了");
+					alert("其他模块也要清了");
 					sendNotif("其他模块也要清了");
 					timeSend = 0;
 				}

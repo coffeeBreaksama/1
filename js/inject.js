@@ -1,10 +1,10 @@
 //var dieWord = 肉棒，精液，习近平，江泽民，飞叶子，丁磊，丁三石，你妈;
 //hztongyueyao@163.com
 var _checkWord_ = {
-	"yuedu-article-censor":"包夜;多少钱上门;性爱;赌;党;",
+	"yuedu-article-censor":"WWW.05BET.CC;包夜;多少钱上门;性爱;赌;党;",
 	"yueducmt-censor":"政府;国家领导人;政才",
 	"yuedu-message-censor":"390350063;",
-	"study-censor":"老师讲的;完整资料;java;免费;1998元;资料;625;私我;群;留q;私信我;yuanandcong;ganshiyun666;18406433299;销售;前面;625783520;",
+	"study-censor":"web;老师讲的;完整资料;java;免费;1998;裙;资料;625;私我;群;留q;私我;yuanandcong;ganshiyun666;销售;前面;",
 	
 	"web.antispam.netease.com-pornographic":"逼;奶子;插;奸;高潮;舔;口交;呻吟;约;日;曰;射;屌;水多;爽;草;啪;干;自慰;精液;撸;叫 床;做爱;套 紧;上 床;bi;咪;j8;搞;",
 	"web.antispam.netease.com-polity":"政府;文革;腐败;萨德;广电;官;抵制;起义;暴动;二 代;长者;蛤;警察;",
@@ -147,6 +147,15 @@ function initEmail(){
 	
 	function foucsItemInit(itemIndex)//清除其他项目的focus样式，设置目标focus样式
 	{
+		if(getActiveTab() == "质检平台")
+		{
+			var item = trsCheckList.eq(itemIndex*3 + 1);
+			trsCheckList.attr("hasFocus","NO");
+			trsCheckList.attr("style","background-color: while;");
+			item.attr("hasFocus","YES");
+			item.css("background-color","#F9CD81");
+			return;
+		}
 		var item = tableObjS.eq(itemIndex);
 		var flagText;
 		for(var j=0;j<tableObjS.length;j++)
@@ -263,6 +272,43 @@ function initEmail(){
 		}
 		
 	}
+	function initCheck()
+	{
+		trsCheckList = jQuery(".simple_table").eq(0).find("tr");
+		var j = 0;
+		var focusFirstFlag = 0;
+		if(trsCheckList.length <= 1)
+			return;
+		for(var i=0;i<trsCheckList.length;i++)
+		{
+			if(i%3 == 1 && trsCheckList.eq(i).attr("titleIndex") == null)
+			{
+				var trBody = trsCheckList.eq(i);
+				trsCheckList.eq(i).attr("titleIndex",(i-i%3)/3);
+				trBody.attr("bodyIndex",(i-i%3)/3);
+				trBody.attr("hasFocus","NO");
+				trBody.bind("mousedown",function(){
+						nowIndex = parseInt(jQuery(this).attr("bodyIndex"));
+						console.log("nowIndex = "+nowIndex);
+						foucsItemInit(nowIndex);
+					});
+				nowIndex = 0;
+			}
+			if(trsCheckList.eq(i).attr("hasFocus")=="YES")
+				{
+					focusFirstFlag+=1;
+				}
+		}
+		i = 0;
+		if(focusFirstFlag==0)
+			{
+				if(nowIndex == null || nowIndex < 0)
+				{
+					nowIndex = 0;
+				}
+				focusItem(nowIndex,-1);
+			}
+	}
 	function readyToInit()//文档加载完成时候初始化邮件条目
 	{
 		/* GetMainObject("body",2)[0].on("onload",function(e){
@@ -292,6 +338,11 @@ function initEmail(){
 			activeTab = "低分聚类审核";
 			return true;
 		}
+		if(jQuery("#panel_clusterInfoQAPlatform").attr("class")=="tap5c_tab-set-panel activated")
+		{
+			activeTab = "质检平台";
+			return activeTab;
+		}
 		return false;
 	}
 	
@@ -306,9 +357,13 @@ function initEmail(){
 			{
 				searchValId = window.clearInterval(searchValId);
 				searchValId = window.setInterval(function(){
-					if(getActiveTab()&&loseFocusFlag!=1)
+					if(getActiveTab() == true && loseFocusFlag!=1)
 					{
 						initItem();
+					}
+					else if(getActiveTab() == "质检平台")
+					{
+						initCheck();
 					}
 				},3*1000);
 			}
@@ -338,6 +393,14 @@ function initEmail(){
 	}
 	function ItemToView(itemIndex)//跳转至item位置。
 	{
+		if(getActiveTab() == "质检平台")
+		{
+			var scrollOffset = top.frames[3].document.documentElement.scrollTop;//滚动条上面隐藏区域的高度
+			var topOffsetDoc = trsCheckList.eq(itemIndex * 3 + 1).offset().top;//离文档可是区域顶端的距离,在区域上面时为负数。
+			var positionY = topOffsetDoc + scrollOffset;//元素的Y轴位置。
+			top.frames[3].scrollTo(0,positionY);	
+			return;
+		}
 		var scrollOffset = top.frames[3].document.documentElement.scrollTop;//滚动条上面隐藏区域的高度
 		var topOffsetDoc = tableObjS.eq(itemIndex).offset().top;//离文档可是区域顶端的距离,在区域上面时为负数。
 		var positionY = topOffsetDoc + scrollOffset;//元素的Y轴位置。
@@ -356,8 +419,45 @@ function initEmail(){
 				}
 			}
 		});
+/* 		if(getActiveTab() == "质检平台")
+		{
+			GetMainObject("body",2)[0].off("keyup");
+			GetMainObject("body",2)[0].on("keyup",function(e){
+				if(nowIndex != null && loseFocusFlag != 1 && e.target.tagName != "INPUT") 
+				{
+					if(e.which == 32 || e.which == 40) //下 空格
+ 					{
+						e.preventDefault();
+						if(nowIndex>=(trsCheckList.length-1)/3 - 1)
+						{
+							nowIndex = -1;
+							focusNextItem(0);
+						}
+						else
+						{
+							focusNextItem(nowIndex);
+						}
+					}
+					else if(e.which == 38)//UP  向上一条
+					{
+						e.preventDefault();
+						if(nowIndex==0)
+						{
+							nowIndex = (trsCheckList.length-1)/3 -1+1;
+							focusPrveItem(nowIndex-1);
+						}
+						else
+						{
+							focusPrveItem(nowIndex-1);
+						}
+					}
+					
+				}
+			});
+			return;
+		} */
 		GetMainObject("body",2)[0].on("keyup",function(e){//可能找不到body无法绑定
-			if(nowIndex != null&&loseFocusFlag != 1)
+			if(nowIndex != null && loseFocusFlag != 1 && e.target.tagName != "INPUT") 
 			{
 				if(e.which == 32)//space 忽略
 				{
@@ -368,6 +468,7 @@ function initEmail(){
 				}
 				else if(e.which == 82)//R 正常 加一个良好
 				{
+					if(getActiveTab() == "质检平台") return;
 					if(setRadioVal(nowIndex,"正常(R)") == false)
 					{
 						setRadioVal(nowIndex,"良好(R)");
@@ -376,16 +477,19 @@ function initEmail(){
 				}
 				else if(e.which == 87)//W  广告邮件
 				{
+					if(getActiveTab() == "质检平台") return;
 					setRadioVal(nowIndex,"广告邮件(W)");
 					focusNextItem(nowIndex);
 				}
 				else if(e.which == 69)//E  订阅邮件
 				{
+					if(getActiveTab() == "质检平台") return;
 					setRadioVal(nowIndex,"订阅邮件(E)");
 					focusNextItem(nowIndex);
 				}
 				else if(e.which == 81)//Q  垃圾邮件 垃圾
 				{
+					if(getActiveTab() == "质检平台") return;
 					if(setRadioVal(nowIndex,"垃圾邮件(Q)") == false)
 					{
 						setRadioVal(nowIndex,"垃圾(Q)");
@@ -418,6 +522,7 @@ function initEmail(){
 				}
 				else if(e.which == 68)//D   封禁 拒收 
 				{
+					if(getActiveTab() == "质检平台") return;
 					if(setRadioVal(nowIndex,"封禁(D)") == false)
 					{
 						setRadioVal(nowIndex,"拒收(D)");
@@ -436,6 +541,19 @@ function initEmail(){
 				else if(e.which == 38)//UP  向上一条
 				{
 					e.preventDefault();
+					if(getActiveTab() == "质检平台")
+					{
+						if(nowIndex==0)
+						{
+							nowIndex = (trsCheckList.length-1)/3 -1+1;
+							focusPrveItem(nowIndex-1);
+						}
+						else
+						{
+							focusPrveItem(nowIndex-1);
+						}
+						return;
+					}
 					if(nowIndex==0)
 					{
 						nowIndex = tableObjS.length -1+1;
@@ -449,6 +567,19 @@ function initEmail(){
 				else if(e.which == 40)//DOWN  向下一条
 				{
 					e.preventDefault();
+					if(getActiveTab() == "质检平台")
+					{
+						if(nowIndex>=(trsCheckList.length-1)/3 - 1)
+						{
+							nowIndex = -1;
+							focusNextItem(0);
+						}
+						else
+						{
+							focusNextItem(nowIndex);
+						}
+						return;
+					}
 					if(nowIndex==tableObjS.length - 1)
 					{
 						nowIndex = -1;
@@ -474,14 +605,16 @@ function initEmail(){
 		jQuery(GetMainObject("body",2)[0]).focus(function(){
 			console.log("focus");
 			loseFocusFlag = null;
-			if(getActiveTab())
+			if(getActiveTab() == true)
 			{
 				initItem();
 			}
+			else if(getActiveTab() == "质检平台")
+			{
+				initCheck();
+			}
 		});
 		jQuery(GetMainObject("body",2)[0]).blur(function(e){
-			if(e.target.tagName == "SELECT" || e.target.tagName == "BODY")
-				return;
 			for(var j=0;j<tableObjS.length;j++)
 			{
 				if(tableObjS.eq(j).attr("needReset")=="true")
@@ -525,6 +658,16 @@ function initEmail(){
 	function focusItem(itemIndex,jumpFlag)//切换不跳，
 	{
 		jumpFlag = arguments[1] ? arguments[1]:1;
+		if(getActiveTab() == "质检平台" && itemIndex < (trsCheckList.length-1)/3)
+		{
+			foucsItemInit(itemIndex);
+			console.log("nowIndex = "+nowIndex);
+			if(jumpFlag == 1)
+			{
+			ItemToView(itemIndex);
+			}
+			return;
+		}
 		if(itemIndex<tableObjS.length)
 		{
 			foucsItemInit(itemIndex);
@@ -541,12 +684,10 @@ function initEmail(){
 		nowIndex += 1;
 		focusItem(nowIndex,jumpFlag);
 	}
-	function focusPrveItem(itemIndex)
+	function focusPrveItem(itemIndex,jumpFlag)
 	{
-		foucsItemInit(itemIndex);
 		nowIndex -= 1;
-		console.log("nowIndex = "+nowIndex);
-		ItemToView(itemIndex)
+		focusItem(nowIndex,jumpFlag);
 	}	
 	
 	
@@ -557,7 +698,7 @@ function initEmail(){
 	var nowRadios=null;
 	var loseFocusFlag = null;
 	var radios = null;
-	
+	var trsCheckList = null;
 	readyToInit();
 	searchInitItem("start");
 	bindKeyEvent();
