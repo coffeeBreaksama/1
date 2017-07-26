@@ -147,7 +147,7 @@ function initEmail(){
 	
 	function foucsItemInit(itemIndex)//清除其他项目的focus样式，设置目标focus样式
 	{
-		if(getActiveTab() == "质检平台")
+		if(activeTab == "质检平台")
 		{
 			var item = trsCheckList.eq(itemIndex*3 + 1);
 			trsCheckList.attr("hasFocus","NO");
@@ -229,8 +229,10 @@ function initEmail(){
 	
 	function initItem()//为邮件条目添加index等初始化事件
 	{
-
-		tableObjS = jQuery('#tab').find("table[class='simple_table']");
+		if(activeTab == "聚类审核")
+			tableObjS = jQuery('#clusterVerify').find("table[class='simple_table']");
+		else if(activeTab == "非重要聚类")
+			tableObjS = jQuery('#unimportanceClusterVerify').find("table[class='simple_table']");
 		if(tableObjS.length!=0)
 		{
 			var focusFirstFlag = 0;
@@ -274,7 +276,7 @@ function initEmail(){
 	}
 	function initCheck()
 	{
-		trsCheckList = jQuery(".simple_table").eq(0).find("tr");
+		trsCheckList = jQuery("#clusterInfoQAPlatform").find(".simple_table").eq(0).find("tr");
 		var j = 0;
 		var focusFirstFlag = 0;
 		if(trsCheckList.length <= 1)
@@ -322,7 +324,7 @@ function initEmail(){
 	}
 	function getActiveTab()
 	{
-		var ActiveTab = null;
+		activeTab = null;
 		if(jQuery("#panel_unimportanceClusterVerify").attr("class")=="tap5c_tab-set-panel activated")
 		{
 			activeTab = "非重要聚类";
@@ -357,11 +359,12 @@ function initEmail(){
 			{
 				searchValId = window.clearInterval(searchValId);
 				searchValId = window.setInterval(function(){
+					getActiveTab();
 					if(getActiveTab() == true && loseFocusFlag!=1)
 					{
 						initItem();
 					}
-					else if(getActiveTab() == "质检平台")
+					else if(activeTab == "质检平台")
 					{
 						initCheck();
 					}
@@ -393,7 +396,7 @@ function initEmail(){
 	}
 	function ItemToView(itemIndex)//跳转至item位置。
 	{
-		if(getActiveTab() == "质检平台")
+		if(activeTab == "质检平台")
 		{
 			var scrollOffset = top.frames[3].document.documentElement.scrollTop;//滚动条上面隐藏区域的高度
 			var topOffsetDoc = trsCheckList.eq(itemIndex * 3 + 1).offset().top;//离文档可是区域顶端的距离,在区域上面时为负数。
@@ -419,7 +422,7 @@ function initEmail(){
 				}
 			}
 		});
-/* 		if(getActiveTab() == "质检平台")
+/* 		if(activeTab == "质检平台")
 		{
 			GetMainObject("body",2)[0].off("keyup");
 			GetMainObject("body",2)[0].on("keyup",function(e){
@@ -462,13 +465,18 @@ function initEmail(){
 				if(e.which == 32)//space 忽略
 				{
 					e.preventDefault();
+					if(activeTab == "质检平台")
+					{
+						focusNextItem(nowIndex);
+						return;
+					}
 					setRadioVal(nowIndex,"忽略(空格)");
 					focusNextItem(nowIndex);
 					
 				}
 				else if(e.which == 82)//R 正常 加一个良好
 				{
-					if(getActiveTab() == "质检平台") return;
+					if(activeTab == "质检平台") return;
 					if(setRadioVal(nowIndex,"正常(R)") == false)
 					{
 						setRadioVal(nowIndex,"良好(R)");
@@ -477,19 +485,19 @@ function initEmail(){
 				}
 				else if(e.which == 87)//W  广告邮件
 				{
-					if(getActiveTab() == "质检平台") return;
+					if(activeTab == "质检平台") return;
 					setRadioVal(nowIndex,"广告邮件(W)");
 					focusNextItem(nowIndex);
 				}
 				else if(e.which == 69)//E  订阅邮件
 				{
-					if(getActiveTab() == "质检平台") return;
+					if(activeTab == "质检平台") return;
 					setRadioVal(nowIndex,"订阅邮件(E)");
 					focusNextItem(nowIndex);
 				}
 				else if(e.which == 81)//Q  垃圾邮件 垃圾
 				{
-					if(getActiveTab() == "质检平台") return;
+					if(activeTab == "质检平台") return;
 					if(setRadioVal(nowIndex,"垃圾邮件(Q)") == false)
 					{
 						setRadioVal(nowIndex,"垃圾(Q)");
@@ -522,7 +530,7 @@ function initEmail(){
 				}
 				else if(e.which == 68)//D   封禁 拒收 
 				{
-					if(getActiveTab() == "质检平台") return;
+					if(activeTab == "质检平台") return;	
 					if(setRadioVal(nowIndex,"封禁(D)") == false)
 					{
 						setRadioVal(nowIndex,"拒收(D)");
@@ -541,7 +549,7 @@ function initEmail(){
 				else if(e.which == 38)//UP  向上一条
 				{
 					e.preventDefault();
-					if(getActiveTab() == "质检平台")
+					if(activeTab == "质检平台")
 					{
 						if(nowIndex==0)
 						{
@@ -567,7 +575,7 @@ function initEmail(){
 				else if(e.which == 40)//DOWN  向下一条
 				{
 					e.preventDefault();
-					if(getActiveTab() == "质检平台")
+					if(activeTab == "质检平台")
 					{
 						if(nowIndex>=(trsCheckList.length-1)/3 - 1)
 						{
@@ -609,7 +617,7 @@ function initEmail(){
 			{
 				initItem();
 			}
-			else if(getActiveTab() == "质检平台")
+			else if(activeTab == "质检平台")
 			{
 				initCheck();
 			}
@@ -658,7 +666,7 @@ function initEmail(){
 	function focusItem(itemIndex,jumpFlag)//切换不跳，
 	{
 		jumpFlag = arguments[1] ? arguments[1]:1;
-		if(getActiveTab() == "质检平台" && itemIndex < (trsCheckList.length-1)/3)
+		if(activeTab == "质检平台" && itemIndex < (trsCheckList.length-1)/3)
 		{
 			foucsItemInit(itemIndex);
 			console.log("nowIndex = "+nowIndex);
@@ -699,6 +707,7 @@ function initEmail(){
 	var loseFocusFlag = null;
 	var radios = null;
 	var trsCheckList = null;
+	var activeTab = null;
 	readyToInit();
 	searchInitItem("start");
 	bindKeyEvent();
