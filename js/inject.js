@@ -235,6 +235,7 @@ function initEmail(){
 			tableObjS = jQuery('#clusterVerify').find("table[class='simple_table']");
 		else if(activeTab == "非重要聚类")
 			tableObjS = jQuery('#unimportanceClusterVerify').find("table[class='simple_table']");
+		else return;
 		if(tableObjS.length!=0)
 		{
 			var focusFirstFlag = 0;
