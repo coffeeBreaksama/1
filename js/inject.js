@@ -362,7 +362,7 @@ function initEmail(){
 				searchValId = window.clearInterval(searchValId);
 				searchValId = window.setInterval(function(){
 					getActiveTab();
-					if(getActiveTab() == true && loseFocusFlag!=1)
+					if(activeTab == true && loseFocusFlag!=1)
 					{
 						initItem();
 					}
