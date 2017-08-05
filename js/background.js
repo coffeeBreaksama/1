@@ -221,10 +221,10 @@ function switchNoti(cmd)
 			intervalID = window.setInterval(function(){
 				timeSend += 1;
 				sendNotif(1);
-				alert("清原创漫画"); //回头取消
+				//alert("清原创漫画"); //回头取消
 				if(timeSend == 4)
 				{
-					alert("其他模块也要清了");
+					//alert("其他模块也要清了");
 					sendNotif("其他模块也要清了");
 					timeSend = 0;
 				}

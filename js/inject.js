@@ -4,7 +4,9 @@ var _checkWord_ = {
 	"yuedu-article-censor":"WWW.05BET.CC;包夜;多少钱上门;性爱;赌;党;",
 	"yueducmt-censor":"政府;国家领导人;政才",
 	"yuedu-message-censor":"390350063;",
-	"study-censor":"web;老师讲的;完整资料;java;免费;1998;裙;资料;625;私我;群;留q;私我;yuanandcong;ganshiyun666;销售;前面;",
+	"study-censor":"web;大数据开发;前端;java;免费;gan;1998;裙;资料;625;私我;群;留q;前面;",
+	"yaolushancmt-censor":"扣;流量;V;薇;+;",
+	
 	
 	"web.antispam.netease.com-pornographic":"逼;奶子;插;奸;高潮;舔;口交;呻吟;约;日;曰;射;屌;水多;爽;草;啪;干;自慰;精液;撸;叫 床;做爱;套 紧;上 床;bi;咪;j8;搞;",
 	"web.antispam.netease.com-polity":"政府;文革;腐败;萨德;广电;官;抵制;起义;暴动;二 代;长者;蛤;警察;",
@@ -324,7 +326,7 @@ function initEmail(){
 	}
 	function getActiveTab()
 	{
-		activeTab = null;
+		//activeTab = null;
 		if(jQuery("#panel_unimportanceClusterVerify").attr("class")=="tap5c_tab-set-panel activated")
 		{
 			activeTab = "非重要聚类";
@@ -708,6 +710,8 @@ function initEmail(){
 	var radios = null;
 	var trsCheckList = null;
 	var activeTab = null;
+	var tableObjS = null;
+	var activeTab =null;
 	readyToInit();
 	searchInitItem("start");
 	bindKeyEvent();
@@ -1090,7 +1094,26 @@ function liveDelImageKeyDown()
 
 function initManhuaCMT()
 {
-
+	$("body").on("keydown", function(e){
+				if(e.target.tagName != "INPUT")
+				{
+					var list = $("#dataType");
+					if(e.which == 49)
+					{
+						//list.val("8");
+						$("#status").val("1000");
+						//list.find("option[text='图片']").attr("selected".true);
+						$("#querybtn").click();
+					}
+					if(e.which == 50)
+					{
+						//list.val("7");
+						$("#status").val("0");
+						//list.find("option[text='图片']").attr("selected".true);
+						$("#querybtn").click();
+					}
+				}
+			});
 }
 
 function initReadMessage()
