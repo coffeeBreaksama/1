@@ -581,8 +581,8 @@ function initEmail(){
 					{
 						if(nowIndex>=(trsCheckList.length-1)/3 - 1)
 						{
-							nowIndex = -1;
-							focusNextItem(0);
+							/* nowIndex = -1;
+							focusNextItem(0); */
 						}
 						else
 						{
@@ -590,10 +590,10 @@ function initEmail(){
 						}
 						return;
 					}
-					if(nowIndex==tableObjS.length - 1)
+					if(nowIndex>=tableObjS.length - 1)
 					{
-						nowIndex = -1;
-						focusNextItem(0);
+						/* nowIndex = -1;
+						focusNextItem(0); */
 					}
 					else
 					{
