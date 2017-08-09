@@ -1,8 +1,12 @@
 # censor-chrome-version
 信息审核部门用
 
-有事请POPO我。下载在右上角clone and download按钮。历史版本下载在左上角commits。<br>
+有事请POPO我(`有事情去找赵莎去，老哥滚去考研了。`)。下载在右上角clone and download按钮。历史版本下载在左上角commits。<br>
 **通用模块要点链接时，按小键盘1关掉鼠标动作再点就行！再按打开！**<br>
+
+![](https://github.com/coffeeBreaksama/censor-chrome-version/tree/master/images/googlea.png)
+
+<br>
 
 `2017/8/5`<br>
 邮件：

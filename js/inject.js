@@ -4,7 +4,7 @@ var _checkWord_ = {
 	"yuedu-article-censor":"WWW.05BET.CC;包夜;多少钱上门;性爱;赌;党;",
 	"yueducmt-censor":"政府;国家领导人;政才",
 	"yuedu-message-censor":"390350063;",
-	"study-censor":"web;大数据开发;前端;java;免费;gan;1998;裙;资料;625;私我;群;留q;前面;",
+	"study-censor":"web;大数据开发;php;前端;java;免费;gan;1998;裙;资料;625;私我;群;留q;前面;",
 	"yaolushancmt-censor":"扣;流量;V;薇;+;",
 	
 	
@@ -1833,8 +1833,8 @@ function autoUpdataBooks()
 var delType = 0;
 var autoMain = 0;
 var delListWord = new Array();
-delListWord[0] = "28659a8c76e94309b03667051b31d2fb_1";//前面是要搜索的关键词，后面是类别，看上面，中间用英文符号:隔开
-delListWord[1] = "b32b599972dc457cb0a4f2f0bc199e81_1";
+delListWord[0] = "*>>";//前面是要搜索的关键词，后面是类别，看上面，中间用英文符号:隔开
+//delListWord[1] = "b32b599972dc457cb0a4f2f0bc199e81_1";
 //delListWord[2] = "操你妈";
 //delListWord[3] = "草泥马";
 function whileDelay()
@@ -1862,7 +1862,7 @@ function whileDelay()
 			$("#status").val("1000");
 			delType = 0;
 		}
-		$("#sourceId").val(str);
+		$("#keyword").val(str);
 		//$(".u-check input").find("name:multiable").attr("checked",false);
 		console.log("search " + str);
 		$("#querybtn").trigger("click");
@@ -1982,5 +1982,5 @@ function whileDelay()
 			}
 		}	
 		
-	},5*1000);
+	},10*1000);
 }
