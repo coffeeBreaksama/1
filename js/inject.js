@@ -4,7 +4,7 @@ var _checkWord_ = {
 	"yuedu-article-censor":"WWW.05BET.CC;包夜;多少钱上门;性爱;赌;党;",
 	"yueducmt-censor":"政府;国家领导人;政才",
 	"yuedu-message-censor":"390350063;",
-	"study-censor":"web;大数据开发;php;前端;java;免费;gan;1998;裙;资料;625;私我;群;留q;前面;",
+	"study-censor":"交流;web;大数据开发;php;前端;java;免费;gan;1998;裙;资料;625;私我;群;留q;前面;",
 	"yaolushancmt-censor":"扣;流量;V;薇;+;",
 	
 	
@@ -792,6 +792,7 @@ function initAll()
 		case "http://mmo.mi.nis.netease.com/modules/image/mark/image-mark-content.html":driverInit();break;
 		case "http://mmo.mi.nis.netease.com/modules/image/mark/image-mark-content.html#":driverInit();break;
 		
+		
 		case "http://blog.nis.netease.com/search/shortTextSearch.html": blogInit(); break;
 		default: break;
 	}
@@ -1381,25 +1382,25 @@ function initKeyMOOC()
 			if(e.target.tagName != "INPUT")
 				{
 					var list = $("#dataType");
-					if(e.which == 49)
+					if(e.which == 49)//1
 					{
 						list.val("5");
 						//list.find("option[text='图片']").attr("selected".true);
 						$("#querybtn").click();
 					}
-					if(e.which == 50)
+					if(e.which == 50)//2
 					{
 						list.val("14");
 						//list.find("option[text='图片']").attr("selected".true);
 						$("#querybtn").click();
 					}
-					if(e.which == 51)
+					if(e.which == 51)//3
 					{
 						list.val("-1");
 						//list.find("option[text='图片']").attr("selected".true);
 						$("#querybtn").click();
 					}
-					if(e.which == 52)
+					if(e.which == 52)//4
 					{
 						list.val("-1");
 						$("#status").val("0");
@@ -1413,6 +1414,7 @@ function initKeyMOOC()
 
 function initKeyREAD()
 {		
+	var i = 0;
 	$("#multiCensor").attr("checked",false);
 	$("#querybtn").click();
 	$("body").on("keydown", function(e){
@@ -1422,6 +1424,7 @@ function initKeyREAD()
 					var checkStatus = $("#status");
 					if(e.which == 49)
 					{
+
 						$("#multiCensor").attr("checked",false);
 						sourceType.val("0");
 						checkStatus.val("1000");
@@ -1833,10 +1836,8 @@ function autoUpdataBooks()
 var delType = 0;
 var autoMain = 0;
 var delListWord = new Array();
-delListWord[0] = "*>>";//前面是要搜索的关键词，后面是类别，看上面，中间用英文符号:隔开
-//delListWord[1] = "b32b599972dc457cb0a4f2f0bc199e81_1";
-//delListWord[2] = "操你妈";
-//delListWord[3] = "草泥马";
+delListWord[0] = "《 》";//前面是要搜索的关键词，后面是类别，看上面，中间用英文符号:隔开
+
 function whileDelay()
 {
 	function delayExecut(num,func)
@@ -1857,14 +1858,15 @@ function whileDelay()
 			$("#status").val("0");
 			delType = 1;
 		}
-		else(delType == 1)
+		else if(delType == 1)
 		{
 			$("#status").val("1000");
 			delType = 0;
 		}
+		//str = "《 》 " + str;
 		$("#keyword").val(str);
 		//$(".u-check input").find("name:multiable").attr("checked",false);
-		console.log("search " + str);
+		//console.log("search " + str);
 		$("#querybtn").trigger("click");
 	}
 	function checkContinueSubmit()
@@ -1888,7 +1890,7 @@ function whileDelay()
 	{
 		if($('#cs-list a').length == 0)
 		{
-			console.log("无数据");
+			//console.log("无数据");
 			return;
 		}
 		if($('#checklist a.focus')!= null)
@@ -1924,7 +1926,7 @@ function whileDelay()
 			switch(step)
 			{
 				case 0: 
-					console.log(step+"start");
+					//console.log(step+"start");
 					executingFlag = 1;
 					delayExecut(1000,function(){
 						searchStr(delListWord[nowDelWordIndex]);
@@ -1932,7 +1934,7 @@ function whileDelay()
 					});
 				break;
 				case 1: 
-					console.log(step+"start");
+					//console.log(step+"start");
 					executingFlag = 1;
 					delayExecut(1000,function(){
 						delList(delListWord[nowDelWordIndex]);
@@ -1940,14 +1942,14 @@ function whileDelay()
 					});
 				break;
 				case 2: 
-					console.log(step+"start");
+					//console.log(step+"start");
 					executingFlag = 1;
 					delayExecut(2000,function(){
 						checkContinueSubmit();
 					});
 				break;
 				case 3: 
-					console.log(step+"start");
+					//console.log(step+"start");
 					executingFlag = 1;
 					delayExecut(3000,function(){
 						console.log("3s end"+step);
@@ -1955,7 +1957,7 @@ function whileDelay()
 					});
 				break;
 				case 4: 
-					console.log(step+"start");
+				//	console.log(step+"start");
 					executingFlag = 1;
 					delayExecut(3000,function(){
 						console.log("3s end"+step);
@@ -1963,7 +1965,7 @@ function whileDelay()
 					});
 				break;
 				case 5: 
-					console.log(step+"start");
+					//console.log(step+"start");
 					executingFlag = 1;
 					delayExecut(3000,function(){
 						console.log("3s end"+step);
@@ -1982,5 +1984,6 @@ function whileDelay()
 			}
 		}	
 		
-	},10*1000);
+	},3*1000);
+	return console.log("开始删除.关键词列表：" + delListWord);
 }

@@ -230,6 +230,7 @@ function switchNoti(cmd)
 				}
 			},30*1000*60);
 			NotifSwitch = 1;
+			timeSend = 0;
 			sendNotif("开始计算时间，注意清当前一轮漫画原创"); //回头取消
 	}else if(cmd == "stop")
 	{
