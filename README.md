@@ -10,8 +10,8 @@
 ##### 也许群里吼一吼会有效果？
 `Write in 2017/8/22`<br>
 
-![图片好像无法载入](https://github.com/coffeeBreaksama/censor-chrome-version/raw/master/images/menxin.png)
-![图片好像无法载入](https://github.com/coffeeBreaksama/censor-chrome-version/raw/master/images/googlea.png)
+![图片好像无法载入](https://github.com/coffeeBreaksama/censor-chrome-version/raw/master/images/menxin.jpg)<br>
+![图片好像无法载入](https://github.com/coffeeBreaksama/censor-chrome-version/raw/master/images/googlea.png)<br>
 
 `2017/8/5`<br>
 邮件：
