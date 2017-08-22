@@ -6,7 +6,7 @@
 有事请POPO我(`谁也别POPO了，自己改代码去。`)。下载在右上角clone and download按钮。历史版本下载在左上角commits。<br>
 **通用模块要点链接时，按小键盘1关掉鼠标动作再点就行！再按打开！**<br>
 
-![图片好像无法载入](https://github.com/coffeeBreaksama/censor-chrome-version/tree/master/images/googlea.png)
+![图片好像无法载入](https://github.com/coffeeBreaksama/censor-chrome-version/trw/master/images/googlea.png)
 
 <br>
 
