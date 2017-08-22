@@ -9,10 +9,11 @@
 ![](https://github.com/coffeeBreaksama/censor-chrome-version/tree/master/images/googlea.png)
 
 <br>
-`2017/8/22`<br>
-### 老哥以溜，蛤？有BUG？不存在的,老哥这么帅气的人怎么会留BUG。<br>
 
+### 老哥以溜，蛤？有BUG？不存在的,老哥这么帅气的人怎么会留BUG。<br>
 ##### 也许群里吼一吼会有效果？
+`Write in 2017/8/22`<br>
+
 
 `2017/8/5`<br>
 邮件：
