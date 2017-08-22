@@ -6,14 +6,12 @@
 有事请POPO我(`谁也别POPO了，自己改代码去。`)。下载在右上角clone and download按钮。历史版本下载在左上角commits。<br>
 **通用模块要点链接时，按小键盘1关掉鼠标动作再点就行！再按打开！**<br>
 
-![图片好像无法载入](https://github.com/coffeeBreaksama/censor-chrome-version/raw/master/images/googlea.png)
-
-<br>
-
 ### 老哥以溜，蛤？有BUG？不存在的,老哥这么帅气的人怎么会留BUG。<br>
 ##### 也许群里吼一吼会有效果？
 `Write in 2017/8/22`<br>
 
+![图片好像无法载入](https://github.com/coffeeBreaksama/censor-chrome-version/raw/master/images/menxin.png)
+![图片好像无法载入](https://github.com/coffeeBreaksama/censor-chrome-version/raw/master/images/googlea.png)
 
 `2017/8/5`<br>
 邮件：
